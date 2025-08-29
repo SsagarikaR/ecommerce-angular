@@ -1,0 +1,55 @@
+<div class="p-6">
+  <h1 class="text-2xl font-bold mb-6">Products</h1>
+
+  <div *ngIf="loading" class="text-center">Loading...</div>
+
+  <div
+    *ngIf="!loading && products.length === 0"
+    class="text-center text-gray-500"
+  >
+    No products found.
+  </div>
+
+  <!-- <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"> -->
+  <div
+    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 mb-10"
+  >
+    @for (product of products; track $index) {
+    <app-product-card [item]="product"></app-product-card>
+    }
+  </div>
+  <!-- </div> -->
+
+  <!-- Pagination controls -->
+  <div
+    *ngIf="totalPages > 1"
+    class="flex justify-center items-center gap-2 mt-6"
+  >
+    <button
+      class="px-3 py-1 border rounded"
+      [disabled]="page === 1"
+      (click)="goToPage(page - 1)"
+    >
+      Prev
+    </button>
+
+    <ng-container *ngFor="let p of [].constructor(totalPages); let i = index">
+      <button
+        class="px-3 py-1 border rounded"
+        [class.bg-blue-600]="page === i + 1"
+        [class.text-white]="page === i + 1"
+        (click)="goToPage(i + 1)"
+      >
+        {{ i + 1 }}
+      </button>
+    </ng-container>
+
+    <button
+      class="px-3 py-1 border rounded"
+      [disabled]="page === totalPages"
+      (click)="goToPage(page + 1)"
+    >
+      Next
+    </button>
+  </div>
+</div>

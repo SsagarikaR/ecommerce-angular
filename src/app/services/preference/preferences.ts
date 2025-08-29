@@ -1,0 +1,25 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { category } from '../../types/type';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class Preferences {
+  http = inject(HttpClient);
+  constructor() {}
+  getPrefernces(queryParams: { userID?: number } = {}) {
+    const params = new HttpParams({
+      fromObject: queryParams,
+    });
+    return this.http.get('http://localhost:5000/prefernces', { params });
+  }
+
+  postPrefernces(data: any) {
+    return this.http.post('http://localhost:5000/prefernces', data);
+  }
+
+  updatePrefernces(data: Partial<category>) {
+    return this.http.patch('http://localhost:5000/prefernces', data);
+  }
+}

@@ -1,0 +1,102 @@
+<div class="flex flex-col items-center px-40 mt-10">
+  @if(isEdit){
+  <h1 class="text-2xl font-extrabold">Update Product</h1>
+  }@else{
+  <h1 class="text-2xl font-extrabold">Add New Product</h1>
+  }
+  <form class="shadow-sm w-[75%] p-4">
+    <div class="flex flex-wrap">
+      <div class="w-full gap-4">
+        <mat-form-field class="w-full flex flex-col">
+          <div class="border pl-2 pt-2 mb-2">
+            <mat-label>Name</mat-label>
+            <input
+              matInput
+              type="text"
+              [(ngModel)]="productName"
+              name="productName"
+            />
+          </div>
+        </mat-form-field>
+        <mat-form-field class="w-full flex flex-col">
+          <div class="border pl-2 pt-2">
+            <mat-label>ThumbNail</mat-label>
+            <input
+              matInput
+              type="text"
+              [(ngModel)]="productThumbnail"
+              name="productThumbnail"
+            />
+          </div>
+        </mat-form-field>
+        <mat-form-field class="w-full flex flex-col">
+          <div class="border pl-2 pt-2">
+            <mat-label>Description</mat-label>
+            <input
+              matInput
+              type="text"
+              [(ngModel)]="productDescription"
+              name="productDescription"
+            />
+          </div>
+        </mat-form-field>
+        <mat-form-field class="w-full flex flex-col">
+          <div class="border pl-2 pt-2">
+            <mat-label>Price</mat-label>
+            <input
+              matInput
+              type="text"
+              [(ngModel)]="productPrice"
+              name="productPrice"
+            />
+          </div>
+        </mat-form-field>
+        <mat-form-field class="w-full flex flex-col">
+          <div class="border pl-2 pt-2">
+            <mat-label>Category ID</mat-label>
+            <input
+              matInput
+              type="text"
+              [(ngModel)]="categoryID"
+              name="categoryID"
+            />
+          </div>
+        </mat-form-field>
+        <mat-form-field class="w-full flex flex-col">
+          <div class="border pl-2 pt-2">
+            <mat-label>Stock</mat-label>
+            <input matInput type="text" [(ngModel)]="stock" name="stock" />
+          </div>
+        </mat-form-field>
+        <mat-form-field class="w-full flex flex-col">
+          <div class="border pl-2 pt-2">
+            <mat-label>Brand ID</mat-label>
+            <input matInput type="text" [(ngModel)]="brandID" name="brandID" />
+          </div>
+        </mat-form-field>
+        <mat-form-field class="w-full flex flex-col">
+          <div class="border pl-2 pt-2">
+            <mat-label>Rating</mat-label>
+            <input matInput type="text" [(ngModel)]="rating" name="rating" />
+          </div>
+        </mat-form-field>
+      </div>
+      <div class="w-full flex justify-center">
+        @if(isEdit){<button
+          class="px-6 py-2 font-semibold bg-blue-400 rounded-lg hover:bg-blue-300 cursor-pointer"
+          (click)="update()"
+          [disabled]="!productName || !productThumbnail"
+        >
+          Update</button
+        >} @else{
+        <button
+          class="px-6 py-2 font-semibold bg-blue-400 rounded-lg hover:bg-blue-300 cursor-pointer"
+          (click)="add()"
+          [disabled]="!productName || !productThumbnail"
+        >
+          Add</button
+        >}
+      </div>
+    </div>
+  </form>
+</div>
