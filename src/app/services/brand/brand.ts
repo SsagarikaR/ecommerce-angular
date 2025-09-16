@@ -13,16 +13,16 @@ export class Brand {
     const params = new HttpParams({
       fromObject: queryParams,
     });
-    return this.http.get('http://localhost:5000/brands', { params });
+    return this.http.get('brands', { params });
   }
   postBrands(data: Partial<brand>) {
-    return this.http.post('http://localhost:5000/brands', data);
+    return this.http.post('brands', data);
   }
   updateBrands(data: Partial<brand>) {
-    return this.http.patch('http://localhost:5000/brands', data);
+    return this.http.patch('brands', data);
   }
   deleteBrands(brandID: number) {
-    return this.http.delete('http://localhost:5000/brands', {
+    return this.http.delete('brands', {
       body: { brandID },
     });
   }

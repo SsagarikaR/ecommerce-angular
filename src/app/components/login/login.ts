@@ -9,6 +9,7 @@ import { Auth } from '../../services/auth/auth';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { CommonModule } from '@angular/common';
+import { Toast } from '../../services/toast';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.css',
 })
 export class Login {
+  private toast = inject(Toast);
   loginForm!: FormGroup;
   fb = inject(FormBuilder);
   auth = inject(Auth);
@@ -42,7 +44,7 @@ export class Login {
       },
       error: (err) => {
         console.error('Login failed:', err);
-        alert(err.error?.message || 'Login failed');
+        this.toast.show(err.error?.message || 'Login failed', 'error');
       },
     });
   }

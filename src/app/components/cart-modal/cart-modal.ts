@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { cartItem } from '../../types/type';
 import { CommonModule } from '@angular/common';
 import { Cart } from '../../services/cart/cart';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart-modal',
@@ -11,7 +12,7 @@ import { Cart } from '../../services/cart/cart';
 })
 export class CartModal {
   private cartService = inject(Cart);
-
+  router = inject(Router);
   cartItems: cartItem[] = [];
   isOpen = false;
 
@@ -34,12 +35,12 @@ export class CartModal {
       quantity,
     });
   }
+  proceedToCheckout() {
+    this.close(); // Close the cart modal
+    this.router.navigate(['/checkout']); // Navigate to checkout page
+  }
 
   remove(item: cartItem) {
     this.cartService.deleteItem(item.cartItemID);
-  }
-
-  get totalAmount() {
-    return this.cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
   }
 }

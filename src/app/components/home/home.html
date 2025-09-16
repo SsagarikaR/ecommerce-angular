@@ -1,40 +1,237 @@
 <div>
-  <div>
-    <owl-carousel-o [options]="customOptions">
-      @for(category of categories; track $index){
-      <ng-template carouselSlide>
-        <div
-          class="relative flex flex-col items-center"
-          [routerLink]="'categories/' + category.categoryID"
-        >
-          <img
-            class="h-[400px]"
-            [src]="category.categoryThumbnail"
-            alt="{{ category.categoryName }}"
-          />
-          <span>{{ category.categoryName }}</span>
-        </div></ng-template
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+    <section
+      class="relative overflow-hidden rounded-2xl aspect-[16/7] bg-zinc-900 text-white"
+    >
+      <img
+        class="absolute inset-0 h-full w-full object-cover opacity-80 hero-img"
+        [src]="heroImage"
+        alt="Handcrafted ceramics displayed on a table"
+      />
+      <div class="absolute inset-0 bg-black/30"></div>
+      <div
+        class="relative z-10 flex h-full items-center justify-center text-center p-6"
       >
-      }
-    </owl-carousel-o>
-  </div>
-  <h4 class="text-2xl font-bold mb-2">Featured Products</h4>
+        <div class="max-w-2xl">
+          <h1
+            class="text-3xl sm:text-4xl font-semibold tracking-tight text-balance"
+          >
+            Products for the soul
+          </h1>
+          <p class="mt-3 text-sm sm:text-base text-white/85 leading-relaxed">
+            Breathe new life into cultural craft with timeless, handmade pieces.
+          </p>
+          <div class="mt-6">
+            <a
+              [routerLink]="'/products'"
+              class="inline-flex items-center rounded-full px-5 py-2.5 text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
+            >
+              Shop now
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <div
-    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 mb-10"
-  >
-    @for (product of products; track $index) {
-    <app-product-card [item]="product"></app-product-card>
-    }
-  </div>
+    <div class="lg:grid lg:grid-cols-3 lg:gap-6 space-y-8 lg:space-y-0">
+      <div class="lg:col-span-2 space-y-10">
+        <section>
+          <div class="mb-3 flex items-end justify-between">
+            <h2 class="text-xl font-semibold text-zinc-900">
+              Shop by Category
+            </h2>
+          </div>
 
-  <h4 class="text-2xl font-bold mb-2">Featured Products</h4>
+          <owl-carousel-o [options]="customOptions">
+            @for(category of categories; track $index){
+            <ng-template carouselSlide>
+              <a
+                class="relative block overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm hover:shadow-md transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
+                [routerLink]="'/products'"
+                [queryParams]="{ categoryID: category.categoryID }"
+              >
+                <div class="h-60 w-full bg-stone-100">
+                  <img
+                    class="h-full w-full object-cover"
+                    [src]="category.categoryThumbnail"
+                    alt="{{ category.categoryName }}"
+                  />
+                </div>
+                <span
+                  class="pointer-events-none absolute inset-x-4 bottom-4 inline-flex items-center justify-center rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-zinc-900 shadow"
+                >
+                  {{ category.categoryName }}
+                </span>
+              </a>
+            </ng-template>
+            }
+          </owl-carousel-o>
+        </section>
 
-  <div
-    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4"
-  >
-    @for (preference of preferences; track $index) {
-    <app-product-card [item]="preference"></app-product-card>
-    }
+        <section>
+          <div class="mb-3 flex items-end justify-between">
+            <h3 class="text-2xl font-semibold text-zinc-900">
+              Featured products
+            </h3>
+            <a
+              class="hidden items-center gap-1 text-sm font-medium text-emerald-900 hover:text-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 rounded md:inline-flex"
+              [routerLink]="'/products'"
+            >
+              Browse all →
+            </a>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:gap-6 mb-6">
+            @for (product of products!.slice(0, 10); track $index) {
+            <app-product-card [item]="product"></app-product-card>
+            }
+          </div>
+
+          <div
+            class="mt-2 flex justify-center md:hidden"
+            *ngIf="products.length > 10"
+          >
+            <a
+              class="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2 text-white hover:bg-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
+              [routerLink]="'/products'"
+            >
+              Show more →
+            </a>
+          </div>
+        </section>
+
+        <section *ngIf="preferences && preferences!.length > 1" class="pb-2">
+          <div class="mb-3 flex items-end justify-between">
+            <h3 class="text-2xl font-semibold text-zinc-900">
+              Recommended for you
+            </h3>
+            <a
+              class="hidden items-center gap-1 text-sm font-medium text-emerald-700 hover:text-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 rounded md:inline-flex"
+              [routerLink]="'/products'"
+            >
+              Browse all →
+            </a>
+          </div>
+
+          <div
+            class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 lg:gap-6 mb-6"
+          >
+            @for (preference of preferences!.slice(0, 9); track $index) {
+            <app-product-card [item]="preference"></app-product-card>
+            }
+          </div>
+
+          <div class="mt-2 flex justify-center md:hidden">
+            <a
+              class="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2 text-white hover:bg-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
+              [routerLink]="'/products'"
+            >
+              Show more →
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <aside class="lg:col-span-1 space-y-6">
+        <div
+          class="rounded-2xl overflow-hidden bg-white border border-stone-200"
+        >
+          <div class="h-40 w-full">
+            <img
+              [src]="aboutImage"
+              alt="Studio workspace with handcrafted ceramics"
+              class="h-full w-full object-cover bg-cover"
+            />
+          </div>
+          <div class="p-5">
+            <h4 class="text-lg font-semibold text-zinc-900">About us</h4>
+            <p class="mt-2 text-sm leading-relaxed text-zinc-600">
+              We source small‑batch, hand‑crafted pieces from independent
+              makers. Each item carries a story of care and craft.
+            </p>
+            <a
+              [routerLink]="'/products'"
+              class="mt-3 inline-flex text-sm font-medium text-emerald-900 hover:text-emerald-800"
+            >
+              Shop now →
+            </a>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="rounded-xl bg-white border border-stone-200 p-4">
+            <h5 class="text-sm font-semibold text-zinc-900">
+              Exclusive design
+            </h5>
+            <p class="mt-1 text-xs leading-5 text-zinc-600">
+              Limited runs by independent studios.
+            </p>
+          </div>
+          <div class="rounded-xl bg-white border border-stone-200 p-4">
+            <h5 class="text-sm font-semibold text-zinc-900">Handmade work</h5>
+            <p class="mt-1 text-xs leading-5 text-zinc-600">
+              Every piece carries human touch.
+            </p>
+          </div>
+          <div class="rounded-xl bg-white border border-stone-200 p-4">
+            <h5 class="text-sm font-semibold text-zinc-900">
+              Careful delivery
+            </h5>
+            <p class="mt-1 text-xs leading-5 text-zinc-600">
+              Secure packaging worldwide.
+            </p>
+          </div>
+          <div class="rounded-xl bg-white border border-stone-200 p-4">
+            <h5 class="text-sm font-semibold text-zinc-900">Easy returns</h5>
+            <p class="mt-1 text-xs leading-5 text-zinc-600">
+              Hassle‑free within 30 days.
+            </p>
+          </div>
+        </div>
+
+        <div class="rounded-2xl bg-white border border-stone-200 p-2">
+          <details class="group rounded-xl px-3 py-2">
+            <summary
+              class="cursor-pointer list-none text-sm font-medium text-zinc-900 flex items-center justify-between"
+            >
+              How do I place an order?
+              <span class="ml-3 text-zinc-500 group-open:hidden">+</span>
+              <span class="ml-3 text-zinc-500 hidden group-open:inline">–</span>
+            </summary>
+            <p class="mt-2 text-sm leading-relaxed text-zinc-600">
+              Add items to cart and proceed to checkout. You’ll confirm shipping
+              and payment details.
+            </p>
+          </details>
+
+          <details class="group rounded-xl px-3 py-2">
+            <summary
+              class="cursor-pointer list-none text-sm font-medium text-zinc-900 flex items-center justify-between"
+            >
+              What are the delivery options?
+              <span class="ml-3 text-zinc-500 group-open:hidden">+</span>
+              <span class="ml-3 text-zinc-500 hidden group-open:inline">–</span>
+            </summary>
+            <p class="mt-2 text-sm leading-relaxed text-zinc-600">
+              Standard and express shipping are available with real‑time
+              tracking.
+            </p>
+          </details>
+
+          <details class="group rounded-xl px-3 py-2">
+            <summary
+              class="cursor-pointer list-none text-sm font-medium text-zinc-900 flex items-center justify-between"
+            >
+              Can I return an item?
+              <span class="ml-3 text-zinc-500 group-open:hidden">+</span>
+              <span class="ml-3 text-zinc-500 hidden group-open:inline">-</span>
+            </summary>
+            <p class="mt-2 text-sm leading-relaxed text-zinc-600">
+              Yes, returns are accepted within 30 days in original condition.
+            </p>
+          </details>
+        </div>
+      </aside>
+    </div>
   </div>
 </div>

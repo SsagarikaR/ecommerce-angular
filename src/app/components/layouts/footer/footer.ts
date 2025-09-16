@@ -1,12 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Category } from '../../services/category';
-import { category } from '../../types/type';
-import { CommonModule, LowerCasePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Category } from '../../../services/category/category';
+import { category } from '../../../types/type';
 
 @Component({
   selector: 'app-footer',
-  imports: [RouterLink, LowerCasePipe, CommonModule],
+  imports: [CommonModule],
   templateUrl: './footer.html',
   styleUrl: './footer.css',
 })

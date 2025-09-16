@@ -6,12 +6,13 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const cookieService = inject(CookieService);
   const token = cookieService.get('auth_token');
 
-  if (token) {
-    const authReq = req.clone({
-      setHeaders: { Authorization: `Bearer ${token}` },
-    });
-    return next(authReq);
-  }
+  const apiPrefix = 'http://localhost:5001';
 
-  return next(req);
+  const isAbsolute = /^https?:\/\//i.test(req.url);
+  const apiReq = req.clone({
+    url: isAbsolute ? req.url : `${apiPrefix}/${req.url}`,
+    setHeaders: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+
+  return next(apiReq);
 };

@@ -1,0 +1,326 @@
+<div class="min-h-screen bg-slate-50 py-8">
+  <div class="max-w-4xl mx-auto px-4">
+    <!-- Progress Steps -->
+    <div class="mb-8">
+      <div class="flex items-center justify-center space-x-4">
+        <div class="flex items-center">
+          <div
+            [class]="
+              currentStep >= 1
+                ? 'w-8 h-8 bg-slate-600 text-white rounded-full flex items-center justify-center text-sm font-medium'
+                : 'w-8 h-8 bg-slate-300 text-slate-600 rounded-full flex items-center justify-center text-sm font-medium'
+            "
+          >
+            1
+          </div>
+          <span
+            class="ml-2 text-sm font-medium"
+            [class]="currentStep >= 1 ? 'text-slate-600' : 'text-slate-500'"
+            >Review Items</span
+          >
+        </div>
+        <div
+          class="w-16 h-0.5"
+          [class]="currentStep >= 2 ? 'bg-slate-600' : 'bg-slate-300'"
+        ></div>
+        <div class="flex items-center">
+          <div
+            [class]="
+              currentStep >= 2
+                ? 'w-8 h-8 bg-slate-600 text-white rounded-full flex items-center justify-center text-sm font-medium'
+                : 'w-8 h-8 bg-slate-300 text-slate-600 rounded-full flex items-center justify-center text-sm font-medium'
+            "
+          >
+            2
+          </div>
+          <span
+            class="ml-2 text-sm font-medium"
+            [class]="currentStep >= 2 ? 'text-slate-600' : 'text-slate-500'"
+            >Address</span
+          >
+        </div>
+        <div
+          class="w-16 h-0.5"
+          [class]="currentStep >= 3 ? 'bg-slate-600' : 'bg-slate-300'"
+        ></div>
+        <div class="flex items-center">
+          <div
+            [class]="
+              currentStep >= 3
+                ? 'w-8 h-8 bg-slate-600 text-white rounded-full flex items-center justify-center text-sm font-medium'
+                : 'w-8 h-8 bg-slate-300 text-slate-600 rounded-full flex items-center justify-center text-sm font-medium'
+            "
+          >
+            3
+          </div>
+          <span
+            class="ml-2 text-sm font-medium"
+            [class]="currentStep >= 3 ? 'text-slate-600' : 'text-slate-500'"
+            >Confirm</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 1: Review Items -->
+    <div
+      *ngIf="currentStep === 1"
+      class="bg-white rounded-lg shadow-md p-6 border border-slate-200"
+    >
+      <h2 class="text-xl font-semibold mb-6 text-slate-900">
+        Review Your Order
+      </h2>
+
+      <div class="space-y-4 mb-6">
+        <div
+          *ngFor="let item of cartItems"
+          class="flex items-center p-4 border border-slate-200 rounded-lg"
+        >
+          <img
+            [src]="item.productThumbnail"
+            [alt]="item.productName"
+            class="w-16 h-16 object-cover rounded-md mr-4"
+          />
+
+          <div class="flex-1">
+            <h4 class="font-medium text-slate-800">{{ item.productName }}</h4>
+            <p class="text-sm text-slate-600">₹{{ item.productPrice }} each</p>
+            <p class="text-sm text-slate-600">Quantity: {{ item.quantity }}</p>
+          </div>
+
+          <div class="text-right">
+            <p class="font-semibold text-slate-900">₹{{ item.totalPrice }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-200 pt-4">
+        <div class="flex justify-between text-lg font-semibold text-slate-900">
+          <span>Total Amount:</span>
+          <span>₹{{ totalAmount }}</span>
+        </div>
+      </div>
+
+      <div class="flex justify-between mt-6">
+        <button
+          (click)="goBack()"
+          class="px-6 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+        >
+          Back to Cart
+        </button>
+        <button
+          (click)="nextStep()"
+          class="px-6 py-2 bg-slate-600 text-white rounded-md hover:bg-slate-500"
+        >
+          Continue to Address
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2: Address Form -->
+    <div
+      *ngIf="currentStep === 2"
+      class="bg-white rounded-lg shadow-md p-6 border border-slate-200"
+    >
+      <h2 class="text-xl font-semibold mb-6 text-slate-900">
+        Delivery Address
+      </h2>
+
+      <form #addressForm="ngForm" class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1"
+              >State</label
+            >
+            <input
+              type="text"
+              [(ngModel)]="orderData.state"
+              name="state"
+              required
+              class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1"
+              >City</label
+            >
+            <input
+              type="text"
+              [(ngModel)]="orderData.city"
+              name="city"
+              required
+              class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1"
+              >Pincode</label
+            >
+            <input
+              type="text"
+              [(ngModel)]="orderData.pincode"
+              name="pincode"
+              required
+              class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1"
+              >Locality</label
+            >
+            <input
+              type="text"
+              [(ngModel)]="orderData.locality"
+              name="locality"
+              required
+              class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1"
+            >Complete Address</label
+          >
+          <textarea
+            [(ngModel)]="orderData.address"
+            name="address"
+            required
+            rows="3"
+            class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            placeholder="House/Flat no, Building, Street, Landmark"
+          ></textarea>
+        </div>
+      </form>
+
+      <div class="flex justify-between mt-6">
+        <button
+          (click)="previousStep()"
+          class="px-6 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+        >
+          Back
+        </button>
+        <button
+          (click)="nextStep()"
+          [disabled]="!addressForm.valid"
+          class="px-6 py-2 bg-slate-600 text-white rounded-md hover:bg-slate-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Review Order
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 3: Order Confirmation -->
+    <div
+      *ngIf="currentStep === 3"
+      class="bg-white rounded-lg shadow-md p-6 border border-slate-200"
+    >
+      <h2 class="text-xl font-semibold mb-6 text-slate-900">
+        Confirm Your Order
+      </h2>
+
+      <!-- Order Summary -->
+      <div class="mb-6">
+        <h3 class="font-medium mb-3 text-slate-800">Order Items</h3>
+        <div class="space-y-2">
+          <div
+            *ngFor="let item of cartItems"
+            class="flex justify-between text-sm"
+          >
+            <span class="text-slate-700"
+              >{{ item.productName }} x {{ item.quantity }}</span
+            >
+            <span class="text-slate-900">₹{{ item.totalPrice }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address Summary -->
+      <div class="mb-6">
+        <h3 class="font-medium mb-3 text-slate-800">Delivery Address</h3>
+        <div class="text-sm text-slate-600 bg-slate-50 p-3 rounded-md">
+          <p>{{ orderData.address }}</p>
+          <p>{{ orderData.locality }}, {{ orderData.city }}</p>
+          <p>{{ orderData.state }} - {{ orderData.pincode }}</p>
+        </div>
+      </div>
+
+      <!-- Total -->
+      <div class="border-t border-slate-200 pt-4 mb-6">
+        <div class="flex justify-between text-lg font-semibold text-slate-900">
+          <span>Total Amount:</span>
+          <span>₹{{ totalAmount }}</span>
+        </div>
+      </div>
+
+      <div class="flex justify-between">
+        <button
+          (click)="previousStep()"
+          class="px-6 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+        >
+          Back
+        </button>
+        <button
+          (click)="showConfirmModal()"
+          class="px-6 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-500"
+        >
+          Place Order
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div
+  *ngIf="showModal"
+  class="fixed inset-0 bg-black/50 flex items-center justify-center z-[1001]"
+>
+  <div class="bg-white rounded-lg p-6 max-w-md mx-4 border border-slate-200">
+    <div class="text-center">
+      <div
+        class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4"
+      >
+        <svg
+          class="w-8 h-8 text-emerald-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 13l4 4L19 7"
+          ></path>
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold mb-2 text-slate-900">
+        Confirm Your Order
+      </h3>
+      <p class="text-slate-600 mb-6">
+        Are you sure you want to place this order for ₹{{ totalAmount }}?
+      </p>
+
+      <div class="flex space-x-3">
+        <button
+          (click)="hideConfirmModal()"
+          class="flex-1 px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 text-slate-700"
+        >
+          Cancel
+        </button>
+        <button
+          (click)="confirmOrder()"
+          [disabled]="isLoading"
+          class="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-500 disabled:opacity-50"
+        >
+          <span *ngIf="!isLoading">Confirm Order</span>
+          <span *ngIf="isLoading">Processing...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

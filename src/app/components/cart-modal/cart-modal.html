@@ -11,10 +11,10 @@
   class="fixed top-0 right-0 w-[380px] h-full bg-white shadow-xl z-[1000] flex flex-col animate-slide-in overflow-y-auto"
 >
   <!-- Header -->
-  <div class="flex justify-between items-center p-4 border-b">
-    <h2 class="text-lg font-semibold">Your Cart 🛒</h2>
+  <div class="flex justify-between items-center p-4 border-b border-slate-200">
+    <h2 class="text-lg font-semibold text-slate-900">Your Cart</h2>
     <button
-      class="text-xl cursor-pointer hover:text-gray-600"
+      class="text-xl cursor-pointer hover:text-slate-600 text-slate-400"
       (click)="close()"
     >
       ✕
@@ -31,21 +31,21 @@
       />
 
       <div class="flex-1">
-        <h4 class="font-medium text-gray-800">{{ item.productName }}</h4>
-        <p class="text-sm text-gray-600">₹{{ item.productPrice }}</p>
+        <h4 class="font-medium text-slate-800">{{ item.productName }}</h4>
+        <p class="text-sm text-slate-600">₹{{ item.productPrice }}</p>
 
         <!-- Quantity -->
         <div class="flex items-center space-x-2 my-2">
           <button
-            class="px-2 py-1 border rounded bg-gray-100 disabled:opacity-50"
+            class="px-2 py-1 border border-slate-300 rounded bg-slate-50 hover:bg-slate-100 disabled:opacity-50"
             (click)="updateQuantity(item, item.quantity - 1)"
             [disabled]="item.quantity <= 1"
           >
             -
           </button>
-          <span class="px-2">{{ item.quantity }}</span>
+          <span class="px-2 text-slate-700">{{ item.quantity }}</span>
           <button
-            class="px-2 py-1 border rounded bg-gray-100"
+            class="px-2 py-1 border border-slate-300 rounded bg-slate-50 hover:bg-slate-100"
             (click)="updateQuantity(item, item.quantity + 1)"
           >
             +
@@ -54,7 +54,7 @@
 
         <!-- Remove -->
         <button
-          class="text-red-500 text-xs hover:underline"
+          class="text-rose-500 text-xs hover:underline"
           (click)="remove(item)"
         >
           Remove
@@ -64,10 +64,14 @@
   </div>
 
   <!-- Footer -->
-  <div class="mt-auto p-4 border-t">
-    <p class="text-gray-800 font-medium mb-3">Total: ₹{{ totalAmount }}</p>
+  <div class="mt-auto p-4 border-t border-slate-200">
+    <p *ngIf="cartItems.length > 0" class="text-slate-800 font-medium mb-3">
+      Total: ₹{{ cartItems[0].totalPrice }}
+    </p>
     <button
-      class="w-full bg-black text-white py-3 rounded-md hover:bg-gray-800 transition"
+      (click)="proceedToCheckout()"
+      [disabled]="cartItems.length === 0"
+      class="w-full bg-slate-600 hover:bg-slate-500 text-white py-3 rounded-md transition disabled:opacity-50"
     >
       Checkout
     </button>

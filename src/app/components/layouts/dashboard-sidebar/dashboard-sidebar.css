@@ -1,0 +1,20 @@
+:host {
+      display: block;
+      height: 100%;
+    }
+    
+    .mat-icon {
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+    }
+
+    a.router-link-active {
+      background-color: #eff6ff;
+      border-right: 2px solid #3b82f6;
+      color: #1d4ed8;
+    }
+
+    a.router-link-active .mat-icon {
+      color: #3b82f6;
+    }

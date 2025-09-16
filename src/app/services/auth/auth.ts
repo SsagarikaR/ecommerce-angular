@@ -1,11 +1,15 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
   http = inject(HttpClient);
+  private userRole = new BehaviorSubject<string | null>(null);
+  userRole$ = this.userRole.asObservable();
+
   constructor() {}
   signup(data: {
     name: string;
@@ -13,9 +17,25 @@ export class Auth {
     contactNo: string;
     password: string;
   }) {
-    return this.http.post('http://localhost:5000/auth/signup', data);
+    return this.http.post('auth/signup', data);
   }
   login(data: { email: string; password: string }) {
-    return this.http.post('http://localhost:5000/auth/login', data);
+    return this.http.post('auth/login', data);
+  }
+  fetchUserProfile() {
+    return this.http.get('user').subscribe({
+      next: (user: any) => {
+        this.userRole.next(user.role);
+      },
+      error: () => this.userRole.next(null),
+    });
+  }
+
+  isAdmin(): boolean {
+    return this.userRole.getValue() === 'Admin';
+  }
+
+  clearUser(): void {
+    this.userRole.next(null);
   }
 }

@@ -8,7 +8,7 @@ import { product } from '../../types/type';
 export class Product {
   http = inject(HttpClient);
   add(body: Partial<product>) {
-    return this.http.post('http://localhost:5000/products', body);
+    return this.http.post('products', body);
   }
   get(
     queryParams: {
@@ -23,13 +23,13 @@ export class Product {
     const params = new HttpParams({
       fromObject: queryParams,
     });
-    return this.http.get('http://localhost:5000/products', { params });
+    return this.http.get<product[]>('products', { params });
   }
   update(data: Partial<product>) {
-    return this.http.patch('http://localhost:5000/products', data);
+    return this.http.patch('products', data);
   }
   delete(productID: number) {
-    return this.http.delete('http://localhost:5000/products', {
+    return this.http.delete('products', {
       body: { productID },
     });
   }

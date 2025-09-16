@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { ProductCard } from '../product-card/product-card';
 import { product } from '../../types/type';
 import { Product } from '../../services/product/product';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { ProductCard } from '../product-card/product-card';
 
 @Component({
   selector: 'app-product-list',
@@ -22,36 +22,48 @@ export class ProductList {
   limit = 5;
   totalItems = 0;
   totalPages = 0;
-  name: string | undefined;
 
   ngOnInit(): void {
-    const name = this.route.snapshot.queryParamMap.get('search');
-    this.fetchProducts(name || undefined);
+    // React to query param changes dynamically
+    this.route.queryParams.subscribe((params) => {
+      const name = params['search'];
+      const categoryID = params['categoryID']
+        ? +params['categoryID']
+        : undefined;
+      this.page = 1; // reset to page 1 when filters change
+      this.fetchProducts({ name, categoryID });
+    });
   }
 
-  fetchProducts(name?: string) {
+  fetchProducts(options: { name?: string; categoryID?: number } = {}) {
     this.loading = true;
-    this.productService
-      .get({ page: this.page, limit: this.limit, name: name })
-      .subscribe({
-        next: (result: any) => {
-          // Assuming backend returns { data: [], total: number }
-          this.products = result;
-          this.totalItems = result[0].totalCount || this.products.length || 0;
-          this.totalPages = Math.ceil(this.totalItems / this.limit);
-          this.loading = false;
-        },
-        error: (err) => {
-          console.error('Error fetching products', err);
-          this.loading = false;
-        },
-      });
+
+    const query: any = {
+      page: this.page,
+      limit: this.limit,
+      ...(options.name ? { name: options.name } : {}),
+      ...(options.categoryID ? { categoryID: options.categoryID } : {}),
+    };
+
+    this.productService.get(query).subscribe({
+      next: (result: any) => {
+        // Assuming backend returns { data: [], total: number }
+        this.products = result;
+        this.totalItems = result[0]?.totalCount || this.products.length || 0;
+        this.totalPages = Math.ceil(this.totalItems / this.limit);
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching products', err);
+        this.loading = false;
+      },
+    });
   }
 
   goToPage(pageNum: number) {
     if (pageNum >= 1 && pageNum <= this.totalPages) {
       this.page = pageNum;
-      this.fetchProducts();
+      this.fetchProducts(); // reuses current query params
     }
   }
 }

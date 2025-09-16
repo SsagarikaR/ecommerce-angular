@@ -1,0 +1,30 @@
+/* Minor smoothing for carousel images */
+:host {
+  display: block;
+}
+
+.hero-img {
+  image-rendering: -webkit-optimize-contrast;
+  transform: scale(1.015);
+}
+
+img {
+  image-rendering: -webkit-optimize-contrast;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] summary {
+  opacity: 0.95;
+}
+
+/* Optional: soften owl dots if present */
+::ng-deep .owl-theme .owl-dots .owl-dot span {
+  background: #e7e5e4; /* stone-200 */
+}
+::ng-deep .owl-theme .owl-dots .owl-dot.active span,
+::ng-deep .owl-theme .owl-dots .owl-dot:hover span {
+  background: #78350f; /* amber-900 fallback close to amber-700 */
+}

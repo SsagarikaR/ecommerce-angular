@@ -1,57 +1,122 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Brand } from '../../../services/brand/brand';
+import { CloudinaryUploadComponent } from '../../../components/shared/cloudinary-upload-component/cloudinary-upload-component';
+import { Toast } from '../../../services/toast';
+import { cloudinaryConfig } from '../../../utils/cloudinaryConfig';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-brand-form',
-  imports: [FormsModule, MatFormField, MatInput, MatButtonModule, MatLabel],
+  standalone: true,
+  imports: [
+    FormsModule,
+    MatButtonModule,
+    CloudinaryUploadComponent,
+    CommonModule,
+  ],
   templateUrl: './brand-form.html',
   styleUrl: './brand-form.css',
 })
-export class BrandForm {
+export class BrandForm implements OnInit {
   brandName!: string;
   brandThumbnail!: string;
-  barndID!: number;
+  brandID!: number;
   isEdit: boolean = false;
-  route = inject(Router);
-  brandServcie = inject(Brand);
+
+  private router = inject(Router);
+  private brandService = inject(Brand);
   private activatedRoute = inject(ActivatedRoute);
+  private toast = inject(Toast);
+  cloudinaryConfig = cloudinaryConfig;
 
   ngOnInit() {
-    const id = this.activatedRoute.snapshot.params['id'];
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
       this.isEdit = true;
-      this.barndID = id;
-      this.brandServcie.getBrands({ brandID: id }).subscribe((result: any) => {
-        this.brandName = result[0].brandName;
-        this.brandThumbnail = result[0].brandThumbnail;
-      });
+      this.brandID = parseInt(id, 10); // Ensure id is a number
+      this.loadBrandDetails(this.brandID);
     }
   }
-  add() {
-    this.brandServcie
+
+  loadBrandDetails(id: number) {
+    this.brandService.getBrands({ brandID: id }).subscribe({
+      next: (result: any) => {
+        if (result && result.length > 0) {
+          this.brandName = result[0].brandName;
+          this.brandThumbnail = result[0].brandThumbnail;
+        } else {
+          this.toast.show('Brand not found.', 'error');
+          this.router.navigateByUrl('/admin/brands');
+        }
+      },
+      error: (error) => {
+        console.error('Error loading brand:', error);
+        this.toast.show('Error loading brand details.', 'error');
+        this.router.navigateByUrl('/admin/brands');
+      },
+    });
+  }
+
+  onThumbnailChange(thumbnailUrl: string) {
+    this.brandThumbnail = thumbnailUrl;
+  }
+
+  saveBrand() {
+    if (!this.brandName || !this.brandThumbnail) {
+      this.toast.show('Please provide both name and thumbnail.', 'error');
+      return;
+    }
+
+    if (this.isEdit) {
+      this.updateBrand();
+    } else {
+      this.addBrand();
+    }
+  }
+
+  addBrand() {
+    this.brandService
       .postBrands({
         brandName: this.brandName,
         brandThumbnail: this.brandThumbnail,
       })
-      .subscribe((response) => {
-        console.log('Success Create!', response);
-        this.route.navigateByUrl('/admin/brands');
+      .subscribe({
+        next: (response) => {
+          console.log('Brand created successfully:', response);
+          this.toast.show('Brand added successfully!', 'success');
+          this.router.navigateByUrl('/admin/brands');
+        },
+        error: (error) => {
+          console.error('Error creating brand:', error);
+          this.toast.show('Error adding brand.', 'error');
+        },
       });
   }
-  update() {
-    this.brandServcie
+
+  updateBrand() {
+    this.brandService
       .updateBrands({
-        brandID: this.barndID,
+        brandID: this.brandID,
         brandName: this.brandName,
         brandThumbnail: this.brandThumbnail,
       })
-      .subscribe((response) => {
-        console.log('Success Update!', response);
-        this.route.navigateByUrl('/admin/brands');
+      .subscribe({
+        next: (response) => {
+          console.log('Brand updated successfully:', response);
+          this.toast.show('Brand updated successfully!', 'success');
+          this.router.navigateByUrl('/admin/brands');
+        },
+        error: (error) => {
+          console.error('Error updating brand:', error);
+          this.toast.show('Error updating brand.', 'error');
+        },
       });
+  }
+
+  cancel() {
+    this.router.navigateByUrl('/admin/brands');
   }
 }

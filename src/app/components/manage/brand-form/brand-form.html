@@ -1,51 +1,64 @@
-<div class="flex flex-col items-center px-40 mt-10">
-  @if(isEdit){
-  <h1 class="text-2xl font-extrabold">Update Category</h1>
-  }@else{
-  <h1 class="text-2xl font-extrabold">Add New Category</h1>
-  }
-  <form class="shadow-sm w-96 p-4">
-    <div class="flex flex-wrap">
-      <div class="w-full gap-4">
-        <mat-form-field class="w-full flex flex-col">
-          <div class="border pl-2 pt-2 mb-2">
-            <mat-label>Name</mat-label>
-            <input
-              matInput
-              type="text"
-              [(ngModel)]="brandName"
-              name="brandName"
-            />
-          </div>
-        </mat-form-field>
-        <mat-form-field class="w-full flex flex-col">
-          <div class="border pl-2 pt-2">
-            <mat-label>ThumbNail</mat-label>
-            <input
-              matInput
-              type="text"
-              [(ngModel)]="brandThumbnail"
-              name="brandThumbnail"
-            />
-          </div>
-        </mat-form-field>
-      </div>
-      <div class="w-full flex justify-center">
-        @if(isEdit){<button
-          class="px-6 py-2 font-semibold bg-blue-400 rounded-lg hover:bg-blue-300 cursor-pointer"
-          (click)="update()"
-          [disabled]="!brandName || !brandThumbnail"
-        >
-          Update</button
-        >} @else{
-        <button
-          class="px-6 py-2 font-semibold bg-blue-400 rounded-lg hover:bg-blue-300 cursor-pointer"
-          (click)="add()"
-          [disabled]="!brandName || !brandThumbnail"
-        >
-          Add</button
-        >}
-      </div>
+<div class="container mx-auto p-6">
+  <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 border border-slate-200">
+    <div class="mb-6 border-b border-slate-200 pb-4">
+      <h1 class="text-3xl font-bold text-slate-900">
+        {{ isEdit ? "Update Brand" : "Add New Brand" }}
+      </h1>
+      <p class="text-slate-600 mt-1">
+        {{
+          isEdit
+            ? "Edit brand details below."
+            : "Fill in the details to add a new brand."
+        }}
+      </p>
     </div>
-  </form>
+    <form class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+        <div class="flex flex-col space-y-1">
+          <label for="rating" class="text-sm font-medium text-slate-700"
+            >Name</label
+          >
+          <input
+            id="brandName"
+            type="text"
+            placeholder="e.g., Nike, Adidas"
+            [(ngModel)]="brandName"
+            name="brandName"
+            required
+            class="px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+          />
+        </div>
+
+        <div class="md:col-span-1">
+          <label class="block text-sm font-medium text-slate-700 mb-2"
+            >Brand Thumbnail</label
+          >
+          <app-cloudinary-upload-component
+            [config]="cloudinaryConfig"
+            [(ngModel)]="brandThumbnail"
+            name="brandThumbnail"
+            placeholder="Upload Thumbnail image"
+            [showInfo]="true"
+            [imageUrl]="brandThumbnail"
+            (uploadSuccess)="brandThumbnail = $event.url"
+          ></app-cloudinary-upload-component>
+        </div>
+      </div>
+    </form>
+    <div class="mt-8 flex justify-end gap-4">
+      <button
+        (click)="cancel()"
+        class="border-slate-400 border text-slate-600 hover:bg-slate-50 focus:bg-slate-100 px-5 py-3 rounded-full font-medium"
+      >
+        Cancel
+      </button>
+      <button
+        (click)="saveBrand()"
+        [disabled]="!brandName || !brandThumbnail"
+        class="bg-slate-600 hover:bg-slate-500 focus:bg-slate-500 disabled:bg-slate-400 text-white px-5 py-3 rounded-full font-medium"
+      >
+        {{ isEdit ? "Update Brand" : "Add Brand" }}
+      </button>
+    </div>
+  </div>
 </div>

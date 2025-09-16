@@ -13,16 +13,15 @@ export class Cart {
   private cartItems = new BehaviorSubject<cartItem[]>([]);
   private readonly cartItems$ = this.cartItems.asObservable();
 
-  // 🔹 modal state
   private cartModalOpen = new BehaviorSubject<boolean>(false);
   cartModalOpen$ = this.cartModalOpen.asObservable();
 
   constructor(private toast: Toast) {
-    this.http.get<cartItem[]>('http://localhost:5000/cart').subscribe({
+    this.http.get<cartItem[]>('cart').subscribe({
       next: (result) => this.cartItems.next(result),
       error: (err) => {
         console.error('Cart item fetch failed');
-        alert(err.error?.message || 'Cart item fetch failed');
+        toast.show(err.error?.message || 'Cart item fetch failed', 'error');
       },
     });
   }
@@ -31,13 +30,10 @@ export class Cart {
     return this.cartItems$;
   }
 
-  // 🔹 open/close modal
   openCartModal() {
-    console.log('open');
     this.cartModalOpen.next(true);
   }
   closeCartModal() {
-    console.log('close');
     this.cartModalOpen.next(false);
   }
 
@@ -54,25 +50,23 @@ export class Cart {
       });
     } else {
       this.http
-        .post<{ cartItem: cartItem; message: string; cartItemID: number }>(
-          'http://localhost:5000/cart',
+        .post<{ cartItem: cartItem[]; message: string; cartItemID: number }>(
+          'cart',
           item
         )
         .subscribe({
           next: (result) => {
-            let currentCart = this.cartItems.getValue();
             const newCartItem = result.cartItem;
-            currentCart = [...currentCart, newCartItem];
+            const currentCart = newCartItem;
             this.cartItems.next(currentCart);
           },
           error: (err) => {
             console.error('Failed to add item');
-            alert(err.error?.message || 'Add item failed');
+            this.toast.show(err.error?.message || 'Add item failed', 'error');
           },
         });
     }
 
-    // 🔹 always open modal when item added
     this.openCartModal();
   }
 
@@ -86,11 +80,16 @@ export class Cart {
     this.cartItems.next(updatedCart);
 
     this.http
-      .patch<{ cartItem: cartItem; message: string; cartItemID: number }>(
-        `http://localhost:5000/cart`,
+      .patch<{ cartItem: cartItem[]; message: string; cartItemID: number }>(
+        `cart`,
         data
       )
       .subscribe({
+        next: (result) => {
+          const newCartItem = result.cartItem;
+          const currentCart = newCartItem;
+          this.cartItems.next(currentCart);
+        },
         error: (err) => {
           console.error('Failed to update item');
           this.toast.show(err.error?.message || 'Update item failed', 'error');
@@ -98,16 +97,22 @@ export class Cart {
       });
   }
 
-  deleteItem(productID: number): void {
+  deleteItem(cartItemID: number): void {
     const currentCart = this.cartItems.getValue();
-    const updatedCart = currentCart.filter((ci) => ci.productID !== productID);
+    const updatedCart = currentCart.filter(
+      (ci) => ci.cartItemID !== cartItemID
+    );
     this.cartItems.next(updatedCart);
 
-    this.http.delete(`http://localhost:5000/cart/${productID}`).subscribe({
-      error: (err) => {
-        console.error('Failed to delete item');
-        this.toast.show(err.error?.message || 'Delete item failed', 'error');
-      },
-    });
+    this.http
+      .delete(`cart`, {
+        body: { cartItemID: cartItemID },
+      })
+      .subscribe({
+        error: (err) => {
+          console.error('Failed to delete item');
+          this.toast.show(err.error?.message || 'Delete item failed', 'error');
+        },
+      });
   }
 }

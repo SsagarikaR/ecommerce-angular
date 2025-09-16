@@ -1,101 +1,252 @@
-<div class="flex flex-col items-center px-40 mt-10">
-  @if(isEdit){
-  <h1 class="text-2xl font-extrabold">Update Product</h1>
-  }@else{
-  <h1 class="text-2xl font-extrabold">Add New Product</h1>
-  }
-  <form class="shadow-sm w-[75%] p-4">
-    <div class="flex flex-wrap">
-      <div class="w-full gap-4">
-        <mat-form-field class="w-full flex flex-col">
-          <div class="border pl-2 pt-2 mb-2">
-            <mat-label>Name</mat-label>
+<div class="max-w-7xl mx-auto py-8 px-6">
+  <div class="mb-8">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h1 class="text-2xl font-semibold text-gray-800">
+          {{ isEdit ? "Update Product" : "Add New Product" }}
+        </h1>
+        <p class="text-gray-500 mt-1">
+          {{
+            isEdit
+              ? "Update product information and images"
+              : "Fill in the details to create a new product"
+          }}
+        </p>
+      </div>
+      <div class="flex items-center gap-2">
+        <button
+          class="border-slate-400 border text-slate-600 hover:bg-slate-50 focus:bg-slate-100 px-5 py-3 rounded-full font-medium"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+        <button
+          (click)="isEdit ? update() : add()"
+          [disabled]="!isFormValid() || isLoading"
+          class="bg-slate-600 hover:bg-slate-500 focus:bg-slate-500 disabled:bg-slate-400 text-white px-5 py-3 rounded-full font-medium"
+        >
+          {{ isEdit ? "Update" : "Add" }} Product
+        </button>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+  </div>
+
+  <div
+    *ngIf="isLoading || isLoadingDropdowns"
+    class="flex justify-center items-center py-12"
+  >
+    <div class="flex items-center gap-3">
+      <div
+        class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"
+      ></div>
+      <span class="text-gray-600">{{
+        isLoadingDropdowns
+          ? "Loading form data..."
+          : isEdit
+          ? "Loading product..."
+          : "Processing..."
+      }}</span>
+    </div>
+  </div>
+
+  <form *ngIf="!isLoading && !isLoadingDropdowns" class="space-y-6">
+    <div class="bg-white rounded-lg border border-gray-200 p-6">
+      <h2 class="text-lg font-medium text-gray-800 mb-6">Basic Information</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="flex flex-col space-y-1">
+          <label for="productName" class="text-sm font-medium text-gray-700"
+            >Product Name*</label
+          >
+          <input
+            id="productName"
+            type="text"
+            [(ngModel)]="productName"
+            name="productName"
+            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+            placeholder="e.g., T-Shirt"
+            required
+          />
+        </div>
+
+        <div class="flex flex-col space-y-1">
+          <label for="productPrice" class="text-sm font-medium text-gray-700"
+            >Price*</label
+          >
+          <div class="relative">
+            <span
+              class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500"
+              >$</span
+            >
             <input
-              matInput
-              type="text"
-              [(ngModel)]="productName"
-              name="productName"
-            />
-          </div>
-        </mat-form-field>
-        <mat-form-field class="w-full flex flex-col">
-          <div class="border pl-2 pt-2">
-            <mat-label>ThumbNail</mat-label>
-            <input
-              matInput
-              type="text"
-              [(ngModel)]="productThumbnail"
-              name="productThumbnail"
-            />
-          </div>
-        </mat-form-field>
-        <mat-form-field class="w-full flex flex-col">
-          <div class="border pl-2 pt-2">
-            <mat-label>Description</mat-label>
-            <input
-              matInput
-              type="text"
-              [(ngModel)]="productDescription"
-              name="productDescription"
-            />
-          </div>
-        </mat-form-field>
-        <mat-form-field class="w-full flex flex-col">
-          <div class="border pl-2 pt-2">
-            <mat-label>Price</mat-label>
-            <input
-              matInput
-              type="text"
+              id="productPrice"
+              type="number"
               [(ngModel)]="productPrice"
               name="productPrice"
+              class="pl-7 pr-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
+              placeholder="0.00"
+              min="0"
+              step="0.01"
+              required
             />
           </div>
-        </mat-form-field>
-        <mat-form-field class="w-full flex flex-col">
-          <div class="border pl-2 pt-2">
-            <mat-label>Category ID</mat-label>
-            <input
-              matInput
-              type="text"
+        </div>
+
+        <div class="flex flex-col space-y-1">
+          <label for="stock" class="text-sm font-medium text-gray-700"
+            >Stock*</label
+          >
+          <input
+            id="stock"
+            type="number"
+            [(ngModel)]="stock"
+            name="stock"
+            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+            placeholder="0"
+            min="0"
+            required
+          />
+        </div>
+
+        <!-- Category Dropdown -->
+        <div class="flex flex-col space-y-1">
+          <label for="categoryID" class="text-sm font-medium text-gray-700"
+            >Category*</label
+          >
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select
               [(ngModel)]="categoryID"
               name="categoryID"
-            />
-          </div>
-        </mat-form-field>
-        <mat-form-field class="w-full flex flex-col">
-          <div class="border pl-2 pt-2">
-            <mat-label>Stock</mat-label>
-            <input matInput type="text" [(ngModel)]="stock" name="stock" />
-          </div>
-        </mat-form-field>
-        <mat-form-field class="w-full flex flex-col">
-          <div class="border pl-2 pt-2">
-            <mat-label>Brand ID</mat-label>
-            <input matInput type="text" [(ngModel)]="brandID" name="brandID" />
-          </div>
-        </mat-form-field>
-        <mat-form-field class="w-full flex flex-col">
-          <div class="border pl-2 pt-2">
-            <mat-label>Rating</mat-label>
-            <input matInput type="text" [(ngModel)]="rating" name="rating" />
-          </div>
-        </mat-form-field>
+              placeholder="Select category"
+              required
+            >
+              <mat-option value="">Select a category</mat-option>
+              <mat-option
+                *ngFor="let category of categories"
+                [value]="category.categoryID"
+              >
+                {{ category.categoryName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Brand Dropdown -->
+        <div class="flex flex-col space-y-1">
+          <label for="brandID" class="text-sm font-medium text-gray-700"
+            >Brand*</label
+          >
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select
+              [(ngModel)]="brandID"
+              name="brandID"
+              placeholder="Select brand"
+              required
+            >
+              <mat-option value="">Select a brand</mat-option>
+              <mat-option *ngFor="let brand of brands" [value]="brand.brandID">
+                {{ brand.brandName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
-      <div class="w-full flex justify-center">
-        @if(isEdit){<button
-          class="px-6 py-2 font-semibold bg-blue-400 rounded-lg hover:bg-blue-300 cursor-pointer"
-          (click)="update()"
-          [disabled]="!productName || !productThumbnail"
+
+      <div class="flex flex-col space-y-1 mt-6">
+        <label
+          for="productDescription"
+          class="text-sm font-medium text-gray-700"
+          >Product Description*</label
         >
-          Update</button
-        >} @else{
-        <button
-          class="px-6 py-2 font-semibold bg-blue-400 rounded-lg hover:bg-blue-300 cursor-pointer"
-          (click)="add()"
-          [disabled]="!productName || !productThumbnail"
-        >
-          Add</button
-        >}
+        <textarea
+          id="productDescription"
+          [(ngModel)]="productDescription"
+          name="productDescription"
+          class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+          placeholder="Provide a detailed description of the product."
+          rows="4"
+          required
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg border border-gray-200 p-6">
+      <h2 class="text-lg font-medium text-gray-800 mb-2">Product Images</h2>
+      <p class="text-sm text-gray-500 mb-6">
+        The first image will be the main thumbnail. Please upload at least 3
+        images.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-gray-700"
+            >Main Thumbnail*</label
+          >
+          <app-cloudinary-upload-component
+            [config]="cloudinaryConfig"
+            [(ngModel)]="productThumbnail"
+            name="productThumbnail"
+            placeholder="Upload thumbnail image"
+            (uploadSuccess)="productThumbnail = $event.url"
+            [imageUrl]="productThumbnail"
+            [showInfo]="true"
+          ></app-cloudinary-upload-component>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-gray-700"
+            >Product Image 1*</label
+          >
+          <app-cloudinary-upload-component
+            [config]="cloudinaryConfig"
+            [(ngModel)]="productImage1"
+            name="productImage1"
+            placeholder="Upload image 1"
+            [imageUrl]="productImage1"
+            (uploadSuccess)="productImage1 = $event.url"
+          ></app-cloudinary-upload-component>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-gray-700"
+            >Product Image 2*</label
+          >
+          <app-cloudinary-upload-component
+            [config]="cloudinaryConfig"
+            [(ngModel)]="productImage2"
+            name="productImage2"
+            placeholder="Upload image 2"
+            [imageUrl]="productImage2"
+            (uploadSuccess)="productImage2 = $event.url"
+          ></app-cloudinary-upload-component>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-gray-700"
+            >Product Image 3</label
+          >
+          <app-cloudinary-upload-component
+            [config]="cloudinaryConfig"
+            [(ngModel)]="productImage3"
+            name="productImage3"
+            [imageUrl]="productImage3"
+            placeholder="Upload image 3 (optional)"
+            (uploadSuccess)="productImage3 = $event.url"
+          ></app-cloudinary-upload-component>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-gray-700"
+            >Product Image 4</label
+          >
+          <app-cloudinary-upload-component
+            [config]="cloudinaryConfig"
+            [(ngModel)]="productImage4"
+            name="productImage4"
+            placeholder="Upload image 4 (optional)"
+            (uploadSuccess)="productImage4 = $event.url"
+          ></app-cloudinary-upload-component>
+        </div>
       </div>
     </div>
   </form>

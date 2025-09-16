@@ -1,0 +1,8 @@
+/* Subtle polish for product card hover motion and image smoothing */
+:host {
+  display: block;
+}
+img {
+  image-rendering: -webkit-optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}

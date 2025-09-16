@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { WishList } from '../shared/wish-list/wish-list';
 import { Wishlist } from '../../services/wishlist/wishlist';
+import { AddToCartButton } from '../add-to-cart-button/add-to-cart-button';
 
 @Component({
   selector: 'app-product-card',
-  imports: [CommonModule, RouterLink, WishList],
+  imports: [CommonModule, RouterLink, WishList, AddToCartButton],
   templateUrl: './product-card.html',
   styleUrl: './product-card.css',
 })
@@ -28,9 +29,6 @@ export class ProductCard {
     wishlistID: number | undefined;
     productID: number | undefined;
   }) {
-    console.log('Toggle wishlist for product:', data.wishlistID);
-
-    // Call service API
     if (data.wishlistID) {
       this.wishlistService.deleteFromWishlist(data.wishlistID).subscribe({
         next: () => {

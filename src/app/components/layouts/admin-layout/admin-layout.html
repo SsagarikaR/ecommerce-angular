@@ -1,0 +1,25 @@
+<div class="flex min-h-screen bg-gray-50">
+  <!-- Sidebar -->
+  <app-dashboard-sidebar
+    class="fixed left-0 top-0 h-full z-10"
+  ></app-dashboard-sidebar>
+
+  <!-- Main Content -->
+  <div class="flex-1 ml-64">
+    <header
+      class="p-6 border-b border-gray-200 bg-white shadow-sm flex justify-between"
+    >
+      <h1 class="text-2xl font-bold text-gray-800">
+        {{ pageTitle }}
+      </h1>
+      <button
+        *ngIf="isAddRoute"
+        class="bg-slate-600 hover:bg-slate-500 focus:bg-slate-500 disabled:bg-slate-400 rounded-xl text-white px-4 py-3 font-medium"
+        [routerLink]="['/admin/add', pageTitle.toLowerCase()]"
+      >
+        Add New {{ pageTitle }}
+      </button>
+    </header>
+    <router-outlet></router-outlet>
+  </div>
+</div>

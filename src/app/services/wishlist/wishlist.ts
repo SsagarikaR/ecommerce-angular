@@ -7,19 +7,19 @@ import { inject, Injectable } from '@angular/core';
 export class Wishlist {
   http = inject(HttpClient);
   addToWishlist(data: { productID: number }) {
-    return this.http.post('http://localhost:5000/wishlist', data);
+    return this.http.post('wishlist', data);
   }
   fetchFromWishlist() {
-    return this.http.get('http://localhost:5000/wishlist');
+    return this.http.get('wishlist');
   }
   fetchFromWishlistByItemId(queryParams: { id: number }) {
     const params = new HttpParams({
       fromObject: queryParams,
     });
-    return this.http.get('http://localhost:5000/wishlist', { params });
+    return this.http.get('wishlist', { params });
   }
   deleteFromWishlist(wishListID: number) {
-    return this.http.delete('http://localhost:5000/wishlist', {
+    return this.http.delete<{ message: string }>('wishlist', {
       body: { wishListID },
     });
   }

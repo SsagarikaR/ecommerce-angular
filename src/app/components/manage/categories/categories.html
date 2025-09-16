@@ -1,68 +1,291 @@
-<div class="px-40 mt-10">
-  <div class="shadow">
-    <div class="flex justify-between items-center mb-2">
-      <h1 class="text-2xl font-extrabold">Manage Categories</h1>
-      <button
-        class="px-2 py-2 bg-blue-400 rounded-lg hover:bg-blue-300 cursor-pointer"
-        [routerLink]="['/admin/categories/add']"
+<!-- categories.html with consistent styling -->
+<div class="min-h-screen bg-gray-50 p-6">
+  <div class="max-w-7xl mx-auto">
+    <!-- Search and Filters -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="flex-1 relative">
+          <input
+            type="text"
+            placeholder="Search categories by name..."
+            [(ngModel)]="searchTerm"
+            (input)="onSearch($event)"
+            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+          />
+          <mat-icon
+            class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            >search</mat-icon
+          >
+          <button
+            *ngIf="searchTerm"
+            (click)="clearSearch()"
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          >
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+
+        <!-- Sort Options -->
+        <div class="flex gap-2">
+          <button
+            (click)="sortCategories('categoryName')"
+            [class]="
+              'px-4 py-2 rounded-lg border transition-colors ' +
+              (sortBy === 'categoryName'
+                ? 'bg-blue-50 border-blue-500 text-blue-700'
+                : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50')
+            "
+          >
+            Name
+            <mat-icon *ngIf="sortBy === 'categoryName'" class="ml-1 text-sm">
+              {{ sortOrder === "asc" ? "arrow_upward" : "arrow_downward" }}
+            </mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bulk Actions Bar -->
+    <div
+      *ngIf="selectedCategories.size > 0"
+      class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6"
+    >
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <span class="text-sm font-medium text-gray-700">
+            {{ selectedCategories.size }} item{{
+              selectedCategories.size > 1 ? "s" : ""
+            }}
+            selected
+          </span>
+          <mat-checkbox
+            [checked]="isAllSelected()"
+            [indeterminate]="isIndeterminate()"
+            (change)="toggleSelectAll()"
+            class="text-blue-600"
+          >
+            Select All
+          </mat-checkbox>
+        </div>
+        <div class="flex items-center gap-2">
+          <button
+            mat-stroked-button
+            color="warn"
+            (click)="bulkDelete()"
+            class="text-red-600 border-red-300 hover:bg-red-50"
+          >
+            <mat-icon class="mr-1">delete_outline</mat-icon>
+            Delete Selected
+          </button>
+          <button
+            mat-icon-button
+            (click)="selectedCategories.clear()"
+            class="text-gray-500"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"
+      ></div>
+    </div>
+
+    <!-- Categories Table -->
+    <div
+      *ngIf="!isLoading && filteredCategories.length > 0"
+      class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+    >
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <!-- Table Header -->
+          <thead class="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th class="px-6 py-4 text-left w-12">
+                <mat-checkbox
+                  [checked]="isAllSelected()"
+                  [indeterminate]="isIndeterminate()"
+                  (change)="toggleSelectAll()"
+                  class="text-blue-600"
+                >
+                </mat-checkbox>
+              </th>
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20"
+              >
+                Category
+              </th>
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors"
+                (click)="sortCategories('categoryName')"
+              >
+                <div class="flex items-center">
+                  Name
+                  <mat-icon
+                    *ngIf="sortBy === 'categoryName'"
+                    class="ml-1 text-sm"
+                  >
+                    {{
+                      sortOrder === "asc" ? "arrow_upward" : "arrow_downward"
+                    }}
+                  </mat-icon>
+                </div>
+              </th>
+              <th
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-32"
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+
+          <!-- Table Body -->
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr
+              *ngFor="let category of filteredCategories"
+              (click)="onCategoryClick(category)"
+              class="hover:bg-gray-50 cursor-pointer transition-colors"
+            >
+              <!-- Selection Checkbox -->
+              <td class="px-6 py-4 whitespace-nowrap">
+                <mat-checkbox
+                  [checked]="isSelected(category.categoryID)"
+                  (click)="$event.stopPropagation()"
+                  (change)="toggleCategorySelection(category.categoryID)"
+                  class="text-blue-600"
+                >
+                </mat-checkbox>
+              </td>
+
+              <!-- Category Image -->
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden">
+                  <img
+                    [src]="
+                      category.categoryThumbnail ||
+                      '/assets/placeholder-category.jpg'
+                    "
+                    [alt]="category.categoryName"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+              </td>
+
+              <!-- Category Name -->
+              <td class="px-6 py-4">
+                <div class="text-sm font-medium text-gray-900">
+                  {{ category.categoryName }}
+                </div>
+              </td>
+
+              <!-- Actions -->
+              <td
+                class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+              >
+                <div class="flex items-center gap-2">
+                  <button
+                    mat-icon-button
+                    (click)="editCategory(category, $event)"
+                    class="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
+                    matTooltip="Edit Category"
+                  >
+                    <mat-icon class="text-lg">edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    (click)="confirmDelete(category, $event)"
+                    class="text-red-600 hover:text-red-800 hover:bg-red-50"
+                    matTooltip="Delete Category"
+                  >
+                    <mat-icon class="text-lg">delete_outline</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div
+      *ngIf="!isLoading && filteredCategories.length === 0"
+      class="text-center py-16"
+    >
+      <div
+        class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6"
       >
-        Add new Category
+        <mat-icon class="text-gray-400 text-4xl">category</mat-icon>
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">
+        No categories found
+      </h3>
+      <p class="text-gray-600 mb-6 max-w-md mx-auto">
+        {{
+          searchTerm
+            ? "No categories match your search criteria. Try adjusting your search terms."
+            : "It looks like you haven't added any categories yet. Get started by adding your first category."
+        }}
+      </p>
+      <button
+        mat-flat-button
+        color="primary"
+        routerLink="/admin/categories/add"
+      >
+        <mat-icon class="mr-2">add</mat-icon>
+        {{ searchTerm ? "Clear Search" : "Add First Category" }}
       </button>
     </div>
-    <mat-form-field class="w-full">
-      <mat-label>Filter</mat-label>
-      <input
-        matInput
-        (keyup)="applyFilter($event)"
-        placeholder="Search"
-        #input
-      />
-    </mat-form-field>
 
-    <table mat-table [dataSource]="dataSource" matSort>
-      <!-- ID Column -->
-      <ng-container matColumnDef="categoryThumbnail">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          categoryThumbnail
-        </th>
-        <td mat-cell *matCellDef="let row">
-          <img [src]="row.categoryThumbnail" class="w-12 h-12" />
-        </td>
-      </ng-container>
+    <!-- Pagination -->
+    <div
+      *ngIf="!isLoading && filteredCategories.length > 0 && totalPages > 1"
+      class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mt-8"
+    >
+      <div class="flex items-center justify-between">
+        <div class="text-sm text-gray-700">
+          Showing {{ (currentPage - 1) * pageSize + 1 }} to
+          {{ Math.min(currentPage * pageSize, totalCategories) }} of
+          {{ totalCategories }} categories
+        </div>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="categoryName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-        <td mat-cell *matCellDef="let row">{{ row.categoryName }}</td>
-      </ng-container>
-
-      <!-- Fruit Column -->
-      <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
-        <td mat-cell *matCellDef="let row">
+        <div class="flex items-center gap-2">
           <button
-            matIconButton
-            [routerLink]="['/admin/categories/', row.categoryID]"
+            mat-icon-button
+            [disabled]="currentPage === 1"
+            (click)="previousPage()"
+            class="disabled:text-gray-300"
           >
-            ✏️</button
-          ><button matIconButton>🗑️</button>
-        </td>
-      </ng-container>
+            <mat-icon>chevron_left</mat-icon>
+          </button>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <button
+            *ngFor="let page of getPageNumbers()"
+            (click)="goToPage(page)"
+            [class]="
+              'px-3 py-1 text-sm rounded transition-colors ' +
+              (page === currentPage
+                ? 'bg-blue-600 text-white'
+                : 'text-gray-700 hover:bg-gray-100')
+            "
+          >
+            {{ page }}
+          </button>
 
-      <!-- Row shown when there is no matching data. -->
-      <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">
-          No data matching the filter "{{ input.value }}"
-        </td>
-      </tr>
-    </table>
-
-    <mat-paginator
-      [pageSizeOptions]="[5, 10, 25, 100]"
-      aria-label="Select page of users"
-    ></mat-paginator>
+          <button
+            mat-icon-button
+            [disabled]="currentPage === totalPages"
+            (click)="nextPage()"
+            class="disabled:text-gray-300"
+          >
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

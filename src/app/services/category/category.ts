@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { category } from '../types/type';
+import { category } from '../../types/type';
 
 @Injectable({
   providedIn: 'root',
@@ -13,14 +13,17 @@ export class Category {
     const params = new HttpParams({
       fromObject: queryParams,
     });
-    return this.http.get('http://localhost:5000/categories', { params });
+    return this.http.get('categories', { params });
   }
 
   postCategories(data: any) {
-    return this.http.post('http://localhost:5000/categories', data);
+    return this.http.post('categories', data);
   }
 
   updateCategories(data: Partial<category>) {
-    return this.http.patch('http://localhost:5000/categories', data);
+    return this.http.patch('categories', data);
+  }
+  deleteCategory(categoryID: number) {
+    return this.http.delete('categories', { body: { categoryID } });
   }
 }

@@ -12,14 +12,14 @@ export class Preferences {
     const params = new HttpParams({
       fromObject: queryParams,
     });
-    return this.http.get('http://localhost:5000/prefernces', { params });
+    return this.http.get('prefernces', { params });
   }
 
   postPrefernces(data: any) {
-    return this.http.post('http://localhost:5000/prefernces', data);
+    return this.http.post('prefernces', data);
   }
 
   updatePrefernces(data: Partial<category>) {
-    return this.http.patch('http://localhost:5000/prefernces', data);
+    return this.http.patch('prefernces', data);
   }
 }

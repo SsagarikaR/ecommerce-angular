@@ -4,12 +4,13 @@
   [type]="toast.type"
   [visible]="toast.visible"
 ></app-toast>
+<app-dialog></app-dialog>
 
 <app-cart-modal></app-cart-modal>
 
 <div class="flex flex-col">
   <app-header *ngIf="showLayout"></app-header>
-  <div class="min-h-screen p-4">
+  <div class="min-h-screen">
     <router-outlet></router-outlet>
   </div>
   <app-footer *ngIf="showLayout"></app-footer>
