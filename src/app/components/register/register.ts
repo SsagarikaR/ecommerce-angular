@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register.html',
   styleUrl: './register.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Register {
   registerForm!: FormGroup;
@@ -23,7 +24,7 @@ export class Register {
     private fb: FormBuilder,
     private toast: Toast,
     private cookieService: CookieService
-  ) {}
+  ) { }
   router = inject(Router);
   authService = inject(Auth);
   ngOnInit(): void {

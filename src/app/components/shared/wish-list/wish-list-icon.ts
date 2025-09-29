@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-wish-list',
   imports: [CommonModule],
   templateUrl: './wish-list-icon.html',
   styleUrl: './wish-list-icon.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WishList {
   @Input() isWishlisted = false;

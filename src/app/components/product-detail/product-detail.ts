@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Product } from '../../services/product/product';
@@ -15,6 +15,7 @@ import { Toast } from '../../services/toast/toast';
   imports: [CommonModule, WishList, AddToCartButton, FormsModule],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetail {
   private route = inject(ActivatedRoute);

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ProductCard } from '../product-card/product-card';
@@ -10,6 +10,7 @@ import { Product } from '../../services/product/product';
   imports: [CommonModule, ProductCard],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductList {
   private route = inject(ActivatedRoute);

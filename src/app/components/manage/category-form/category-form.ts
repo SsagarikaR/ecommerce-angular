@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
@@ -13,6 +13,7 @@ import { cloudinaryConfig } from '../../../utils/cloudinaryConfig';
   imports: [FormsModule, MatButtonModule, CloudinaryUploadComponent],
   templateUrl: './category-form.html',
   styleUrl: './category-form.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryForm {
   private toast = inject(Toast);

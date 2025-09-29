@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { cartItem } from '../../types/type';
 import { CommonModule } from '@angular/common';
 import { Cart } from '../../services/cart/cart';
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
   imports: [CommonModule],
   templateUrl: './cart-modal.html',
   styleUrl: './cart-modal.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartModal {
   private cartService = inject(Cart);

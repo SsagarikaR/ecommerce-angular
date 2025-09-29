@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,6 +25,7 @@ import { CategroyData } from '../../../types/type';
   ],
   templateUrl: './categories.html',
   styleUrl: './categories.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Categories implements OnInit {
   categories: CategroyData[] = [];
@@ -218,9 +219,8 @@ export class Categories implements OnInit {
     const selectedCount = this.selectedCategories.size;
     this.dialog.open({
       title: 'Delete Categories',
-      message: `Are you sure you want to delete ${selectedCount} categor${
-        selectedCount > 1 ? 'ies' : 'y'
-      }? This action cannot be undone.`,
+      message: `Are you sure you want to delete ${selectedCount} categor${selectedCount > 1 ? 'ies' : 'y'
+        }? This action cannot be undone.`,
     });
 
     this.dialog.confirmed$.subscribe((result) => {

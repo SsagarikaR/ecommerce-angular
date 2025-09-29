@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Wishlist } from '../../services/wishlist/wishlist';
 import { Toast } from '../../services/toast/toast';
@@ -12,6 +12,7 @@ import { product } from '../../types/type';
   imports: [CommonModule, RouterLink],
   templateUrl: './wishlist.html',
   styleUrl: './wishlist.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WishlistPage {
   private wishlistService = inject(Wishlist);

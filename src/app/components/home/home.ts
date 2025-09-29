@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Product } from '../../services/product/product';
 import type { category, product } from '../../types/type';
 import { ProductCard } from '../product-card/product-card';
@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
   imports: [ProductCard, CarouselModule, RouterLink, CommonModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home {
   heroImage: string = '';

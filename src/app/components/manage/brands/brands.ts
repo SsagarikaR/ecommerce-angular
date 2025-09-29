@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,6 +30,7 @@ export interface BrandData {
   ],
   templateUrl: './brands.html',
   styleUrl: './brands.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Brands implements OnInit {
   brands: BrandData[] = [];
@@ -219,9 +220,8 @@ export class Brands implements OnInit {
     const selectedCount = this.selectedBrands.size;
     this.dialog.open({
       title: 'Delete Brands',
-      message: `Are you sure you want to delete ${selectedCount} brand${
-        selectedCount > 1 ? 's' : ''
-      }? This action cannot be undone.`,
+      message: `Are you sure you want to delete ${selectedCount} brand${selectedCount > 1 ? 's' : ''
+        }? This action cannot be undone.`,
     });
 
     this.dialog.confirmed$.subscribe((result) => {

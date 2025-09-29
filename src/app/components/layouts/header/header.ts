@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, inject } from '@angular/core';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -20,6 +20,7 @@ type Crumb = { label: string; url?: string };
   imports: [RouterLink, CommonModule],
   templateUrl: './header.html',
   styleUrl: './header.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
   private categoryService = inject(Category);

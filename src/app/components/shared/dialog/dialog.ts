@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DialogService, DialogData } from '../../../services/dialog/dialog';
 
@@ -8,6 +8,7 @@ import { DialogService, DialogData } from '../../../services/dialog/dialog';
   imports: [CommonModule],
   templateUrl: './dialog.html',
   styleUrls: ['./dialog.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Dialog implements OnInit, OnDestroy {
   private dialogService = inject(DialogService);

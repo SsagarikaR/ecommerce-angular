@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   Router,
   RouterOutlet,
@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
   imports: [RouterOutlet, DashboardSidebar, RouterLink, CommonModule],
   templateUrl: './admin-layout.html',
   styleUrl: './admin-layout.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminLayout {
   router = inject(Router);

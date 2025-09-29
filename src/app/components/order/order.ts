@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Orders } from '../../services/orders/orders';
@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './order.html',
   styleUrl: './order.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderComponent implements OnInit {
   orderService = inject(Orders);

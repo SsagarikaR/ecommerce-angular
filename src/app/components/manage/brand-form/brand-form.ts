@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
   ],
   templateUrl: './brand-form.html',
   styleUrl: './brand-form.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BrandForm implements OnInit {
   brandName!: string;
@@ -36,7 +37,7 @@ export class BrandForm implements OnInit {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
       this.isEdit = true;
-      this.brandID = parseInt(id, 10); // Ensure id is a number
+      this.brandID = parseInt(id, 10);
       this.loadBrandDetails(this.brandID);
     }
   }

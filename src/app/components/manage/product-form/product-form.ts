@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,6 +33,7 @@ import { cloudinaryConfig } from '../../../utils/cloudinaryConfig';
   ],
   templateUrl: './product-form.html',
   styleUrl: './product-form.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductForm implements OnInit {
   private toast = inject(Toast);

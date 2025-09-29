@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { product } from '../../types/type';
 import { Cart } from '../../services/cart/cart';
@@ -9,6 +9,7 @@ import { Cart } from '../../services/cart/cart';
   imports: [CommonModule],
   templateUrl: './add-to-cart-button.html',
   styleUrl: './add-to-cart-button.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddToCartButton {
   @Input() item!: product;

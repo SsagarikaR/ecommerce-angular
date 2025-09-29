@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Category } from '../../../services/category/category';
 import { category } from '../../../types/type';
@@ -8,6 +8,7 @@ import { category } from '../../../types/type';
   imports: [CommonModule],
   templateUrl: './footer.html',
   styleUrl: './footer.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Footer implements OnInit {
   private categoryService = inject(Category);

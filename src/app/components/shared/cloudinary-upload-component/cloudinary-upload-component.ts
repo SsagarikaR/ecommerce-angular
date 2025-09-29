@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
@@ -19,6 +20,7 @@ import { CloudinaryService } from '../../../services/cloudinary/cloudinary';
 
   templateUrl: './cloudinary-upload-component.html',
   styleUrl: './cloudinary-upload-component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CloudinaryUploadComponent {
   private http = inject(HttpClient);

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { cartItem } from '../../types/type';
 import { Cart } from '../../services/cart/cart';
@@ -12,6 +12,7 @@ import { Toast } from '../../services/toast/toast';
   imports: [CommonModule, FormsModule],
   templateUrl: './checkout.html',
   styleUrl: './checkout.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Checkout {
   private toast = inject(Toast);
