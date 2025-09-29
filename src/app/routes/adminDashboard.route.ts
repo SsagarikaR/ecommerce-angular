@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { Categories } from '../components/manage/categories/categories';
-import { CategoryForm } from '../components/manage/category-form/category-form';
-import { Brands } from '../components/manage/brands/brands';
-import { BrandForm } from '../components/manage/brand-form/brand-form';
-import { Products } from '../components/manage/products/products';
-import { ProductForm } from '../components/manage/product-form/product-form';
+import { Categories } from '../page/admin-dashboard/categories/categories';
+import { CategoryForm } from '../page/admin-dashboard/category-form/category-form';
+import { Brands } from '../page/admin-dashboard/brands/brands';
+import { BrandForm } from '../page/admin-dashboard/brand-form/brand-form';
+import { Products } from '../page/admin-dashboard/products/products';
+import { ProductForm } from '../page/admin-dashboard/product-form/product-form';
 import { AdminLayout } from '../components/layouts/admin-layout/admin-layout';
 
 export const adminRoutes: Routes = [

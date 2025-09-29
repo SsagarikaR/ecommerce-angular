@@ -7,13 +7,13 @@ import { brand } from '../../types/type';
 })
 export class Brand {
   http = inject(HttpClient);
-  constructor() {}
+  constructor() { }
 
   getBrands(queryParams: { brandID?: number } = {}) {
     const params = new HttpParams({
       fromObject: queryParams,
     });
-    return this.http.get('brands', { params });
+    return this.http.get<brand[]>('brands', { params });
   }
   postBrands(data: Partial<brand>) {
     return this.http.post('brands', data);

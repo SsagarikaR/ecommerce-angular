@@ -1,18 +1,18 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { category } from '../../types/type';
+import { category, preferences } from '../../types/type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Preferences {
   http = inject(HttpClient);
-  constructor() {}
+  constructor() { }
   getPrefernces(queryParams: { userID?: number } = {}) {
     const params = new HttpParams({
       fromObject: queryParams,
     });
-    return this.http.get('prefernces', { params });
+    return this.http.get<preferences[]>('prefernces', { params });
   }
 
   postPrefernces(data: any) {

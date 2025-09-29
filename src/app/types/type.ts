@@ -25,14 +25,14 @@ export interface product {
   categoryName: string;
   wishListID?: number;
   wishlist: string;
-
   productImage1: string;
-
   productImage2: string;
-
   productImage3?: string;
-
   productImage4?: string;
+}
+
+export interface preferences extends product {
+  userID: number
 }
 
 export interface CategroyData {
@@ -113,4 +113,10 @@ export interface review {
   contactNo: string;
   password?: string;
   email: string;
+}
+
+export interface toast {
+  message: string;
+  type: 'success' | 'error' | 'info';
+  visible: boolean;
 }

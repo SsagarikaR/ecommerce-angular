@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core
 import { product } from '../../types/type';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { WishList } from '../shared/wish-list/wish-list-icon';
+import { WishList } from '../shared/wish-list-icon/wish-list-icon';
 import { Wishlist } from '../../services/wishlist/wishlist';
 import { AddToCartButton } from '../add-to-cart-button/add-to-cart-button';
 
@@ -42,11 +42,10 @@ export class ProductCard {
       this.wishlistService
         .addToWishlist({ productID: data.productID })
         .subscribe({
-          next: (res: any) => {
+          next: (res: { message: string, wishlistID: number }) => {
             this.item.wishlist = 'yes';
             this.item.wishListID = res.wishlistID;
           },
-          error: (err) => console.error(err),
         });
     }
   }

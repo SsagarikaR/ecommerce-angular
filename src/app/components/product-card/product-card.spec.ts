@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import { provideRouter, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AddToCartButton } from '../add-to-cart-button/add-to-cart-button';
-import { WishList } from '../shared/wish-list/wish-list-icon';
+import { WishList } from '../shared/wish-list-icon/wish-list-icon';
 import { By } from '@angular/platform-browser';
 import { product } from '../../types/type';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -129,7 +129,7 @@ describe('ProductCard', () => {
     const newWishlistID = 5;
 
     mockWishlistService.addToWishlist.and.returnValue(
-      of({ wishlistID: newWishlistID })
+      of({ message: "Item added to wishlist successfully!", wishlistID: newWishlistID })
     );
 
     component.toggleWishlist({
@@ -144,42 +144,4 @@ describe('ProductCard', () => {
     expect(component.item.wishListID).toBe(newWishlistID);
   });
 
-  it('should log an error to the console if addToWishlist fails', () => {
-    component.item = mockProduct;
-    fixture.detectChanges();
-    const consoleSpy = spyOn(console, 'error');
-
-    mockWishlistService.addToWishlist.and.returnValue(
-      throwError(() => new Error('API Error'))
-    );
-
-    component.toggleWishlist({
-      wishlistID: undefined,
-      productID: mockProduct.productID,
-    });
-
-    expect(consoleSpy).toHaveBeenCalledWith(jasmine.any(Error));
-  });
-
-  it('should log an error to the console if deleteFromWishlist fails', () => {
-    const wishlistedProduct = {
-      ...mockProduct,
-      wishlist: 'yes',
-      wishListID: 5,
-    };
-    component.item = wishlistedProduct;
-    fixture.detectChanges();
-    const consoleSpy = spyOn(console, 'error');
-
-    mockWishlistService.deleteFromWishlist.and.returnValue(
-      throwError(() => new Error('API Error'))
-    );
-
-    component.toggleWishlist({
-      wishlistID: wishlistedProduct.wishListID,
-      productID: undefined,
-    });
-
-    expect(consoleSpy).toHaveBeenCalledWith(jasmine.any(Error));
-  });
 });

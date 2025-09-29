@@ -10,23 +10,6 @@ import { category } from '../../../types/type';
   styleUrl: './footer.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Footer implements OnInit {
-  private categoryService = inject(Category);
+export class Footer {
 
-  categories: category[] = [];
-
-  ngOnInit() {
-    this.loadCategories();
-  }
-
-  loadCategories() {
-    this.categoryService.getCategories().subscribe({
-      next: (data: any) => {
-        this.categories = data;
-      },
-      error: (err) => {
-        console.error('Failed to load categories in footer:', err);
-      },
-    });
-  }
 }

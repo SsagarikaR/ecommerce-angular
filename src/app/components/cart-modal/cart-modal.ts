@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { cartItem } from '../../types/type';
 import { CommonModule } from '@angular/common';
 import { Cart } from '../../services/cart/cart';
@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
   imports: [CommonModule],
   templateUrl: './cart-modal.html',
   styleUrl: './cart-modal.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartModal {
   private cartService = inject(Cart);
@@ -37,8 +36,8 @@ export class CartModal {
     });
   }
   proceedToCheckout() {
-    this.close(); // Close the cart modal
-    this.router.navigate(['/checkout']); // Navigate to checkout page
+    this.close();
+    this.router.navigate(['/checkout']);
   }
 
   remove(item: cartItem) {

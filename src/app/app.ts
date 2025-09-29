@@ -37,10 +37,10 @@ export class App {
     type: 'success' | 'error' | 'info';
     visible: boolean;
   } = {
-    message: '',
-    type: 'info',
-    visible: false,
-  };
+      message: '',
+      type: 'info',
+      visible: false,
+    };
   showLayout = true;
   constructor(
     private toastService: Toast,

@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
-import { Home } from './components/home/home';
-import { ProductList } from './components/product-list/product-list';
-import { ProductDetail } from './components/product-detail/product-detail';
-import { Register } from './components/register/register';
-import { Login } from './components/login/login';
-import { authGuard } from './core/auth.guard';
+import { Home } from './page/home/home';
+import { ProductList } from './page/product-list/product-list';
+import { ProductDetail } from './page/product-detail/product-detail';
+import { Register } from './page/register/register';
+import { Login } from './page/login/login';
+import { authGuard } from './guards/auth.guard';
 import { adminRoutes } from './routes/adminDashboard.route';
-import { WishlistPage } from './components/wishlist/wishlist';
-import { Checkout } from './components/checkout/checkout';
-import { OrderComponent } from './components/order/order';
+import { WishlistPage } from './page/wishlist/wishlist';
+import { Checkout } from './page/checkout/checkout';
+import { OrderComponent } from './page/order/order';
 
 export const routes: Routes = [
   {

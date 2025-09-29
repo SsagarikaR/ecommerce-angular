@@ -2,7 +2,7 @@
   <div
     class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between gap-4"
   >
-    <!-- Simplified logo without gradients -->
+    <!--  logo  -->
     <a routerLink="/" class="flex items-center gap-2">
       <div
         class="w-8 h-8 rounded-full bg-slate-600 flex items-center justify-center"
@@ -10,10 +10,11 @@
       <span class="font-bold text-lg text-slate-900">ShopMate</span>
     </a>
 
-    <!-- Simplified search bar -->
+    <!--  search bar -->
     <form
       class="flex-1 max-w-2xl"
       (submit)="$event.preventDefault(); onSearch(searchInput.value)"
+       role="search"
     >
       <div class="flex border border-slate-300 rounded-lg overflow-hidden">
         <input
@@ -25,6 +26,7 @@
         <button
           type="submit"
           class="px-4 py-2 bg-slate-500 hover:bg-slate-400 text-white"
+          aria-label="Search ShopMate products"
         >
           <svg
             class="h-4 w-4"
@@ -48,7 +50,8 @@
       <div class="relative">
         <button
           (click)="toggleProfileDropdown()"
-          class="flex items-center gap-2 px-3 py-2 rounded hover:bg-slate-50"
+          class="flex items-center md:gap-2 px-3 py-2 rounded hover:bg-slate-50"
+           [attr.aria-expanded]="profileDropdownOpen"
         >
           <div
             class="w-6 h-6 rounded-full bg-emerald-700 flex items-center justify-center"
@@ -67,7 +70,7 @@
               />
             </svg>
           </div>
-          <span class="text-sm">Profile</span>
+          <span class="text-sm  md:block hidden">Profile</span>
           <svg
             class="w-4 h-4 text-slate-400"
             fill="currentColor"
@@ -91,6 +94,7 @@
               <a
                 routerLink="/admin/categories"
                 class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                role="menu"
               >
                 Dashboard
               </a>
@@ -99,6 +103,7 @@
               <a
                 routerLink="/orders"
                 class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                role="menuitem"
               >
                 My Orders
               </a>
@@ -107,6 +112,7 @@
               <a
                 routerLink="/wishlist"
                 class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                role="menuitem"
               >
                 Wishlist
               </a>
@@ -119,6 +125,7 @@
               <button
                 (click)="signOut()"
                 class="block w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-slate-50"
+                role="menuitem"
               >
                 Sign Out
               </button>
@@ -126,10 +133,13 @@
           </ul>
         </div>
       </div>
-      <!-- Simplified cart button -->
+      <!-- cart button -->
       <button
         (click)="openCart()"
-        class="flex items-center gap-2 px-3 py-2 rounded hover:bg-slate-50 relative"
+        class="flex items-center gap-2 md:px-3 py-2 rounded hover:bg-slate-50 relative"
+        [attr.aria-label]="
+          'Shopping Cart with ' + cartItems.length + ' items'
+        "
       >
         <svg
           class="h-5 w-5 text-slate-700"
@@ -144,10 +154,11 @@
             d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9h14l-2-9M10 21a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm8 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"
           />
         </svg>
-        <span class="text-sm">Cart</span>
+        <span class="text-sm md:block hidden">Cart</span>
         <span
           *ngIf="cartItems.length > 0"
           class="absolute -top-1 -right-1 bg-rose-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full"
+          aria-hidden="true"
         >
           {{ cartItems.length }}
         </span>
@@ -155,10 +166,9 @@
     </div>
   </div>
 
-  <!-- Simplified secondary navigation -->
-  <div class="border-t border-slate-100 bg-slate-50">
+ <div class="border-t border-slate-100 bg-slate-50">
     <div class="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
-      <!-- Simplified categories dropdown -->
+      <!--  categories dropdown -->
       <div class="relative">
         <button
           (click)="toggleDropdown()"
@@ -182,6 +192,7 @@
         <div
           *ngIf="dropdownOpen"
           class="absolute left-0 mt-1 w-48 bg-white border border-slate-200 rounded shadow-lg z-50"
+          
         >
           <ul class="py-1">
             <li *ngFor="let cat of categories">
@@ -197,7 +208,7 @@
         </div>
       </div>
 
-      <!-- Simplified breadcrumb -->
+      <!-- breadcrumb -->
       <nav class="text-sm">
         <ol
           *ngIf="breadcrumb && breadcrumb.length > 1"

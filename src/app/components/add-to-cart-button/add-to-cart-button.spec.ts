@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddToCartButton } from './add-to-cart-button';
 import { Cart } from '../../services/cart/cart';
 import { of } from 'rxjs';
-import { product } from '../../types/type';
+import { cartItem, product } from '../../types/type';
 
 class MockCartService {
-  addItem(item: any) {
+  addItem(item: cartItem) {
     return of('Item added');
   }
 }

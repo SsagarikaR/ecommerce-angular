@@ -19,9 +19,6 @@ export class Cart {
   constructor(private toast: Toast) {
     this.http.get<cartItem[]>('cart').subscribe({
       next: (result) => this.cartItems.next(result),
-      error: (err) => {
-        toast.show(err.error?.message || 'Cart item fetch failed', 'error');
-      },
     });
   }
 
@@ -58,10 +55,7 @@ export class Cart {
             const newCartItem = result.cartItem;
             const currentCart = newCartItem;
             this.cartItems.next(currentCart);
-          },
-          error: (err) => {
-            this.toast.show(err.error?.message || 'Add item failed', 'error');
-          },
+          }
         });
     }
 
@@ -87,10 +81,7 @@ export class Cart {
           const newCartItem = result.cartItem;
           const currentCart = newCartItem;
           this.cartItems.next(currentCart);
-        },
-        error: (err) => {
-          this.toast.show(err.error?.message || 'Update item failed', 'error');
-        },
+        }
       });
   }
 
@@ -105,10 +96,5 @@ export class Cart {
       .delete(`cart`, {
         body: { cartItemID: cartItemID },
       })
-      .subscribe({
-        error: (err) => {
-          this.toast.show(err.error?.message || 'Delete item failed', 'error');
-        },
-      });
   }
 }
