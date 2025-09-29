@@ -6,10 +6,8 @@
   *ngIf="!loading && product"
   class="max-w-6xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-2 gap-10"
 >
-  <!-- LEFT: Image Gallery -->
   <div class="flex flex-col lg:flex-row gap-4">
-    <!-- Thumbnails -->
-    <div class="flex lg:flex-col gap-3 order-2 lg:order-1">
+     <div class="flex lg:flex-col gap-3 order-2 lg:order-1">
       <img
         *ngIf="product.productThumbnail"
         [src]="product.productThumbnail"
@@ -53,8 +51,7 @@
       />
     </div>
 
-    <!-- Main Image -->
-    <div class="flex-1 order-1 lg:order-2">
+     <div class="flex-1 order-1 lg:order-2">
       <img
         [src]="selectedImage || product.productThumbnail"
         alt="{{ product.productName }}"
@@ -62,9 +59,7 @@
       />
     </div>
   </div>
-
-  <!-- RIGHT: Product Info -->
-  <div class="space-y-6">
+ <div class="space-y-6">
     <div class="flex justify-between items-start">
       <h1 class="text-3xl font-bold">{{ product.productName }}</h1>
       <app-wish-list
@@ -100,7 +95,6 @@
   </div>
 </div>
 
-<!-- Enhanced Reviews Section -->
 <!-- Enhanced Reviews Section -->
 <div class="max-w-6xl mx-auto mt-12 px-6 pb-8">
   <div class="bg-white rounded-xl shadow-md overflow-hidden">

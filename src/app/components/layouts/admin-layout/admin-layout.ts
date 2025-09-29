@@ -22,10 +22,8 @@ export class AdminLayout {
   isAddRoute = true;
 
   ngOnInit() {
-    // Run once on init
     this.updateTitle(this.router.url);
 
-    // Run again on every navigation inside admin
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event) => {
@@ -43,7 +41,6 @@ export class AdminLayout {
     const segments = url.split('/').filter(Boolean);
     this.currentRoute = segments[segments.length - 1] || '';
 
-    // If last is "add", show the resource name (2nd to last)
     const resourceSegment =
       this.currentRoute.toLowerCase() === 'add'
         ? segments[segments.length - 1]

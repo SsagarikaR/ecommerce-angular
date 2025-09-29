@@ -10,7 +10,6 @@ export class Orders {
   private http = inject(HttpClient);
   private baseUrl = 'orders';
 
-  // Create new order with separate address fields
   createOrder(data: {
     totalAmount: number;
     items: {
@@ -28,12 +27,10 @@ export class Orders {
     return this.http.post(`${this.baseUrl}`, data);
   }
 
-  // Fetch orders for logged-in user
   getOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(`${this.baseUrl}`);
   }
 
-  // Update order address with complete address details
   updateAddress(
     orderID: number,
     state: string,
@@ -52,7 +49,6 @@ export class Orders {
     });
   }
 
-  // Cancel order
   cancelOrder(orderID: number) {
     return this.http.patch(`${this.baseUrl}/status`, { orderID });
   }
@@ -67,7 +63,6 @@ export class Orders {
     });
   }
 
-  // Delete order
   deleteOrder(orderID: number) {
     return this.http.delete(`${this.baseUrl}`, { body: { orderID } });
   }

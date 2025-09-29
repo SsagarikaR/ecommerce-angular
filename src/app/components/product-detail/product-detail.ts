@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Product } from '../../services/product/product';
 import { product, review } from '../../types/type';
-import { WishList } from '../shared/wish-list/wish-list';
+import { WishList } from '../shared/wish-list/wish-list-icon';
 import { Wishlist } from '../../services/wishlist/wishlist';
 import { Cart } from '../../services/cart/cart';
 import { AddToCartButton } from '../add-to-cart-button/add-to-cart-button';

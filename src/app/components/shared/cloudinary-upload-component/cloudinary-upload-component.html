@@ -1,5 +1,4 @@
 <div class="cloudinary-upload-container">
-  <!-- Upload Area -->
   <div
     class="upload-area"
     [class.drag-over]="isDragOver"
@@ -10,7 +9,6 @@
     (dragleave)="onDragLeave($event)"
     (drop)="onDrop($event)"
   >
-    <!-- Current Image Preview -->
     <div *ngIf="currentImageUrl && !isUploading" class="image-preview">
       <img [src]="currentImageUrl" [alt]="placeholder" />
       <div class="image-overlay">
@@ -58,7 +56,6 @@
       </div>
     </div>
 
-    <!-- Upload State -->
     <div *ngIf="isUploading" class="upload-progress">
       <div class="spinner"></div>
       <p>Uploading image...</p>
@@ -67,7 +64,6 @@
       </div>
     </div>
 
-    <!-- Empty State -->
     <div *ngIf="!currentImageUrl && !isUploading" class="upload-prompt">
       <svg
         width="48"
@@ -92,7 +88,6 @@
       </div>
     </div>
 
-    <!-- Error State -->
     <div *ngIf="uploadError" class="upload-error">
       <svg
         width="24"

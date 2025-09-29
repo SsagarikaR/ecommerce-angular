@@ -1,4 +1,3 @@
-// src/app/dialog.service.ts
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
@@ -18,7 +17,7 @@ export class DialogService {
 
   dialogData$ = this.dialogDataSubject.asObservable();
 
-  constructor() {}
+  constructor() { }
 
   open(data: DialogData) {
     this.dialogDataSubject.next(data);

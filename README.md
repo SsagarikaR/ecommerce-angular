@@ -2,7 +2,7 @@
 
 A full-featured e-commerce application built with Angular, featuring product management, shopping cart, order processing, and admin dashboard functionality.
 
-## 🚀 Features
+##  Features
 
 ### Customer Features
 
@@ -23,16 +23,15 @@ A full-featured e-commerce application built with Angular, featuring product man
 - **Brand Management**: Add and manage product brands
 - **Order Management**: View and process customer orders
 
-## 🛠️ Technologies Used
+##  Technologies Used
 
 - **Frontend**: Angular 20.1.4
 - **Styling**: Tailwind CSS
 - **Components**: Custom Angular components
 - **Routing**: Angular Router
-- **Forms**: Angular Reactive Forms
 - **HTTP Client**: Angular HttpClient
 
-## 📋 Prerequisites
+##  Prerequisites
 
 Before you begin, ensure you have the following installed:
 
@@ -45,7 +44,7 @@ Before you begin, ensure you have the following installed:
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/SsagarikaR/ecommerce-angular.git
 cd angular-ecommerce
 ```
 
@@ -63,7 +62,7 @@ ng serve
 
 4. Open your browser and navigate to `http://localhost:4200/`
 
-## 🏗️ Project Structure
+##  Project Structure
 
 ```
 src/
@@ -86,16 +85,12 @@ src/
 │   │   ├── cart.service.ts
 │   │   ├── auth.service.ts
 │   │   └── ...
-│   ├── models/
-│   │   ├── product.model.ts
-│   │   ├── user.model.ts
-│   │   └── ...
-│   └── guards/
+│   └── core/
 │       ├── auth.guard.ts
-│       └── admin.guard.ts
+│       └── tooken.interceptor.ts
 ```
 
-## 🚀 Available Scripts
+##  Available Scripts
 
 ### Development
 
@@ -110,33 +105,17 @@ ng serve --port 4201
 ng serve --open
 ```
 
-### Building
-
-```bash
-# Build for development
-ng build
-
-# Build for production
-ng build --prod
-
-# Build and analyze bundle
-ng build --stats-json
-```
 
 ### Code Generation
 
 ```bash
 # Generate new component
-ng generate component components/component-name
+ng generate c components/component-name
 
 # Generate new service
 ng generate service services/service-name
 
-# Generate new guard
-ng generate guard guards/guard-name
 
-# Generate new module
-ng generate module modules/module-name
 ```
 
 ### Testing
@@ -148,8 +127,7 @@ ng test
 # Run tests with coverage
 ng test --code-coverage
 
-# Run e2e tests
-ng e2e
+
 ```
 
 ### Code Quality
@@ -158,11 +136,11 @@ ng e2e
 # Lint the code
 ng lint
 
-# Format code (if Prettier is configured)
+# Format code 
 npm run format
 ```
 
-## 🔐 Authentication & Authorization
+##  Authentication & Authorization
 
 The application includes:
 
@@ -171,15 +149,7 @@ The application includes:
 - Role-based access control (Customer/Admin)
 - Route guards for protected pages
 
-## 📱 Responsive Design
-
-The application is fully responsive and optimized for:
-
-- Desktop (1200px+)
-- Tablet (768px - 1199px)
-- Mobile (320px - 767px)
-
-## 🛒 Key Functionalities
+##  Key Functionalities
 
 ### Product Management
 
@@ -209,35 +179,6 @@ The application is fully responsive and optimized for:
 - Category and brand management
 - Order management system
 
-## 🤝 Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
-## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📞 Support
-
-For support and questions:
-
-- Create an issue in the repository
-- Contact the development team
-- Check the documentation
-
-## 🔮 Future Enhancements
-
-- Payment gateway integration
-- Multi-language support
-- Advanced search with filters
-- Product recommendations
-- Real-time notifications
-- Mobile app version
-
----
-
-**Note**: This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.4.

@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import { provideRouter, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AddToCartButton } from '../add-to-cart-button/add-to-cart-button';
-import { WishList } from '../shared/wish-list/wish-list';
+import { WishList } from '../shared/wish-list/wish-list-icon';
 import { By } from '@angular/platform-browser';
 import { product } from '../../types/type';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -78,11 +78,9 @@ describe('ProductCard', () => {
     expect(descriptionElement.nativeElement.textContent).toContain('...');
     expect(component.isExpanded).toBeFalse();
 
-    // Trigger the method directly
     component.toggleDescription();
     fixture.detectChanges();
 
-    // After click, the full description should be visible and isExpanded should be true
     expect(component.isExpanded).toBeTrue();
     expect(descriptionElement.nativeElement.textContent).toContain(
       longDescriptionProduct.productDescription
@@ -99,21 +97,17 @@ describe('ProductCard', () => {
     component.item = longDescriptionProduct;
     fixture.detectChanges();
 
-    // First, expand the description
     component.toggleDescription();
     fixture.detectChanges();
 
-    // The button text should now be "Read less"
     const readMoreButton = fixture.debugElement.query(
       By.css('button.ml-1')
     ).nativeElement;
     expect(readMoreButton.textContent.trim()).toBe('Read less');
 
-    // Trigger the method again
     component.toggleDescription();
     fixture.detectChanges();
 
-    // The description should be truncated again
     expect(component.isExpanded).toBeFalse();
     expect(
       fixture.debugElement.query(By.css('p.mt-1.text-sm')).nativeElement
@@ -138,7 +132,6 @@ describe('ProductCard', () => {
       of({ wishlistID: newWishlistID })
     );
 
-    // Simulate clicking the wishlist button
     component.toggleWishlist({
       wishlistID: undefined,
       productID: mockProduct.productID,

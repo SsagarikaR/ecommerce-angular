@@ -23,7 +23,6 @@ describe('Login', () => {
   let mockToastService: jasmine.SpyObj<Toast>;
 
   beforeEach(async () => {
-    // Create spy objects for services
     mockAuthService = jasmine.createSpyObj('Auth', ['login']);
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     mockCookieService = jasmine.createSpyObj('CookieService', ['set']);
@@ -84,67 +83,49 @@ describe('Login', () => {
   });
 
   it('should call auth.login and navigate on successful submission', fakeAsync(() => {
-    // Set up a mock successful login response
     const mockToken = 'mock-auth-token';
     mockAuthService.login.and.returnValue(of({ token: mockToken }));
 
-    // Set form values to a valid state
     component.loginForm.get('email')?.setValue('test@example.com');
     component.loginForm.get('password')?.setValue('password123');
 
-    // Call the onSubmit method
     component.onSubmit();
-    tick(); // Simulate the passage of time for the observable to complete
-
-    // Assert that the login service was called with the correct data
+    tick();
     expect(mockAuthService.login).toHaveBeenCalledWith({
       email: 'test@example.com',
       password: 'password123',
     });
 
-    // Assert that the token was set in the cookie
     expect(mockCookieService.set).toHaveBeenCalledWith(
       'auth_token',
       mockToken,
       { expires: 7 }
     );
-
-    // Assert that navigation to the home page occurred
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
   }));
 
   it('should show an error toast on failed submission', fakeAsync(() => {
-    // Set up a mock error response from the login service
     const mockError = { error: { message: 'Invalid credentials' } };
     mockAuthService.login.and.returnValue(throwError(() => mockError));
 
-    // Set form values to a valid state
     component.loginForm.get('email')?.setValue('test@example.com');
     component.loginForm.get('password')?.setValue('password123');
 
-    // Call the onSubmit method
     component.onSubmit();
-    tick(); // Simulate the passage of time for the observable to complete
-
-    // Assert that the toast service was called with the error message
-    expect(mockToastService.show).toHaveBeenCalledWith(
+    tick(); expect(mockToastService.show).toHaveBeenCalledWith(
       'Invalid credentials',
       'error'
     );
 
-    // Assert that the router was NOT called
     expect(mockRouter.navigate).not.toHaveBeenCalled();
   }));
 
   it('should not submit the form if it is invalid', () => {
-    // Leave the form in an invalid state (e.g., empty fields)
     component.loginForm.get('email')?.setValue('');
     component.loginForm.get('password')?.setValue('');
 
-    // Call the onSubmit method
     component.onSubmit();
 
-    // Assert that the login service was NOT called
     expect(mockAuthService.login).not.toHaveBeenCalled();
   });
 });

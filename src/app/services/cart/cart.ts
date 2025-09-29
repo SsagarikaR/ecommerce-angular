@@ -20,7 +20,6 @@ export class Cart {
     this.http.get<cartItem[]>('cart').subscribe({
       next: (result) => this.cartItems.next(result),
       error: (err) => {
-        console.error('Cart item fetch failed');
         toast.show(err.error?.message || 'Cart item fetch failed', 'error');
       },
     });
@@ -61,7 +60,6 @@ export class Cart {
             this.cartItems.next(currentCart);
           },
           error: (err) => {
-            console.error('Failed to add item');
             this.toast.show(err.error?.message || 'Add item failed', 'error');
           },
         });
@@ -91,7 +89,6 @@ export class Cart {
           this.cartItems.next(currentCart);
         },
         error: (err) => {
-          console.error('Failed to update item');
           this.toast.show(err.error?.message || 'Update item failed', 'error');
         },
       });
@@ -110,7 +107,6 @@ export class Cart {
       })
       .subscribe({
         error: (err) => {
-          console.error('Failed to delete item');
           this.toast.show(err.error?.message || 'Delete item failed', 'error');
         },
       });

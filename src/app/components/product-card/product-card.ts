@@ -2,7 +2,7 @@ import { Component, inject, Input } from '@angular/core';
 import { product } from '../../types/type';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { WishList } from '../shared/wish-list/wish-list';
+import { WishList } from '../shared/wish-list/wish-list-icon';
 import { Wishlist } from '../../services/wishlist/wishlist';
 import { AddToCartButton } from '../add-to-cart-button/add-to-cart-button';
 

@@ -24,7 +24,6 @@ describe('Home', () => {
   let mockCategoryService: jasmine.SpyObj<Category>;
   let mockPreferenceService: jasmine.SpyObj<Preferences>;
 
-  // Mock data to be used in tests
   const mockCategories: category[] = [
     {
       categoryID: 1,
@@ -90,14 +89,12 @@ describe('Home', () => {
   ];
 
   beforeEach(async () => {
-    // Create spies for the service methods
     mockProductService = jasmine.createSpyObj('Product', ['get']);
     mockCategoryService = jasmine.createSpyObj('Category', ['getCategories']);
     mockPreferenceService = jasmine.createSpyObj('Preferences', [
       'getPrefernces',
     ]);
 
-    // Configure the testing module with mock providers
     await TestBed.configureTestingModule({
       imports: [
         Home,
@@ -117,14 +114,13 @@ describe('Home', () => {
   });
 
   beforeEach(() => {
-    // Set up return values for the mock service spies
     mockProductService.get.and.returnValue(of(mockProducts));
     mockCategoryService.getCategories.and.returnValue(of(mockCategories));
     mockPreferenceService.getPrefernces.and.returnValue(of(mockPreferences));
 
     fixture = TestBed.createComponent(Home);
     component = fixture.componentInstance;
-    fixture.detectChanges(); // Trigger ngOnInit
+    fixture.detectChanges();
   });
 
   it('should create the component', () => {
@@ -138,13 +134,10 @@ describe('Home', () => {
   });
 
   it('should assign fetched data to component properties', fakeAsync(() => {
-    // Ensure all observables have completed and component properties are set
     expect(component.products).toEqual(mockProducts);
     expect(component.categories).toEqual(mockCategories);
     expect(component.preferences).toEqual(mockPreferences);
   }));
-
-  // ---
 
   it('should display the hero image from a fetched category', () => {
     const heroImage = fixture.nativeElement.querySelector('.hero-img');
@@ -159,14 +152,12 @@ describe('Home', () => {
   });
 
   it('should render the correct number of product cards', () => {
-    // The component slices the products array to show the first 10
     const productCards =
       fixture.nativeElement.querySelectorAll('app-product-card');
     expect(productCards.length).toBe(mockProducts.length);
   });
 
   it('should render the "Recommended for you" section if preferences exist', () => {
-    // Ensure the section is visible
     const recommendedSection =
       fixture.nativeElement.querySelector('section:last-child');
     expect(recommendedSection).toBeTruthy();

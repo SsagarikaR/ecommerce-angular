@@ -4,8 +4,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-wish-list',
   imports: [CommonModule],
-  templateUrl: './wish-list.html',
-  styleUrl: './wish-list.css',
+  templateUrl: './wish-list-icon.html',
+  styleUrl: './wish-list-icon.css',
 })
 export class WishList {
   @Input() isWishlisted = false;
