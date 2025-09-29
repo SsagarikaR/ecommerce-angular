@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { cartItem } from '../../types/type';
 import { HttpClient } from '@angular/common/http';
-import { Toast } from '../toast';
+import { Toast } from '../toast/toast';
 
 @Injectable({
   providedIn: 'root',

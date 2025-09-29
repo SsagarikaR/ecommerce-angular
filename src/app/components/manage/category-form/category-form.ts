@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { Category } from '../../../services/category/category';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Toast } from '../../../services/toast';
+import { Toast } from '../../../services/toast/toast';
 import { CloudinaryUploadComponent } from '../../shared/cloudinary-upload-component/cloudinary-upload-component';
 import { cloudinaryConfig } from '../../../utils/cloudinaryConfig';
 
@@ -35,15 +35,12 @@ export class CategoryForm {
       this.categoryService
         .getCategories({ categoryID: id })
         .subscribe((result: any) => {
-          console.log('result', result);
           this.name = result[0].categoryName;
           this.thumbnail = result[0].categoryThumbnail;
         });
     }
   }
   add() {
-    console.log(this.name, this.thumbnail);
-
     this.categoryService
       .postCategories({
         categoryName: this.name,
@@ -51,7 +48,6 @@ export class CategoryForm {
       })
       .subscribe(
         (response) => {
-          console.log('Category created successfully', response);
           this.toast.show('Category Added Successfully!');
           this.router.navigateByUrl('/admin/categories');
         },
@@ -68,7 +64,6 @@ export class CategoryForm {
         categoryThumbnail: this.thumbnail,
       })
       .subscribe((response) => {
-        console.log('Categories updated successfully', response);
         this.toast.show('Category Updated Successfully!');
         this.router.navigateByUrl('/admin/categories');
       });

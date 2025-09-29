@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Orders } from '../../services/orders/orders';
 import { Order } from '../../types/type';
-import { DialogService } from '../../services/dialog';
+import { DialogService } from '../../services/dialog/dialog';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -55,7 +55,6 @@ export class OrderComponent implements OnInit {
       next: (result: Order[]) => {
         this.orders = result;
         this.loading = false;
-        console.log('Orders loaded:', result);
       },
       error: (error) => {
         this.error = 'Failed to load orders. Please try again.';
@@ -67,7 +66,7 @@ export class OrderComponent implements OnInit {
 
   // Update order address
   updateOrderAddress() {
-    if (!this.validateAddressForm()) {
+    if (!this.isAddressFormValid()) {
       return;
     }
 
@@ -84,7 +83,6 @@ export class OrderComponent implements OnInit {
       )
       .subscribe({
         next: (result) => {
-          console.log('Address updated:', result);
           this.resetAddressForm();
           this.loadOrders(); // Refresh the list
           this.loading = false;
@@ -111,7 +109,6 @@ export class OrderComponent implements OnInit {
           this.loading = true;
           this.orderService.cancelOrder(orderID).subscribe({
             next: (result) => {
-              console.log('Order cancelled:', result);
               this.loadOrders();
               this.loading = false;
             },
@@ -141,7 +138,6 @@ export class OrderComponent implements OnInit {
           this.loading = true;
           this.orderService.deleteOrder(orderID).subscribe({
             next: (result) => {
-              console.log('Order deleted:', result);
               this.loadOrders(); // Refresh the list
               this.loading = false;
             },
@@ -160,7 +156,6 @@ export class OrderComponent implements OnInit {
   // Show address update form for specific order
   showUpdateAddressForm(order: Order) {
     this.editingOrderId = order.orderID || 0;
-    console.log(order);
     this.addressUpdate = {
       orderID: order.orderID || 0,
       state: order.state || '',
@@ -184,6 +179,7 @@ export class OrderComponent implements OnInit {
       delivered: 'delivered',
       cancelled: 'cancelled',
       returned: 'returned',
+      success: 'delivered', // Add 'success' to handle the mock data
     };
 
     return statusMap[status.toLowerCase()] || 'pending';
@@ -200,6 +196,7 @@ export class OrderComponent implements OnInit {
       delivered: 'Delivered',
       cancelled: 'Cancelled',
       returned: 'Returned',
+      success: 'Delivered', // Add 'success' to handle the mock data
     };
 
     return statusMap[status.toLowerCase()] || status;
@@ -210,41 +207,20 @@ export class OrderComponent implements OnInit {
   }
 
   isOrderCompleted(status: string | undefined): boolean {
-    const completedStatuses = ['delivered', 'cancelled', 'returned'];
+    const completedStatuses = ['delivered', 'cancelled', 'returned', 'success'];
     return completedStatuses.includes(status?.toLowerCase() || '');
   }
 
   // Form validation
-  validateAddressForm(): boolean {
-    if (
-      !this.addressUpdate.state?.trim() ||
-      !this.addressUpdate.city?.trim() ||
-      !this.addressUpdate.pincode?.trim() ||
-      !this.addressUpdate.locality?.trim() ||
-      !this.addressUpdate.address?.trim()
-    ) {
-      this.error = 'Please fill in all address fields';
-      return false;
-    }
-
-    // Validate pincode format
-    const pincodePattern = /^[0-9]{6}$/;
-    if (!pincodePattern.test(this.addressUpdate.pincode.trim())) {
-      this.error = 'Please enter a valid 6-digit pincode';
-      return false;
-    }
-
-    return true;
-  }
-
   isAddressFormValid(): boolean {
-    return !!(
-      this.addressUpdate.state?.trim() &&
-      this.addressUpdate.city?.trim() &&
-      this.addressUpdate.pincode?.trim() &&
-      this.addressUpdate.locality?.trim() &&
-      this.addressUpdate.address?.trim() &&
-      /^[0-9]{6}$/.test(this.addressUpdate.pincode.trim())
+    const pincodePattern = /^[0-9]{6}$/;
+    return (
+      !!this.addressUpdate.state?.trim() &&
+      !!this.addressUpdate.city?.trim() &&
+      !!this.addressUpdate.pincode?.trim() &&
+      !!this.addressUpdate.locality?.trim() &&
+      !!this.addressUpdate.address?.trim() &&
+      pincodePattern.test(this.addressUpdate.pincode.trim())
     );
   }
 
@@ -267,8 +243,9 @@ export class OrderComponent implements OnInit {
     this.resetAddressForm();
   }
 
-  onModalOverlayClick(event: Event) {
-    // Close modal when clicking on overlay
-    this.cancelAddressUpdate();
+  onModalOverlayClick(e: Event) {
+    if (e.target instanceof HTMLDivElement) {
+      this.cancelAddressUpdate();
+    }
   }
 }

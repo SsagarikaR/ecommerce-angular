@@ -8,9 +8,9 @@ import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Product } from '../../../services/product/product';
-import { DialogService } from '../../../services/dialog';
+import { DialogService } from '../../../services/dialog/dialog';
 import { product } from '../../../types/type';
-import { Toast } from '../../../services/toast';
+import { Toast } from '../../../services/toast/toast';
 
 @Component({
   selector: 'app-products',
@@ -66,7 +66,6 @@ export class Products {
 
     this.productService.get(queryParams).subscribe({
       next: (result: any) => {
-        console.log('Products loaded:', result);
         this.totalProducts = result[0].totalCount || 0;
         if (Array.isArray(result)) {
           this.products = result;

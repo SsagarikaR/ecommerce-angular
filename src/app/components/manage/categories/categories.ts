@@ -8,7 +8,7 @@ import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Category } from '../../../services/category/category';
-import { DialogService } from '../../../services/dialog';
+import { DialogService } from '../../../services/dialog/dialog';
 import { CategroyData } from '../../../types/type';
 
 @Component({
@@ -58,8 +58,6 @@ export class Categories implements OnInit {
 
     this.categoryService.getCategories().subscribe({
       next: (result: any) => {
-        console.log('Categories loaded:', result);
-
         if (Array.isArray(result)) {
           this.categories = result;
           this.totalCategories = result.length;

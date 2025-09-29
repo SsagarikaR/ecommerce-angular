@@ -8,7 +8,7 @@ import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Brand } from '../../../services/brand/brand';
-import { DialogService } from '../../../services/dialog';
+import { DialogService } from '../../../services/dialog/dialog';
 
 export interface BrandData {
   brandID: number;
@@ -63,8 +63,6 @@ export class Brands implements OnInit {
 
     this.brandService.getBrands().subscribe({
       next: (result: any) => {
-        console.log('Brands loaded:', result);
-
         if (Array.isArray(result)) {
           this.brands = result;
           this.totalBrands = result.length;

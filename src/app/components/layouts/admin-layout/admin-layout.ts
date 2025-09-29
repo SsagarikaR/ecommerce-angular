@@ -51,12 +51,5 @@ export class AdminLayout {
 
     this.pageTitle = this.capitalize(resourceSegment || 'Dashboard');
     this.isAddRoute = this.currentRoute.toLowerCase() !== 'add';
-
-    console.log({
-      segments,
-      pageTitle: this.pageTitle,
-      isAddRoute: this.isAddRoute,
-      currentRoute: this.currentRoute,
-    });
   }
 }

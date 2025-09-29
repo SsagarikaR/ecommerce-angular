@@ -9,7 +9,7 @@ import { Auth } from '../../services/auth/auth';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { CommonModule } from '@angular/common';
-import { Toast } from '../../services/toast';
+import { Toast } from '../../services/toast/toast';
 
 @Component({
   selector: 'app-login',
@@ -37,8 +37,7 @@ export class Login {
 
     this.auth.login(this.loginForm.value).subscribe({
       next: (result: any) => {
-        console.log('Login success:', result);
-        this.cookieService.set('auth_token', result.token, 7);
+        this.cookieService.set('auth_token', result.token, { expires: 7 });
 
         this.router.navigate(['/']);
       },

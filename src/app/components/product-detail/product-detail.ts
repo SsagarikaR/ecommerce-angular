@@ -9,6 +9,7 @@ import { Wishlist } from '../../services/wishlist/wishlist';
 import { Cart } from '../../services/cart/cart';
 import { AddToCartButton } from '../add-to-cart-button/add-to-cart-button';
 import { Review } from '../../services/review/review';
+import { Toast } from '../../services/toast/toast';
 @Component({
   selector: 'app-product-detail',
   imports: [CommonModule, WishList, AddToCartButton, FormsModule],
@@ -22,6 +23,7 @@ export class ProductDetail {
   private cartService = inject(Cart);
   private reviewService = inject(Review);
 
+  toast = inject(Toast);
   product: product | null = null;
   loading = true;
   id: number;
@@ -76,7 +78,6 @@ export class ProductDetail {
   }
 
   addToCart(item: product) {
-    console.log('Added to cart', item);
     this.cartService.addItem({
       productID: item.productID,
       quantity: 1,
@@ -178,11 +179,7 @@ export class ProductDetail {
         })
         .subscribe({
           next: (res) => {
-            console.log('Review submitted successfully:', res);
-
-            // Show success message (you can replace with a toast notification)
-            alert('Thank you for your review!');
-
+            this.toast.show('Thank you for your review!');
             // Refresh the review list after a successful submission
             this.fetchProductReviews();
 

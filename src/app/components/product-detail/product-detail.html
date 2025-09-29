@@ -101,240 +101,156 @@
 </div>
 
 <!-- Enhanced Reviews Section -->
-<div class="max-w-6xl mx-auto mt-16 px-6 pb-12">
-  <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+<!-- Enhanced Reviews Section -->
+<div class="max-w-6xl mx-auto mt-12 px-6 pb-8">
+  <div class="bg-white rounded-xl shadow-md overflow-hidden">
     <!-- Reviews Header -->
-    <div
-      class="bg-gradient-to-r from-green-50 to-blue-50 px-8 py-6 border-b border-gray-100"
-    >
-      <div class="flex items-center space-x-4 text-sm text-gray-600">
-        <span *ngIf="reviews && reviews.length > 0"
-          >{{ reviews.length }} review{{
-            reviews.length === 1 ? "" : "s"
-          }}</span
-        >
-        <span *ngIf="reviews && reviews.length > 0" class="flex items-center">
-          <span class="text-yellow-500 mr-1">★</span>
-          <span>{{ getAverageRating() | number : "1.1-1" }}/5</span>
-        </span>
+    <div class="bg-gradient-to-r from-green-50 to-blue-50 px-6 py-4 border-b border-gray-100">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold text-gray-800">Customer Reviews</h2>
+        <div class="flex items-center space-x-3 text-sm text-gray-600">
+          <span *ngIf="reviews && reviews.length > 0">{{ reviews.length }} review{{ reviews.length === 1 ? "" : "s" }}</span>
+          <span *ngIf="reviews && reviews.length > 0" class="flex items-center">
+            <span class="text-yellow-500 mr-1">★</span>
+            <span class="font-medium">{{ getAverageRating() | number : "1.1-1" }}/5</span>
+          </span>
+        </div>
       </div>
     </div>
 
     <!-- Add Review Form -->
-    <div class="p-8 bg-gray-50 border-b border-gray-100">
-      <div class="max-w-2xl">
-        <form (ngSubmit)="submitReview()" class="space-y-6">
+    <div class="p-6 bg-gray-50 border-b border-gray-100">
+      <form (ngSubmit)="submitReview()" class="space-y-4">
+        <div class="flex flex-col sm:flex-row gap-4">
           <!-- Rating Section -->
-          <div>
-            <label
-              for="rating"
-              class="block text-sm font-semibold text-gray-700 mb-3"
-            >
-              Your Rating
-            </label>
-            <div class="flex items-center space-x-2 mb-3">
+          <div class="flex-shrink-0">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Rate this product</label>
+            <div class="flex items-center space-x-1">
               <button
                 *ngFor="let star of [1, 2, 3, 4, 5]"
                 type="button"
                 (click)="newReviewRating = star"
-                class="text-3xl transition-colors duration-200 hover:scale-110 transform"
+                class="text-2xl transition-all duration-200 hover:scale-110"
                 [ngClass]="{
                   'text-yellow-400': star <= newReviewRating,
-                  'text-gray-300': star > newReviewRating
+                  'text-gray-300 hover:text-yellow-300': star > newReviewRating
                 }"
-              >
-                ★
-              </button>
-              <span
-                *ngIf="newReviewRating > 0"
-                class="ml-3 text-sm text-gray-600 font-medium"
-              >
-                {{ getRatingText(newReviewRating) }}
-              </span>
+              >★</button>
+              <span *ngIf="newReviewRating > 0" class="ml-2 text-sm text-gray-600">{{ getRatingText(newReviewRating) }}</span>
             </div>
           </div>
 
           <!-- Review Text -->
-          <div>
-            <label
-              for="description"
-              class="block text-sm font-semibold text-gray-700 mb-3"
-            >
-              Your Review
-            </label>
+          <div class="flex-grow">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Your review</label>
             <textarea
-              id="description"
-              name="description"
-              rows="4"
               [(ngModel)]="newReviewDescription"
-              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 resize-none shadow-sm"
-              placeholder="Tell others about your experience with this product..."
+              name="description"
+              rows="3"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none text-sm"
+              placeholder="Share your experience with this product..."
               required
             ></textarea>
-            <div class="flex justify-between items-center mt-2">
-              <span class="text-xs text-gray-500">Minimum 10 characters</span>
-              <span class="text-xs text-gray-400"
-                >{{ newReviewDescription.length }}/500</span
-              >
+            <div class="flex justify-between text-xs text-gray-500 mt-1">
+              <span>Min 10 characters</span>
+              <span>{{ newReviewDescription.length }}/500</span>
             </div>
           </div>
 
           <!-- Submit Button -->
-          <div class="flex justify-end">
+          <div class="flex-shrink-0 flex items-end">
             <button
               type="submit"
-              [disabled]="
-                newReviewRating === 0 || newReviewDescription.length < 10
-              "
-              class="px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-xl shadow-lg hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              [disabled]="newReviewRating === 0 || newReviewDescription.length < 10"
+              class="px-6 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
-              <svg
-                class="w-4 h-4 inline mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                ></path>
-              </svg>
               Submit Review
             </button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
 
     <!-- Reviews List -->
-    <div class="p-8">
+    <div class="p-6">
       <!-- Loading State -->
-      <div *ngIf="reviewLoading" class="flex items-center justify-center py-12">
-        <div
-          class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"
-        ></div>
-        <span class="ml-3 text-gray-500">Loading reviews...</span>
+      <div *ngIf="reviewLoading" class="flex items-center justify-center py-8">
+        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-green-600"></div>
+        <span class="ml-2 text-gray-500 text-sm">Loading reviews...</span>
       </div>
 
       <!-- Reviews List -->
-      <div
-        *ngIf="!reviewLoading && reviews && reviews.length > 0"
-        class="space-y-6"
-      >
+      <div *ngIf="!reviewLoading && reviews && reviews.length > 0" class="space-y-4">
         <div
           *ngFor="let review of reviews; let i = index"
-          class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200"
+          class="border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow duration-200"
         >
           <!-- Review Header -->
-          <div class="flex items-start justify-between mb-4">
-            <div class="flex items-center space-x-4">
-              <div
-                class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-lg"
-              >
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
                 {{ getInitials(review.name) }}
               </div>
               <div>
-                <h4 class="font-semibold text-gray-800 text-lg">
-                  {{ review.name }}
-                </h4>
+                <h4 class="font-medium text-gray-800">{{ review.name }}</h4>
                 <div class="flex items-center space-x-2 mt-1">
-                  <div class="flex text-yellow-400">
+                  <div class="flex text-yellow-400 text-sm">
                     <span
                       *ngFor="let star of [1, 2, 3, 4, 5]"
                       [ngClass]="{
                         'text-yellow-400': star <= review.rating,
                         'text-gray-300': star > review.rating
                       }"
-                    >
-                      ★
-                    </span>
+                    >★</span>
                   </div>
-                  <span class="text-sm text-gray-500 ml-2"
-                    >{{ review.rating }}/5</span
-                  >
+                  <span class="text-xs text-gray-500">{{ review.rating }}/5</span>
                 </div>
               </div>
             </div>
 
             <!-- Review Badge -->
-            <div class="flex items-center space-x-2">
-              <span
-                class="px-3 py-1 text-xs font-medium rounded-full"
-                [ngClass]="{
-                  'bg-green-100 text-green-800': review.rating >= 4,
-                  'bg-yellow-100 text-yellow-800': review.rating === 3,
-                  'bg-red-100 text-red-800': review.rating < 3
-                }"
-              >
-                {{ getRatingText(review.rating) }}
-              </span>
-            </div>
+            <span
+              class="px-2 py-1 text-xs font-medium rounded-full"
+              [ngClass]="{
+                'bg-green-100 text-green-700': review.rating >= 4,
+                'bg-yellow-100 text-yellow-700': review.rating === 3,
+                'bg-red-100 text-red-700': review.rating < 3
+              }"
+            >
+              {{ getRatingText(review.rating) }}
+            </span>
           </div>
 
           <!-- Review Content -->
-          <div class="ml-16">
-            <p class="text-gray-700 leading-relaxed">
-              {{ review.description }}
-            </p>
+          <p class="text-gray-700 text-sm leading-relaxed mb-3 ml-13">{{ review.description }}</p>
 
-            <!-- Review Footer -->
-            <div
-              class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100"
-            >
-              <div class="flex items-center text-xs text-gray-500 space-x-4">
-                <span>Verified Purchase</span>
-              </div>
-              <button
-                class="text-xs text-gray-400 hover:text-gray-600 flex items-center"
-              >
-                <svg
-                  class="w-3 h-3 mr-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V18m-7-8a2 2 0 01-2-2V6a2 2 0 012-2h2.343M11 7L9 5l-2 2m0 0v6m0 0H5m6 0L9 15"
-                  ></path>
-                </svg>
-                Helpful
-              </button>
-            </div>
+          <!-- Review Footer -->
+          <div class="flex items-center justify-between text-xs text-gray-500 ml-13 pt-2 border-t border-gray-100">
+            <span class="flex items-center">
+              <svg class="w-3 h-3 mr-1 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              Verified Purchase
+            </span>
+            <button class="text-gray-400 hover:text-gray-600 flex items-center">
+              <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V18m-7-8a2 2 0 01-2-2V6a2 2 0 012-2h2.343M11 7L9 5l-2 2m0 0v6m0 0H5m6 0L9 15"></path>
+              </svg>
+              Helpful
+            </button>
           </div>
         </div>
       </div>
 
       <!-- No Reviews State -->
-      <div
-        *ngIf="!reviewLoading && (!reviews || reviews.length === 0)"
-        class="text-center py-16"
-      >
-        <div
-          class="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center"
-        >
-          <svg
-            class="w-12 h-12 text-gray-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-            ></path>
+      <div *ngIf="!reviewLoading && (!reviews || reviews.length === 0)" class="text-center py-12">
+        <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+          <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
           </svg>
         </div>
-        <h3 class="text-xl font-semibold text-gray-600 mb-2">No Reviews Yet</h3>
-        <p class="text-gray-500">
-          Be the first to share your experience with this product!
-        </p>
+        <h3 class="text-lg font-medium text-gray-600 mb-2">No Reviews Yet</h3>
+        <p class="text-gray-500 text-sm">Be the first to share your experience with this product!</p>
       </div>
     </div>
   </div>

@@ -18,7 +18,6 @@ export class WishList {
 
   onToggle(event: Event) {
     event.stopPropagation();
-    console.log(this.wishlistID);
     this.toggle.emit({
       wishlistID: this.wishlistID,
       productID: this.productID,

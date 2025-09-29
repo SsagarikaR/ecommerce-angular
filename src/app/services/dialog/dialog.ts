@@ -21,7 +21,6 @@ export class DialogService {
   constructor() {}
 
   open(data: DialogData) {
-    console.log('not open');
     this.dialogDataSubject.next(data);
   }
 

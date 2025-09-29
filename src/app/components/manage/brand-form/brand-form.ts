@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Brand } from '../../../services/brand/brand';
 import { CloudinaryUploadComponent } from '../../../components/shared/cloudinary-upload-component/cloudinary-upload-component';
-import { Toast } from '../../../services/toast';
+import { Toast } from '../../../services/toast/toast';
 import { cloudinaryConfig } from '../../../utils/cloudinaryConfig';
 import { CommonModule } from '@angular/common';
 
@@ -85,7 +85,6 @@ export class BrandForm implements OnInit {
       })
       .subscribe({
         next: (response) => {
-          console.log('Brand created successfully:', response);
           this.toast.show('Brand added successfully!', 'success');
           this.router.navigateByUrl('/admin/brands');
         },
@@ -105,7 +104,6 @@ export class BrandForm implements OnInit {
       })
       .subscribe({
         next: (response) => {
-          console.log('Brand updated successfully:', response);
           this.toast.show('Brand updated successfully!', 'success');
           this.router.navigateByUrl('/admin/brands');
         },

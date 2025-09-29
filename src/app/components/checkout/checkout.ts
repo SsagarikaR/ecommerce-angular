@@ -5,7 +5,7 @@ import { Cart } from '../../services/cart/cart';
 import { Orders } from '../../services/orders/orders';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Toast } from '../../services/toast';
+import { Toast } from '../../services/toast/toast';
 
 @Component({
   selector: 'app-checkout',
@@ -35,20 +35,12 @@ export class Checkout {
   ngOnInit(): void {
     this.cartService.getCartItems().subscribe((items) => {
       this.cartItems = items;
+      console.log(this.cartItems);
       // If no items, redirect back
       if (items.length === 0) {
         this.router.navigate(['/']);
       }
     });
-  }
-
-  get totalAmount() {
-    return this.cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
-  }
-
-  get totalPrice() {
-    // Add any additional charges, taxes, delivery fees here
-    return this.totalAmount;
   }
 
   nextStep() {
@@ -81,7 +73,7 @@ export class Checkout {
     try {
       const orderPayload = {
         totalAmount: this.cartItems.length,
-        totalPrice: this.totalPrice,
+        totalPrice: this.cartItems[0].totalPrice,
         items: this.cartItems.map((item) => ({
           productID: item.productID,
           quantity: item.quantity,

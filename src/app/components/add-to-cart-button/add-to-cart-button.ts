@@ -20,6 +20,5 @@ export class AddToCartButton {
       productID: this.item.productID,
       quantity: 1,
     });
-    console.log('Added to cart', this.item);
   }
 }

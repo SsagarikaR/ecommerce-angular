@@ -14,7 +14,7 @@ import { Category } from '../../../services/category/category';
 import { Brand } from '../../../services/brand/brand';
 import { CloudinaryUploadComponent } from '../../shared/cloudinary-upload-component/cloudinary-upload-component';
 import { category, brand } from '../../../types/type';
-import { Toast } from '../../../services/toast';
+import { Toast } from '../../../services/toast/toast';
 import { cloudinaryConfig } from '../../../utils/cloudinaryConfig';
 
 @Component({

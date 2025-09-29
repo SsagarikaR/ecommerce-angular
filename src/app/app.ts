@@ -7,7 +7,7 @@ import {
 } from '@angular/router';
 import { Header } from './components/layouts/header/header';
 import { Footer } from './components/layouts/footer/footer';
-import { Toast } from './services/toast';
+import { Toast } from './services/toast/toast';
 import { Toast as toast } from './components/shared/toast/toast';
 import { filter } from 'rxjs';
 import { CommonModule } from '@angular/common';

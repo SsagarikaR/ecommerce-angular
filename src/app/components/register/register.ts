@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Toast } from '../../services/toast';
+import { Toast } from '../../services/toast/toast';
 import { Auth } from '../../services/auth/auth';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
@@ -39,19 +39,18 @@ export class Register {
     if (this.registerForm.valid) {
       this.authService.signup(this.registerForm.value).subscribe({
         next: (result: any) => {
-          this.cookieService.set('auth_token', result.token, 7);
+          this.cookieService.set('auth_token', result.token, { expires: 7 });
           this.router.navigateByUrl('/');
           this.toast.show(result.message, 'success');
         },
         error: (err) => {
-          console.log(err);
           const message =
-            err.error?.message || 'Server error. Please try again later ❌';
+            err.error?.message || 'Server error. Please try again later.';
           this.toast.show(message, 'error');
         },
       });
     } else {
-      this.toast.show('Please fix the errors ❌', 'error');
+      this.toast.show('Please fix the errors. ', 'error');
       this.registerForm.markAllAsTouched();
     }
   }

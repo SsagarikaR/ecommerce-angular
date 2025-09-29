@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Wishlist } from '../../services/wishlist/wishlist';
-import { Toast } from '../../services/toast';
+import { Toast } from '../../services/toast/toast';
 import { RouterLink } from '@angular/router';
 import { Cart } from '../../services/cart/cart';
 import { product } from '../../types/type';
@@ -33,7 +33,6 @@ export class WishlistPage {
         this.loading = false;
       },
       error: (err) => {
-        console.log(err.status);
         if (err.status === 404) {
           this.wishlist = [];
         }

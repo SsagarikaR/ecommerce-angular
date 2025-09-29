@@ -57,7 +57,7 @@ export interface Order {
   locality: string;
   address: AddressData;
   totalPrice: number;
-  status?: 'pending' | 'confirmed' | 'cancelled' | 'delivered';
+  status?: 'Pending' | 'Success' | 'Cancelled';
   createdAt?: string;
   updatedAt?: string;
   userID?: number;
