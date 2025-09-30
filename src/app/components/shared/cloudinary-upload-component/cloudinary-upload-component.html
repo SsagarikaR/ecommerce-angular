@@ -84,8 +84,7 @@
           >Supported formats:
           {{ allowedFormats.join(", ").toUpperCase() }}</span
         >
-        <span *ngIf="maxSize">Max size: {{ formatFileSize(maxSize) }}</span>
-      </div>
+       </div>
     </div>
 
     <div *ngIf="uploadError" class="upload-error">
@@ -118,26 +117,5 @@
       style="display: none"
       [disabled]="isUploading || disabled"
     />
-  </div>
-  <!-- Upload Info -->
-  <div *ngIf="showInfo && currentImageUrl" class="upload-info">
-    <div class="info-row">
-      <span class="label">File name:</span>
-      <span class="value">{{
-        uploadResult?.originalFilename || "Unknown"
-      }}</span>
-    </div>
-    <div class="info-row">
-      <span class="label">Size:</span>
-      <span class="value">{{
-        uploadResult?.bytes ? formatFileSize(uploadResult?.bytes) : "Unknown"
-      }}</span>
-    </div>
-    <div class="info-row">
-      <span class="label">Format:</span>
-      <span class="value">{{
-        uploadResult?.format?.toUpperCase() || "Unknown"
-      }}</span>
-    </div>
   </div>
 </div>

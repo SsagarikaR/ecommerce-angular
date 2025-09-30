@@ -36,8 +36,6 @@ export class Checkout {
   ngOnInit(): void {
     this.cartService.getCartItems().subscribe((items) => {
       this.cartItems = items;
-      console.log(this.cartItems);
-      // If no items, redirect back
       if (items.length === 0) {
         this.router.navigate(['/']);
       }

@@ -26,7 +26,7 @@ export class Product {
     return this.http.get<product[]>('products', { params });
   }
   update(data: Partial<product>) {
-    return this.http.patch('products', data);
+    return this.http.patch<{ message: string, success: boolean }>('products', data);
   }
   delete(productID: number) {
     return this.http.delete('products', {

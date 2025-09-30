@@ -2,12 +2,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Orders } from '../../services/orders/orders';
-import { Order } from '../../types/type';
+import { order, orderItem } from '../../types/type';
 import { DialogService } from '../../services/dialog/dialog';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-order',
+  selector: 'app-order ',
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './order.html',
   styleUrl: './order.css',
@@ -16,7 +16,7 @@ export class OrderComponent implements OnInit {
   orderService = inject(Orders);
   private dialogService = inject(DialogService);
 
-  orders: Order[] = [];
+  orders: order[] = [];
   loading = false;
   error = '';
 
@@ -38,11 +38,11 @@ export class OrderComponent implements OnInit {
   }
 
   // TrackBy functions for performance optimization
-  trackByOrderId(index: number, order: Order): number {
+  trackByOrderId(index: number, order: order): number {
     return order.orderID || index;
   }
 
-  trackByItemId(index: number, item: any): number {
+  trackByItemId(index: number, item: orderItem): number {
     return item.orderItemID || index;
   }
 
@@ -52,7 +52,7 @@ export class OrderComponent implements OnInit {
     this.error = '';
 
     this.orderService.getOrders().subscribe({
-      next: (result: Order[]) => {
+      next: (result: order[]) => {
         this.orders = result;
         this.loading = false;
       },
@@ -64,7 +64,7 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  // Update order address
+  // Update order  address
   updateOrderAddress() {
     if (!this.isAddressFormValid()) {
       return;
@@ -95,12 +95,12 @@ export class OrderComponent implements OnInit {
       });
   }
 
-  // Cancel order with dialog confirmation
+  // Cancel order  with dialog confirmation
   cancelOrder(orderID: number) {
     this.dialogService.open({
-      title: 'Cancel Order',
+      title: 'Cancel order ',
       message:
-        'Are you sure you want to cancel this order? This action cannot be undone.',
+        'Are you sure you want to cancel this order ? This action cannot be undone.',
     });
 
     const subscription = this.dialogService.confirmed$.subscribe(
@@ -113,9 +113,9 @@ export class OrderComponent implements OnInit {
               this.loading = false;
             },
             error: (error) => {
-              this.error = 'Failed to cancel order. Please try again.';
+              this.error = 'Failed to cancel order . Please try again.';
               this.loading = false;
-              console.error('Error cancelling order:', error);
+              console.error('Error cancelling order :', error);
             },
           });
         }
@@ -124,12 +124,12 @@ export class OrderComponent implements OnInit {
     );
   }
 
-  // Delete order with dialog confirmation
+  // Delete order  with dialog confirmation
   deleteOrder(orderID: number) {
     this.dialogService.open({
-      title: 'Delete Order',
+      title: 'Delete order ',
       message:
-        'Are you sure you want to permanently delete this order? This action cannot be undone and will remove all order history.',
+        'Are you sure you want to permanently delete this order ? This action cannot be undone and will remove all order  history.',
     });
 
     const subscription = this.dialogService.confirmed$.subscribe(
@@ -142,9 +142,9 @@ export class OrderComponent implements OnInit {
               this.loading = false;
             },
             error: (error) => {
-              this.error = 'Failed to delete order. Please try again.';
+              this.error = 'Failed to delete order . Please try again.';
               this.loading = false;
-              console.error('Error deleting order:', error);
+              console.error('Error deleting order :', error);
             },
           });
         }
@@ -153,8 +153,8 @@ export class OrderComponent implements OnInit {
     );
   }
 
-  // Show address update form for specific order
-  showUpdateAddressForm(order: Order) {
+  // Show address update form for specific order 
+  showUpdateAddressForm(order: order) {
     this.editingOrderId = order.orderID || 0;
     this.addressUpdate = {
       orderID: order.orderID || 0,

@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Category } from '../../../services/category/category';
 import { DialogService } from '../../../services/dialog/dialog';
-import { CategroyData } from '../../../types/type';
+import { category, categroyData } from '../../../types/type';
 
 @Component({
   selector: 'app-categories',
@@ -27,20 +27,18 @@ import { CategroyData } from '../../../types/type';
   styleUrl: './categories.css',
 })
 export class Categories implements OnInit {
-  categories: CategroyData[] = [];
-  filteredCategories: CategroyData[] = [];
+  categories: categroyData[] = [];
+  filteredCategories: categroyData[] = [];
   selectedCategories: Set<number> = new Set();
   isLoading = false;
   searchTerm = '';
   Math = Math;
 
-  // Pagination
   currentPage = 1;
   pageSize = 10;
   totalCategories = 0;
   totalPages = 0;
 
-  // Sorting
   sortBy = 'categoryName';
   sortOrder: 'asc' | 'desc' = 'asc';
 
@@ -57,35 +55,19 @@ export class Categories implements OnInit {
     this.isLoading = true;
 
     this.categoryService.getCategories().subscribe({
-      next: (result: any) => {
-        if (Array.isArray(result)) {
-          this.categories = result;
-          this.totalCategories = result.length;
-        } else if (result.data) {
-          this.categories = result.data;
-          this.totalCategories = result.total || result.data.length;
-        } else {
-          this.categories = [];
-          this.totalCategories = 0;
-        }
-
+      next: (result: category[]) => {
+        this.categories = result;
+        this.totalCategories = result.length;
         this.applyFiltersAndSort();
         this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error loading categories:', error);
-        this.showNotification('Error loading categories', 'error');
-        this.isLoading = false;
-        this.categories = [];
-        this.filteredCategories = [];
-      },
+      }
     });
+    this.isLoading = false;
   }
 
   applyFiltersAndSort() {
     let filtered = [...this.categories];
 
-    // Apply search filter
     if (this.searchTerm) {
       filtered = filtered.filter((category) =>
         category.categoryName
@@ -94,10 +76,9 @@ export class Categories implements OnInit {
       );
     }
 
-    // Apply sorting
     filtered.sort((a, b) => {
-      let valueA = a[this.sortBy as keyof CategroyData];
-      let valueB = b[this.sortBy as keyof CategroyData];
+      let valueA = a[this.sortBy as keyof categroyData];
+      let valueB = b[this.sortBy as keyof categroyData];
 
       if (typeof valueA === 'string') valueA = valueA.toLowerCase();
       if (typeof valueB === 'string') valueB = valueB.toLowerCase();
@@ -107,7 +88,6 @@ export class Categories implements OnInit {
       return 0;
     });
 
-    // Apply pagination
     this.totalCategories = filtered.length;
     this.totalPages = Math.ceil(this.totalCategories / this.pageSize);
 
@@ -176,16 +156,16 @@ export class Categories implements OnInit {
     );
   }
 
-  onCategoryClick(category: CategroyData) {
+  onCategoryClick(category: categroyData) {
     this.router.navigate(['/admin/categories/view', category.categoryID]);
   }
 
-  editCategory(category: CategroyData, event: Event) {
+  editCategory(category: categroyData, event: Event) {
     event.stopPropagation();
     this.router.navigate(['/admin/categories/', category.categoryID]);
   }
 
-  confirmDelete(category: CategroyData, event: Event) {
+  confirmDelete(category: categroyData, event: Event) {
     event.stopPropagation();
     this.dialog.open({
       title: 'Delete Category',
@@ -200,17 +180,11 @@ export class Categories implements OnInit {
   }
 
   deleteCategory(categoryID: number) {
-    // Assuming you have a delete method in your category service
-    // You'll need to implement this method in your Category service
     this.categoryService.deleteCategory(categoryID).subscribe({
       next: () => {
         this.showNotification('Category deleted successfully', 'success');
         this.loadCategories();
-      },
-      error: (error) => {
-        console.error('Error deleting category:', error);
-        this.showNotification('Error deleting category', 'error');
-      },
+      }
     });
   }
 
@@ -246,7 +220,6 @@ export class Categories implements OnInit {
     });
   }
 
-  // Pagination methods
   goToPage(page: number) {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;

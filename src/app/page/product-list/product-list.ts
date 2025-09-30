@@ -24,13 +24,12 @@ export class ProductList {
   totalPages = 0;
 
   ngOnInit(): void {
-    // React to query param changes dynamically
     this.route.queryParams.subscribe((params) => {
       const name = params['search'];
       const categoryID = params['categoryID']
         ? +params['categoryID']
         : undefined;
-      this.page = 1; // reset to page 1 when filters change
+      this.page = 1;
       this.fetchProducts({ name, categoryID });
     });
   }
@@ -38,7 +37,7 @@ export class ProductList {
   fetchProducts(options: { name?: string; categoryID?: number } = {}) {
     this.loading = true;
 
-    const query: any = {
+    const query = {
       page: this.page,
       limit: this.limit,
       ...(options.name ? { name: options.name } : {}),
@@ -46,18 +45,14 @@ export class ProductList {
     };
 
     this.productService.get(query).subscribe({
-      next: (result: any) => {
-        // Assuming backend returns { data: [], total: number }
+      next: (result: product[]) => {
         this.products = result;
         this.totalItems = result[0]?.totalCount || this.products.length || 0;
         this.totalPages = Math.ceil(this.totalItems / this.limit);
         this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error fetching products', err);
-        this.loading = false;
-      },
+      }
     });
+    this.loading = false;
   }
 
   goToPage(pageNum: number) {

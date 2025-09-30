@@ -9,7 +9,7 @@ import { Product } from '../../services/product/product';
 import { Category } from '../../services/category/category';
 import { Preferences } from '../../services/preference/preferences';
 import { of } from 'rxjs';
-import { product, category } from '../../types/type';
+import { product, category, preferences } from '../../types/type';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -68,8 +68,9 @@ describe('Home', () => {
       productImage2: '',
     },
   ];
-  const mockPreferences: product[] = [
+  const mockPreferences: preferences[] = [
     {
+      userID: 1,
       productID: 3,
       productName: 'Bowl',
       productThumbnail: 'bowl.jpg',

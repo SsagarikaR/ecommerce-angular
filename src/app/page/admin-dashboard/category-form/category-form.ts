@@ -1,73 +1,118 @@
-import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { Category } from '../../../services/category/category';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Category } from '../../../services/category/category';
 import { Toast } from '../../../services/toast/toast';
 import { CloudinaryUploadComponent } from '../../../components/shared/cloudinary-upload-component/cloudinary-upload-component';
 import { cloudinaryConfig } from '../../../utils/cloudinaryConfig';
+import { category } from '../../../types/type';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-category-form',
-  imports: [FormsModule, MatButtonModule, CloudinaryUploadComponent],
+  imports: [ReactiveFormsModule, MatButtonModule, CloudinaryUploadComponent, CommonModule],
   templateUrl: './category-form.html',
   styleUrl: './category-form.css',
 })
-export class CategoryForm {
+export class CategoryForm implements OnInit {
   private toast = inject(Toast);
-  name!: string;
-  thumbnail!: string;
   categoryID!: number;
   categoryService = inject(Category);
   cloudinaryConfig = cloudinaryConfig;
-
   router = inject(Router);
   isEdit: boolean = false;
-
   private activatedRoute = inject(ActivatedRoute);
 
+  private fb = inject(FormBuilder);
+  categoryForm!: FormGroup;
+
   ngOnInit() {
+    this.categoryForm = this.fb.group({
+      categoryName: ['', [Validators.required, Validators.maxLength(50)]],
+      categoryThumbnail: ['', [Validators.required]],
+    });
+
     const id = this.activatedRoute.snapshot.params['id'];
     if (id) {
       this.isEdit = true;
       this.categoryID = id;
       this.categoryService
         .getCategories({ categoryID: id })
-        .subscribe((result: any) => {
-          this.name = result[0].categoryName;
-          this.thumbnail = result[0].categoryThumbnail;
+        .subscribe((result: category[]) => {
+          if (result && result.length > 0) {
+            this.categoryForm.patchValue({
+              categoryName: result[0].categoryName,
+              categoryThumbnail: result[0].categoryThumbnail,
+            });
+          } else {
+            this.toast.show('Category not found.', 'error');
+            this.router.navigateByUrl('/admin/categories');
+          }
         });
     }
   }
+
+  // Convenience getter for easy access to form controls
+  get f() {
+    return this.categoryForm.controls;
+  }
+
   add() {
+    if (this.categoryForm.invalid) {
+      this.categoryForm.markAllAsTouched();
+      return;
+    }
+    const formData = this.categoryForm.value;
     this.categoryService
       .postCategories({
-        categoryName: this.name,
-        categoryThumbnail: this.thumbnail,
+        categoryName: formData.categoryName,
+        categoryThumbnail: formData.categoryThumbnail,
       })
-      .subscribe(
-        (response) => {
-          this.toast.show('Category Added Successfully!');
+      .subscribe({
+        next: (response) => {
+          this.toast.show('Category Added Successfully!', 'success');
           this.router.navigateByUrl('/admin/categories');
         },
-        (error) => {
+        error: (error) => {
           console.error('Error creating category', error);
-        }
-      );
+          this.toast.show('Error adding category.', 'error');
+        },
+      });
   }
+
   update() {
+    if (this.categoryForm.invalid) {
+      this.categoryForm.markAllAsTouched();
+      this.toast.show('Please fill out all required fields.', 'error');
+      return;
+    }
+    const formData = this.categoryForm.value;
     this.categoryService
       .updateCategories({
         categoryID: this.categoryID,
-        categoryName: this.name,
-        categoryThumbnail: this.thumbnail,
+        categoryName: formData.categoryName,
+        categoryThumbnail: formData.categoryThumbnail,
       })
-      .subscribe((response) => {
-        this.toast.show('Category Updated Successfully!');
-        this.router.navigateByUrl('/admin/categories');
+      .subscribe({
+        next: (response) => {
+          this.toast.show('Category Updated Successfully!', 'success');
+          this.router.navigateByUrl('/admin/categories');
+        },
+        error: (error) => {
+          console.error('Error updating category', error);
+          this.toast.show('Error updating category.', 'error');
+        },
       });
   }
+
   cancel() {
     this.router.navigateByUrl('/admin/categories');
+  }
+
+  onThumbnailChange(url: string) {
+    this.f['categoryThumbnail'].setValue(url);
+    this.f['categoryThumbnail'].markAsDirty();
+    this.f['categoryThumbnail'].markAsTouched();
   }
 }

@@ -1,6 +1,6 @@
-import { CloudinaryConfig } from '../types/type';
+import { cloudinaryConfig as cloudinaryConfigType } from '../types/type';
 
-export const cloudinaryConfig: CloudinaryConfig = {
+export const cloudinaryConfig: cloudinaryConfigType = {
   cloudName: 'duujsfghz',
   uploadPreset: 'nweojrbp',
   folder: 'products',

@@ -6,11 +6,13 @@ import { BrandForm } from '../page/admin-dashboard/brand-form/brand-form';
 import { Products } from '../page/admin-dashboard/products/products';
 import { ProductForm } from '../page/admin-dashboard/product-form/product-form';
 import { AdminLayout } from '../components/layouts/admin-layout/admin-layout';
+import { adminGuard } from '../guards/admin-guard';
 
 export const adminRoutes: Routes = [
   {
     path: '',
     component: AdminLayout,
+    canActivate: [adminGuard],
     children: [
       {
         path: 'categories',

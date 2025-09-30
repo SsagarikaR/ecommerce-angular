@@ -1,16 +1,14 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
-  forwardRef,
   inject,
   Input,
   Output,
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CloudinaryConfig, UploadResult } from '../../../types/type';
+import { cloudinaryConfig, uploadResult } from '../../../types/type';
 import { HttpClient } from '@angular/common/http';
 import { CloudinaryService } from '../../../services/cloudinary/cloudinary';
 
@@ -20,16 +18,14 @@ import { CloudinaryService } from '../../../services/cloudinary/cloudinary';
 
   templateUrl: './cloudinary-upload-component.html',
   styleUrl: './cloudinary-upload-component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CloudinaryUploadComponent {
   private http = inject(HttpClient);
-  @Input() config: CloudinaryConfig = { cloudName: '', uploadPreset: '' };
+  @Input() config: cloudinaryConfig = { cloudName: '', uploadPreset: '' };
   @Input() placeholder: string = 'Upload Image';
   @Input() allowedFormats: string[] = ['jpg', 'jpeg', 'png', 'webp'];
   @Input() maxSize: number = 5 * 1024 * 1024;
   @Input() allowRemove: boolean = true;
-  @Input() showInfo: boolean = false;
   @Input() disabled: boolean = false;
   @Input() targetProperty: string = '';
   @Input()
@@ -38,12 +34,10 @@ export class CloudinaryUploadComponent {
       this.currentImageUrl = url;
     } else {
       this.currentImageUrl = '';
-      this.uploadResult = null;
     }
   }
 
-  @Output() uploadSuccess = new EventEmitter<UploadResult>();
-  @Output() uploadSuccessful = new EventEmitter<{
+  @Output() uploadSuccess = new EventEmitter<string>(); @Output() uploadSuccessful = new EventEmitter<{
     url: string;
     property: string;
   }>();
@@ -52,7 +46,6 @@ export class CloudinaryUploadComponent {
   private cloudinaryService = inject(CloudinaryService);
 
   currentImageUrl: string = '';
-  uploadResult: UploadResult | null = null;
   isUploading: boolean = false;
   uploadProgress: number = 0;
   isDragOver: boolean = false;
@@ -99,17 +92,14 @@ export class CloudinaryUploadComponent {
     const validationError = this.validateFile(file);
     if (validationError) {
       this.uploadError = validationError;
+      // Notify error
+      this.uploadErrorEvent.emit(validationError);
       return;
     }
 
     this.clearError();
-    this.isUploading = true;
-    this.uploadProgress = 0;
 
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', this.config.uploadPreset);
-
+    // Use the simplified service
     this.cloudinaryService
       .uploadFile(
         file,
@@ -118,22 +108,15 @@ export class CloudinaryUploadComponent {
         this.config.folder
       )
       .subscribe({
-        next: (event) => {
-          if (event.progress !== undefined) {
-            this.uploadProgress = event.progress;
-          }
-          if (event.response) {
-            this.handleUploadSuccess(event.response);
-            this.isUploading = false;
-          }
+        next: (url: string) => {
+          this.handleUploadSuccess(url);
         },
         error: (err) => {
-          this.isUploading = false;
-          this.handleUploadError(err);
+          const errorMessage = err.message || 'Image upload failed';
+          this.handleUploadError(errorMessage);
         },
       });
   }
-
   private validateFile(file: File): string | null {
     const fileExtension = file.name.split('.').pop()?.toLowerCase();
     if (!fileExtension || !this.allowedFormats.includes(fileExtension)) {
@@ -142,31 +125,18 @@ export class CloudinaryUploadComponent {
         .toUpperCase()}`;
     }
 
-    if (this.maxSize && file.size > this.maxSize) {
-      return `File size too large. Maximum size: ${this.formatFileSize(
-        this.maxSize
-      )}`;
-    }
 
     return null;
   }
 
-  private handleUploadSuccess(response: any): void {
-    const result: UploadResult = {
-      url: response.secure_url,
-      publicId: response.public_id,
-      originalFilename: response.original_filename,
-      format: response.format,
-      bytes: response.bytes,
-    };
-
-    this.uploadResult = result;
-    this.currentImageUrl = result.url;
+  private handleUploadSuccess(url: string): void {
+    this.currentImageUrl = url;
     this.uploadSuccessful.emit({
-      url: result.url,
+      url: url,
       property: this.targetProperty,
     });
-    this.uploadSuccess.emit(result);
+
+    this.uploadSuccess.emit(url);
   }
 
   private handleUploadError(errorMessage: string): void {
@@ -176,7 +146,6 @@ export class CloudinaryUploadComponent {
 
   removeImage(): void {
     this.currentImageUrl = '';
-    this.uploadResult = null;
     this.imageRemoved.emit();
   }
 
@@ -184,11 +153,4 @@ export class CloudinaryUploadComponent {
     this.uploadError = '';
   }
 
-  formatFileSize(bytes: number | undefined): string {
-    if (bytes === 0 || bytes === undefined) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
-  }
 }

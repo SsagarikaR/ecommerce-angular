@@ -16,7 +16,7 @@ export class Category {
     return this.http.get<category[]>('categories', { params });
   }
 
-  postCategories(data: any) {
+  postCategories(data: Partial<category>) {
     return this.http.post('categories', data);
   }
 

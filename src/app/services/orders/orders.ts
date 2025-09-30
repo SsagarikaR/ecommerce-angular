@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Order } from '../../types/type';
+import { order } from '../../types/type';
 
 @Injectable({
   providedIn: 'root',
@@ -23,12 +23,12 @@ export class Orders {
     locality: string;
     address: string;
     totalPrice: number;
-  }): Observable<any> {
+  }) {
     return this.http.post(`${this.baseUrl}`, data);
   }
 
-  getOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.baseUrl}`);
+  getOrders(): Observable<order[]> {
+    return this.http.get<order[]>(`${this.baseUrl}`);
   }
 
   updateAddress(
@@ -56,7 +56,7 @@ export class Orders {
   updateOrderStatus(
     orderID: number,
     status: 'pending' | 'confirmed' | 'cancelled' | 'delivered'
-  ): Observable<any> {
+  ) {
     return this.http.patch(`${this.baseUrl}/update-status`, {
       orderID,
       status,

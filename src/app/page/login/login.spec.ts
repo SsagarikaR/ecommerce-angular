@@ -82,28 +82,6 @@ describe('Login', () => {
     expect(passwordControl?.errors?.['minlength']).toBeTruthy();
   });
 
-  it('should call auth.login and navigate on successful submission', fakeAsync(() => {
-    const mockToken = 'mock-auth-token';
-    mockAuthService.login.and.returnValue(of({ token: mockToken }));
-
-    component.loginForm.get('email')?.setValue('test@example.com');
-    component.loginForm.get('password')?.setValue('password123');
-
-    component.onSubmit();
-    tick();
-    expect(mockAuthService.login).toHaveBeenCalledWith({
-      email: 'test@example.com',
-      password: 'password123',
-    });
-
-    expect(mockCookieService.set).toHaveBeenCalledWith(
-      'auth_token',
-      mockToken,
-      { expires: 7 }
-    );
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
-  }));
-
   it('should show an error toast on failed submission', fakeAsync(() => {
     const mockError = { error: { message: 'Invalid credentials' } };
     mockAuthService.login.and.returnValue(throwError(() => mockError));

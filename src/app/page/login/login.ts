@@ -6,14 +6,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { Auth } from '../../services/auth/auth';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { CommonModule } from '@angular/common';
 import { Toast } from '../../services/toast/toast';
+import { user } from '../../types/type';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,7 +38,7 @@ export class Login {
     if (this.loginForm.invalid) return;
 
     this.auth.login(this.loginForm.value).subscribe({
-      next: (result: any) => {
+      next: (result: user) => {
         this.cookieService.set('auth_token', result.token, { expires: 7 });
 
         this.router.navigate(['/']);

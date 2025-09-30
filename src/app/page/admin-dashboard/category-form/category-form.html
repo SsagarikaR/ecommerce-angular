@@ -1,50 +1,49 @@
 <div class="container mx-auto p-6">
   <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
-    <div class="mb-6 border-b pb-4">
-      <h1 class="text-3xl font-bold text-gray-800">
-        {{ isEdit ? "Update Category" : "Add New Category" }}
-      </h1>
-      <p class="text-gray-500 mt-1">
-        {{
-          isEdit
-            ? "Edit category details below."
-            : "Fill in the details to add a new category."
-        }}
-      </p>
-    </div>
-    <form class="space-y-6">
+    
+    <form [formGroup]="categoryForm" class="space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
         <div class="flex flex-col space-y-1">
-          <label for="rating" class="text-sm font-medium text-gray-700"
-            >Name</label
-          >
+          <label for="categoryName" class="text-sm font-medium text-gray-700">Name</label>
           <input
             type="text"
             id="categoryName"
-            type="text"
             placeholder="e.g., Ring, Chain"
-            [(ngModel)]="name"
-            name="name"
-            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+            formControlName="categoryName" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+            aria-required="true"
+            [attr.aria-invalid]="f['categoryName'].invalid && (f['categoryName'].dirty || f['categoryName'].touched)"
+            aria-describedby="categoryName-error"
           />
+          
+          <div *ngIf="f['categoryName'].invalid && (f['categoryName'].dirty || f['categoryName'].touched)">
+            <p *ngIf="f['categoryName'].errors?.['required']" id="categoryName-error" class="text-red-500 text-sm mt-1" role="alert">
+              Category Name is required.
+            </p>
+          </div>
         </div>
 
         <div class="md:col-span-1">
-          <label class="block text-sm font-medium text-gray-700 mb-2"
-            >Brand Thumbnail</label
-          >
+          <label class="block text-sm font-medium text-gray-700 mb-2" for="categoryThumbnail">Category Thumbnail</label>
           <app-cloudinary-upload-component
             [config]="cloudinaryConfig"
-            [(ngModel)]="thumbnail"
-            name="thumbnail"
+            name="categoryThumbnail"
             placeholder="Upload Thumbnail image"
-            [showInfo]="true"
-            [imageUrl]="thumbnail"
-            (uploadSuccess)="thumbnail = $event.url"
+            [imageUrl]="f['categoryThumbnail'].value"
+            (uploadSuccess)="onThumbnailChange($event)"
+            id="categoryThumbnail"
+            aria-label="Category Thumbnail Upload"
+            [attr.aria-required]="true"
           ></app-cloudinary-upload-component>
+
+          <div *ngIf="f['categoryThumbnail'].invalid && (f['categoryThumbnail'].dirty || f['categoryThumbnail'].touched)">
+            <p *ngIf="f['categoryThumbnail'].errors?.['required']" class="text-red-500 text-sm mt-1" role="alert">
+              Category Thumbnail is required.
+            </p>
+          </div>
         </div>
       </div>
     </form>
+    
     <div class="mt-8 flex justify-end gap-4">
       <button
         (click)="cancel()"
@@ -52,20 +51,22 @@
       >
         Cancel
       </button>
-      @if(isEdit){<button
-        class="bg-slate-600 hover:bg-slate-500 focus:bg-slate-500 disabled:bg-slate-400 text-white px-5 py-3 rounded-full font-medium"
-        (click)="update()"
-        [disabled]="!name || !thumbnail"
-      >
-        Update Category</button
-      >} @else{
-      <button
-        class="bg-slate-600 hover:bg-slate-500 focus:bg-slate-500 disabled:bg-slate-400 text-white px-5 py-3 rounded-full font-medium"
-        (click)="add()"
-        [disabled]="!name || !thumbnail"
-      >
-        Add Category</button
-      >}
+      
+      @if(isEdit){
+        <button
+          class="bg-slate-600 hover:bg-slate-500 focus:bg-slate-500 disabled:bg-slate-400 text-white px-5 py-3 rounded-full font-medium"
+          (click)="update()"
+        >
+          Update Category
+        </button>
+      } @else {
+        <button
+          class="bg-slate-600 hover:bg-slate-500 focus:bg-slate-500 disabled:bg-slate-400 text-white px-5 py-3 rounded-full font-medium"
+          (click)="add()"
+        >
+          Add Category
+        </button>
+      }
     </div>
   </div>
 </div>

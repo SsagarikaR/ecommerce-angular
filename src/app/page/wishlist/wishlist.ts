@@ -4,7 +4,7 @@ import { Wishlist } from '../../services/wishlist/wishlist';
 import { Toast } from '../../services/toast/toast';
 import { RouterLink } from '@angular/router';
 import { Cart } from '../../services/cart/cart';
-import { product } from '../../types/type';
+import { product, wishlistItem } from '../../types/type';
 
 @Component({
   selector: 'app-wishlist',
@@ -18,7 +18,7 @@ export class WishlistPage {
   private toast = inject(Toast);
   private cartService = inject(Cart);
 
-  wishlist: any[] = [];
+  wishlist: wishlistItem[] = [];
   loading = true;
 
   ngOnInit() {
@@ -28,7 +28,7 @@ export class WishlistPage {
   fetchWishlist() {
     this.loading = true;
     this.wishlistService.fetchFromWishlist().subscribe({
-      next: (items: any) => {
+      next: (items: wishlistItem[]) => {
         this.wishlist = items;
         this.loading = false;
       }

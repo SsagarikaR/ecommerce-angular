@@ -9,11 +9,12 @@ import {
 import { Toast } from '../../services/toast/toast';
 import { Auth } from '../../services/auth/auth';
 import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { user } from '../../types/type';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './register.html',
   styleUrl: './register.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,10 +40,10 @@ export class Register {
   onSubmit() {
     if (this.registerForm.valid) {
       this.authService.signup(this.registerForm.value).subscribe({
-        next: (result: any) => {
+        next: (result: user) => {
           this.cookieService.set('auth_token', result.token, { expires: 7 });
           this.router.navigateByUrl('/');
-          this.toast.show(result.message, 'success');
+          this.toast.show('User registered successfully!', 'success');
         }
       });
     } else {

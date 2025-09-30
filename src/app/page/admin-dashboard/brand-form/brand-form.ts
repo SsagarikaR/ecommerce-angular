@@ -8,11 +8,13 @@ import { Toast } from '../../../services/toast/toast';
 import { cloudinaryConfig } from '../../../utils/cloudinaryConfig';
 import { CommonModule } from '@angular/common';
 import { brand } from '../../../types/type';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-brand-form',
   standalone: true,
   imports: [
+    ReactiveFormsModule,
     FormsModule,
     MatButtonModule,
     CloudinaryUploadComponent,
@@ -22,8 +24,7 @@ import { brand } from '../../../types/type';
   styleUrl: './brand-form.css',
 })
 export class BrandForm implements OnInit {
-  brandName!: string;
-  brandThumbnail!: string;
+  brandForm!: FormGroup;
   brandID!: number;
   isEdit: boolean = false;
 
@@ -31,23 +32,33 @@ export class BrandForm implements OnInit {
   private brandService = inject(Brand);
   private activatedRoute = inject(ActivatedRoute);
   private toast = inject(Toast);
+  private fb = inject(FormBuilder);
   cloudinaryConfig = cloudinaryConfig;
 
   ngOnInit() {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.brandForm = this.fb.group({
+      brandName: ['', [Validators.required, Validators.maxLength(50)]],
+      brandThumbnail: ['', [Validators.required]],
+    });
     if (id) {
       this.isEdit = true;
       this.brandID = parseInt(id, 10);
       this.loadBrandDetails(this.brandID);
     }
   }
+  get f() {
+    return this.brandForm.controls;
+  }
 
   loadBrandDetails(id: number) {
     this.brandService.getBrands({ brandID: id }).subscribe({
       next: (result: brand[]) => {
         if (result && result.length > 0) {
-          this.brandName = result[0].brandName;
-          this.brandThumbnail = result[0].brandThumbnail;
+          this.brandForm.patchValue({
+            brandName: result[0].brandName,
+            brandThumbnail: result[0].brandThumbnail,
+          });
         } else {
           this.toast.show('Brand not found.', 'error');
           this.router.navigateByUrl('/admin/brands');
@@ -57,27 +68,30 @@ export class BrandForm implements OnInit {
   }
 
   onThumbnailChange(thumbnailUrl: string) {
-    this.brandThumbnail = thumbnailUrl;
+    this.f['brandThumbnail'].setValue(thumbnailUrl);
+    this.f['brandThumbnail'].markAsTouched();
+    this.f['brandThumbnail'].markAsDirty();
   }
 
   saveBrand() {
-    if (!this.brandName || !this.brandThumbnail) {
-      this.toast.show('Please provide both name and thumbnail.', 'error');
+    if (this.brandForm.invalid) {
+      this.brandForm.markAllAsTouched();
       return;
     }
 
+    const formData = this.brandForm.value;
     if (this.isEdit) {
-      this.updateBrand();
+      this.updateBrand(formData);
     } else {
-      this.addBrand();
+      this.addBrand(formData);
     }
   }
 
-  addBrand() {
+  addBrand(data: Partial<brand>) {
     this.brandService
       .postBrands({
-        brandName: this.brandName,
-        brandThumbnail: this.brandThumbnail,
+        brandName: data.brandName,
+        brandThumbnail: data.brandThumbnail,
       })
       .subscribe({
         next: (response) => {
@@ -91,12 +105,12 @@ export class BrandForm implements OnInit {
       });
   }
 
-  updateBrand() {
+  updateBrand(data: Partial<brand>) {
     this.brandService
       .updateBrands({
         brandID: this.brandID,
-        brandName: this.brandName,
-        brandThumbnail: this.brandThumbnail,
+        brandName: data.brandName,
+        brandThumbnail: data.brandThumbnail,
       })
       .subscribe({
         next: (response) => {
@@ -109,6 +123,7 @@ export class BrandForm implements OnInit {
         },
       });
   }
+
 
   cancel() {
     this.router.navigateByUrl('/admin/brands');

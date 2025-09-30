@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -13,15 +12,16 @@ import { Product } from '../../../services/product/product';
 import { Category } from '../../../services/category/category';
 import { Brand } from '../../../services/brand/brand';
 import { CloudinaryUploadComponent } from '../../../components/shared/cloudinary-upload-component/cloudinary-upload-component';
-import { category, brand } from '../../../types/type';
+import { category, brand, product } from '../../../types/type';
 import { Toast } from '../../../services/toast/toast';
 import { cloudinaryConfig } from '../../../utils/cloudinaryConfig';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-product-form',
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -41,31 +41,39 @@ export class ProductForm implements OnInit {
   private categoryService = inject(Category);
   private brandService = inject(Brand);
   private activatedRoute = inject(ActivatedRoute);
+  private fb = inject(FormBuilder);
   cloudinaryConfig = cloudinaryConfig;
 
-  productName: string = '';
-  productThumbnail: string = '';
-  productImage1: string = '';
-  productImage2: string = '';
-  productImage3: string = '';
-  productImage4: string = '';
+  productForm!: FormGroup;
   productID!: number;
-  productDescription: string = '';
-  productPrice: number = 0;
-  categoryID: number = 0;
-  stock: number = 0;
-  brandID: number = 0;
 
   categories: category[] = [];
   brands: brand[] = [];
 
-  // State
   isEdit: boolean = false;
   isLoading: boolean = false;
   isLoadingDropdowns: boolean = false;
 
 
   ngOnInit() {
+    this.productForm = this.fb.group({
+      productName: ['', [Validators.required, Validators.maxLength(100)]],
+      productPrice: [
+        0,
+        [Validators.required, Validators.min(0.01), Validators.pattern(/^\d*\.?\d*$/)],
+      ],
+      stock: [0, [Validators.required, Validators.min(0), Validators.pattern(/^\d*$/)]],
+      categoryID: [0, [Validators.required, Validators.min(1)]],
+      brandID: [0, [Validators.required, Validators.min(1)]],
+      productDescription: ['', [Validators.required, Validators.maxLength(5000)]],
+
+      productThumbnail: ['', [Validators.required]],
+      productImage1: ['', [Validators.required]],
+      productImage2: ['', [Validators.required]],
+      productImage3: [''],
+      productImage4: [''],
+    });
+
     this.loadDropdownData();
 
     const id = this.activatedRoute.snapshot.params['id'];
@@ -74,6 +82,10 @@ export class ProductForm implements OnInit {
       this.productID = id;
       this.loadProductData(id);
     }
+  }
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.productForm.controls;
   }
 
   private loadDropdownData() {
@@ -98,76 +110,61 @@ export class ProductForm implements OnInit {
   private loadProductData(id: number) {
     this.isLoading = true;
     this.productService.get({ id: id }).subscribe({
-      next: (result: any) => {
+      next: (result: product[]) => {
         const product = result[0];
-        this.productName = product.productName || '';
-        this.productThumbnail = product.productThumbnail || '';
-        this.productImage1 = product.productImage1 || '';
-        this.productImage2 = product.productImage2 || '';
-        this.productImage3 = product.productImage3 || '';
-        this.productImage4 = product.productImage4 || '';
-        this.productDescription = product.productDescription || '';
-        this.productPrice = product.productPrice || 0;
-        this.categoryID = product.categoryID || 0;
-        this.stock = product.stock || 0;
-        this.brandID = product.brandID || 0;
+
+        this.productForm.patchValue({
+          productName: product.productName,
+          productThumbnail: product.productThumbnail,
+          productImage1: product.productImage1,
+          productImage2: product.productImage2,
+          productImage3: product.productImage3,
+          productImage4: product.productImage4,
+          productDescription: product.productDescription,
+          productPrice: product.productPrice,
+          categoryID: product.categoryID,
+          stock: product.stock,
+          brandID: product.brandID,
+        });
+
+        this.isLoading = false;
+      },
+      complete: () => {
         this.isLoading = false;
       }
     });
-    this.isLoading = false;
   }
 
-  isFormValid(): boolean {
-    return !!(
-      this.productName &&
-      this.productThumbnail &&
-      this.productImage1 &&
-      this.productImage2 &&
-      this.productDescription &&
-      this.productPrice > 0 &&
-      this.categoryID > 0 &&
-      this.stock >= 0 &&
-      this.brandID > 0
-    );
+  onImageChange(controlName: string, url: string) {
+    this.f[controlName].setValue(url);
+    this.f[controlName].markAsTouched();
+    this.f[controlName].markAsDirty();
   }
+
 
   add() {
-    if (!this.isFormValid()) {
-      this.toast.show(
-        'Please fill in all required fields and upload at least 3 images.',
-        'error'
-      );
+    this.productForm.markAllAsTouched(); if (this.productForm.invalid) {
       return;
     }
 
     this.isLoading = true;
-    const productData = {
-      productName: this.productName,
-      productThumbnail: this.productThumbnail,
-      productImage1: this.productImage1,
-      productImage2: this.productImage2,
-      productImage3: this.productImage3,
-      productImage4: this.productImage4,
-      productDescription: this.productDescription,
-      productPrice: this.productPrice,
-      categoryID: this.categoryID,
-      stock: this.stock,
-      brandID: this.brandID,
-    };
-
+    const productData = this.productForm.value;
     this.productService.add(productData).subscribe({
       next: (response) => {
         this.toast.show('Product created successfully!', 'success');
         this.router.navigateByUrl('/admin/products');
+      },
+      complete: () => {
+        this.isLoading = false;
       }
     });
-    this.isLoading = false;
   }
 
   update() {
-    if (!this.isFormValid()) {
+    this.productForm.markAllAsTouched();
+    if (this.productForm.invalid) {
       this.toast.show(
-        'Please fill in all required fields and upload at least 3 images.',
+        'Please correct all form errors before submitting.',
         'error'
       );
       return;
@@ -176,26 +173,18 @@ export class ProductForm implements OnInit {
     this.isLoading = true;
     const productData = {
       productID: this.productID,
-      productName: this.productName,
-      productThumbnail: this.productThumbnail,
-      productImage1: this.productImage1,
-      productImage2: this.productImage2,
-      productImage3: this.productImage3,
-      productImage4: this.productImage4,
-      productDescription: this.productDescription,
-      productPrice: this.productPrice,
-      categoryID: this.categoryID,
-      stock: this.stock,
-      brandID: this.brandID,
+      ...this.productForm.value
     };
 
     this.productService.update(productData).subscribe({
-      next: (response) => {
-        this.toast.show('Product updated successfully!', 'success');
+      next: (response: { message: string, success: boolean }) => {
+        this.toast.show(response.message || 'Product updated successfully!', 'success');
         this.router.navigateByUrl('/admin/products');
+      },
+      complete: () => {
+        this.isLoading = false;
       }
     });
-    this.isLoading = false;
   }
 
   cancel() {

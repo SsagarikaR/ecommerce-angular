@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { inject } from '@angular/core/primitives/di';
+import { review } from '../../types/type';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,6 @@ export class Review {
   // Service method to get reviews for a product
   getReviewsOfProduct(productID: number) {
     const url = `reviews/${productID}`;
-    return this.http.get(url);
+    return this.http.get<review[]>(url);
   }
 }

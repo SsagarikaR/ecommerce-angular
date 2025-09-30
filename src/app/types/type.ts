@@ -35,7 +35,7 @@ export interface preferences extends product {
   userID: number
 }
 
-export interface CategroyData {
+export interface categroyData {
   categoryID: number;
   categoryName: string;
   categoryThumbnail: string;
@@ -47,15 +47,15 @@ export interface cartItem extends product, brand, category {
   totalPrice: number;
 }
 
-export interface Order {
+export interface order {
   orderID: number;
   totalAmount: number;
-  items: OrderItem[];
+  items: orderItem[];
   state: string;
   city: string;
   pincode: string;
   locality: string;
-  address: AddressData;
+  address: addressData;
   totalPrice: number;
   status?: 'Pending' | 'Success' | 'Cancelled';
   createdAt?: string;
@@ -67,7 +67,7 @@ export interface Order {
   deliveryCharge: number;
 }
 
-export interface OrderItem {
+export interface orderItem {
   quantity: number;
   price: number;
   orderItemID: number;
@@ -79,7 +79,7 @@ export interface OrderItem {
   brandName: string;
 }
 
-export interface AddressData {
+export interface addressData {
   addressID?: number;
   state: string;
   city: string;
@@ -88,14 +88,14 @@ export interface AddressData {
   address: string;
 }
 
-export interface CloudinaryConfig {
+export interface cloudinaryConfig {
   cloudName: string;
   uploadPreset: string;
   apiKey?: string;
   folder?: string;
 }
 
-export interface UploadResult {
+export interface uploadResult {
   url: string;
   publicId: string;
   originalFilename: string;
@@ -120,3 +120,25 @@ export interface toast {
   type: 'success' | 'error' | 'info';
   visible: boolean;
 }
+
+export interface wishlistItem extends product {
+  wishListID: number;
+  userID: number;
+  productID: number;
+  productName: string;
+  stock: number;
+  productThumbnail: string;
+  productPrice: number;
+  brandID: number;
+  brandThumbnail: string;
+}
+
+export interface user {
+  userID: number;
+  name: string;
+  email: string;
+  contactNo: string;
+  token: string;
+  role: string;
+}
+

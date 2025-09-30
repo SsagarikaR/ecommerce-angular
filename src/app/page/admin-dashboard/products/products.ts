@@ -1,5 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -65,7 +64,7 @@ export class Products {
     };
 
     this.productService.get(queryParams).subscribe({
-      next: (result: any) => {
+      next: (result: product[]) => {
         this.totalProducts = result[0].totalCount || 0;
         if (Array.isArray(result)) {
           this.products = result;
@@ -77,15 +76,9 @@ export class Products {
         this.filteredProducts = [...this.products];
         this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
         this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error loading products:', error);
-        this.toast.show('Error loading products', 'error');
-        this.isLoading = false;
-        this.products = [];
-        this.filteredProducts = [];
-      },
+      }
     });
+    this.isLoading = false;
   }
 
   onSearch(event: Event) {

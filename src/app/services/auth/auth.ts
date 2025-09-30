@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { user } from '../../types/type';
 
 @Injectable({
   providedIn: 'root',
@@ -10,17 +11,17 @@ export class Auth {
   private userRole = new BehaviorSubject<string | null>(null);
   userRole$ = this.userRole.asObservable();
 
-  constructor() {}
+  constructor() { }
   signup(data: {
     name: string;
     email: string;
     contactNo: string;
     password: string;
   }) {
-    return this.http.post('auth/signup', data);
+    return this.http.post<user>('auth/signup', data);
   }
   login(data: { email: string; password: string }) {
-    return this.http.post('auth/login', data);
+    return this.http.post<user>('auth/login', data);
   }
   fetchUserProfile() {
     return this.http.get('user').subscribe({
