@@ -8,12 +8,12 @@ A full-featured e-commerce application built with Angular, featuring product man
 
 - **Product Catalog**: Browse and view detailed product information
 - **Search & Filter**: Search products by name and filter by categories
-- **Shopping Cart**: Add products to cart with quantity management
+- **Shopping Cart**: Add products to cart
 - **Wishlist**: Save favorite products for later
 - **Product Reviews**: Read and write product reviews
 - **Checkout Process**: Simple and secure checkout flow
 - **Order Management**: View order history and track orders
-- **User Authentication**: Sign up, login, and profile management
+- **User Authentication**: Sign up, login
 
 ### Admin Features
 
@@ -21,7 +21,6 @@ A full-featured e-commerce application built with Angular, featuring product man
 - **Product Management**: Create, edit, and delete products
 - **Category Management**: Manage product categories
 - **Brand Management**: Add and manage product brands
-- **Order Management**: View and process customer orders
 
 ##  Technologies Used
 
@@ -39,7 +38,7 @@ Before you begin, ensure you have the following installed:
 - npm or yarn
 - Angular CLI (`npm install -g @angular/cli`)
 
-## 🔧 Installation
+##  Installation
 
 1. Clone the repository:
 
