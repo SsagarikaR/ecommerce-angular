@@ -14,7 +14,7 @@
     <form
       class="flex-1 max-w-2xl"
       (submit)="$event.preventDefault(); onSearch(searchInput.value)"
-       role="search"
+      role="search"
     >
       <div class="flex border border-slate-300 rounded-lg overflow-hidden">
         <input
@@ -51,7 +51,7 @@
         <button
           (click)="toggleProfileDropdown()"
           class="flex items-center md:gap-2 px-3 py-2 rounded hover:bg-slate-50"
-           [attr.aria-expanded]="profileDropdownOpen"
+          [attr.aria-expanded]="profileDropdownOpen"
         >
           <div
             class="w-6 h-6 rounded-full bg-emerald-700 flex items-center justify-center"
@@ -70,7 +70,7 @@
               />
             </svg>
           </div>
-          <span class="text-sm  md:block hidden">Profile</span>
+          <span class="text-sm md:block hidden">Profile</span>
           <svg
             class="w-4 h-4 text-slate-400"
             fill="currentColor"
@@ -137,9 +137,7 @@
       <button
         (click)="openCart()"
         class="flex items-center gap-2 md:px-3 py-2 rounded hover:bg-slate-50 relative"
-        [attr.aria-label]="
-          'Shopping Cart with ' + cartItems.length + ' items'
-        "
+        [attr.aria-label]="'Shopping Cart with ' + cartItems.length + ' items'"
       >
         <svg
           class="h-5 w-5 text-slate-700"
@@ -166,7 +164,7 @@
     </div>
   </div>
 
- <div class="border-t border-slate-100 bg-slate-50">
+  <div class="border-t border-slate-100 bg-slate-50">
     <div class="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
       <!--  categories dropdown -->
       <div class="relative">
@@ -192,7 +190,6 @@
         <div
           *ngIf="dropdownOpen"
           class="absolute left-0 mt-1 w-48 bg-white border border-slate-200 rounded shadow-lg z-50"
-          
         >
           <ul class="py-1">
             <li *ngFor="let cat of categories">

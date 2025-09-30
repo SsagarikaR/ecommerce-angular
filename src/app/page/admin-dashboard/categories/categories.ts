@@ -29,7 +29,7 @@ import { category, categroyData } from '../../../types/type';
 export class Categories implements OnInit {
   categories: categroyData[] = [];
   filteredCategories: categroyData[] = [];
-  selectedCategories: Set<number> = new Set();
+  selectedCategories = new Set<number>();
   isLoading = false;
   searchTerm = '';
   Math = Math;
@@ -60,7 +60,7 @@ export class Categories implements OnInit {
         this.totalCategories = result.length;
         this.applyFiltersAndSort();
         this.isLoading = false;
-      }
+      },
     });
     this.isLoading = false;
   }
@@ -72,7 +72,7 @@ export class Categories implements OnInit {
       filtered = filtered.filter((category) =>
         category.categoryName
           .toLowerCase()
-          .includes(this.searchTerm.toLowerCase())
+          .includes(this.searchTerm.toLowerCase()),
       );
     }
 
@@ -133,7 +133,7 @@ export class Categories implements OnInit {
     } else {
       this.selectedCategories.clear();
       this.filteredCategories.forEach((category) =>
-        this.selectedCategories.add(category.categoryID)
+        this.selectedCategories.add(category.categoryID),
       );
     }
   }
@@ -184,7 +184,7 @@ export class Categories implements OnInit {
       next: () => {
         this.showNotification('Category deleted successfully', 'success');
         this.loadCategories();
-      }
+      },
     });
   }
 
@@ -192,22 +192,23 @@ export class Categories implements OnInit {
     const selectedCount = this.selectedCategories.size;
     this.dialog.open({
       title: 'Delete Categories',
-      message: `Are you sure you want to delete ${selectedCount} categor${selectedCount > 1 ? 'ies' : 'y'
-        }? This action cannot be undone.`,
+      message: `Are you sure you want to delete ${selectedCount} categor${
+        selectedCount > 1 ? 'ies' : 'y'
+      }? This action cannot be undone.`,
     });
 
     this.dialog.confirmed$.subscribe((result) => {
       if (result) {
         const deletePromises = Array.from(this.selectedCategories).map(
           (categoryId) =>
-            this.categoryService.deleteCategory(categoryId).toPromise()
+            this.categoryService.deleteCategory(categoryId).toPromise(),
         );
 
         Promise.all(deletePromises)
           .then(() => {
             this.showNotification(
               `${selectedCount} categories deleted successfully`,
-              'success'
+              'success',
             );
             this.selectedCategories.clear();
             this.loadCategories();
@@ -254,7 +255,7 @@ export class Categories implements OnInit {
 
   private showNotification(
     message: string,
-    type: 'success' | 'error' | 'info' = 'info'
+    type: 'success' | 'error' | 'info' = 'info',
   ) {
     this.snackBar.open(message, 'Close', {
       duration: 3000,

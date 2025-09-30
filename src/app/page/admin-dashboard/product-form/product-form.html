@@ -1,5 +1,4 @@
 <div class="max-w-7xl mx-auto py-8 px-6">
-
   <div
     *ngIf="isLoading || isLoadingDropdowns"
     class="flex justify-center items-center py-12"
@@ -12,17 +11,20 @@
         isLoadingDropdowns
           ? "Loading form data..."
           : isEdit
-          ? "Loading product..."
-          : "Processing..."
+            ? "Loading product..."
+            : "Processing..."
       }}</span>
     </div>
   </div>
 
-  <form [formGroup]="productForm" *ngIf="!isLoading && !isLoadingDropdowns" class="space-y-6">
+  <form
+    [formGroup]="productForm"
+    *ngIf="!isLoading && !isLoadingDropdowns"
+    class="space-y-6"
+  >
     <div class="bg-white rounded-lg border border-gray-200 p-6">
       <h2 class="text-lg font-medium text-gray-800 mb-6">Basic Information</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        
         <div class="flex flex-col space-y-1">
           <label for="productName" class="text-sm font-medium text-gray-700"
             >Product Name*</label
@@ -30,15 +32,31 @@
           <input
             id="productName"
             type="text"
-            formControlName="productName" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+            formControlName="productName"
+            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
             placeholder="e.g., T-Shirt"
             aria-required="true"
-            [attr.aria-invalid]="f['productName'].invalid && f['productName'].touched"
+            [attr.aria-invalid]="
+              f['productName'].invalid && f['productName'].touched
+            "
             aria-describedby="productName-error"
           />
           <div *ngIf="f['productName'].invalid && f['productName'].touched">
-            <p *ngIf="f['productName'].errors?.['required']" id="productName-error" class="text-red-500 text-sm mt-1" role="alert">Name is required.</p>
-            <p *ngIf="f['productName'].errors?.['maxlength']" class="text-red-500 text-sm mt-1" role="alert">Name is too long (max 100 chars).</p>
+            <p
+              *ngIf="f['productName'].errors?.['required']"
+              id="productName-error"
+              class="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              Name is required.
+            </p>
+            <p
+              *ngIf="f['productName'].errors?.['maxlength']"
+              class="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              Name is too long (max 100 chars).
+            </p>
           </div>
         </div>
 
@@ -54,18 +72,37 @@
             <input
               id="productPrice"
               type="number"
-              formControlName="productPrice" class="pl-7 pr-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
+              formControlName="productPrice"
+              class="pl-7 pr-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
               placeholder="0.00"
               min="0.01"
               step="0.01"
               aria-required="true"
-              [attr.aria-invalid]="f['productPrice'].invalid && f['productPrice'].touched"
+              [attr.aria-invalid]="
+                f['productPrice'].invalid && f['productPrice'].touched
+              "
               aria-describedby="productPrice-error"
             />
           </div>
           <div *ngIf="f['productPrice'].invalid && f['productPrice'].touched">
-            <p *ngIf="f['productPrice'].errors?.['required']" id="productPrice-error" class="text-red-500 text-sm mt-1" role="alert">Price is required.</p>
-            <p *ngIf="f['productPrice'].errors?.['min'] || f['productPrice'].errors?.['pattern']" class="text-red-500 text-sm mt-1" role="alert">Price must be a valid amount greater than 0.</p>
+            <p
+              *ngIf="f['productPrice'].errors?.['required']"
+              id="productPrice-error"
+              class="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              Price is required.
+            </p>
+            <p
+              *ngIf="
+                f['productPrice'].errors?.['min'] ||
+                f['productPrice'].errors?.['pattern']
+              "
+              class="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              Price must be a valid amount greater than 0.
+            </p>
           </div>
         </div>
 
@@ -76,7 +113,8 @@
           <input
             id="stock"
             type="number"
-            formControlName="stock" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+            formControlName="stock"
+            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
             placeholder="0"
             min="0"
             aria-required="true"
@@ -84,8 +122,23 @@
             aria-describedby="stock-error"
           />
           <div *ngIf="f['stock'].invalid && f['stock'].touched">
-            <p *ngIf="f['stock'].errors?.['required']" id="stock-error" class="text-red-500 text-sm mt-1" role="alert">Stock is required.</p>
-            <p *ngIf="f['stock'].errors?.['min'] || f['stock'].errors?.['pattern']" class="text-red-500 text-sm mt-1" role="alert">Stock must be a non-negative integer.</p>
+            <p
+              *ngIf="f['stock'].errors?.['required']"
+              id="stock-error"
+              class="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              Stock is required.
+            </p>
+            <p
+              *ngIf="
+                f['stock'].errors?.['min'] || f['stock'].errors?.['pattern']
+              "
+              class="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              Stock must be a non-negative integer.
+            </p>
           </div>
         </div>
 
@@ -95,9 +148,12 @@
           >
           <mat-form-field appearance="outline" class="w-full">
             <mat-select
-              formControlName="categoryID" placeholder="Select category"
+              formControlName="categoryID"
+              placeholder="Select category"
               aria-required="true"
-              [attr.aria-invalid]="f['categoryID'].invalid && f['categoryID'].touched"
+              [attr.aria-invalid]="
+                f['categoryID'].invalid && f['categoryID'].touched
+              "
               aria-describedby="categoryID-error"
             >
               <mat-option [value]="0">Select a category</mat-option>
@@ -110,7 +166,17 @@
             </mat-select>
           </mat-form-field>
           <div *ngIf="f['categoryID'].invalid && f['categoryID'].touched">
-            <p *ngIf="f['categoryID'].errors?.['required'] || f['categoryID'].errors?.['min']" id="categoryID-error" class="text-red-500 text-sm mt-1" role="alert">Category is required.</p>
+            <p
+              *ngIf="
+                f['categoryID'].errors?.['required'] ||
+                f['categoryID'].errors?.['min']
+              "
+              id="categoryID-error"
+              class="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              Category is required.
+            </p>
           </div>
         </div>
 
@@ -120,7 +186,8 @@
           >
           <mat-form-field appearance="outline" class="w-full">
             <mat-select
-              formControlName="brandID" placeholder="Select brand"
+              formControlName="brandID"
+              placeholder="Select brand"
               aria-required="true"
               [attr.aria-invalid]="f['brandID'].invalid && f['brandID'].touched"
               aria-describedby="brandID-error"
@@ -132,7 +199,17 @@
             </mat-select>
           </mat-form-field>
           <div *ngIf="f['brandID'].invalid && f['brandID'].touched">
-            <p *ngIf="f['brandID'].errors?.['required'] || f['brandID'].errors?.['min']" id="brandID-error" class="text-red-500 text-sm mt-1" role="alert">Brand is required.</p>
+            <p
+              *ngIf="
+                f['brandID'].errors?.['required'] ||
+                f['brandID'].errors?.['min']
+              "
+              id="brandID-error"
+              class="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              Brand is required.
+            </p>
           </div>
         </div>
       </div>
@@ -145,16 +222,36 @@
         >
         <textarea
           id="productDescription"
-          formControlName="productDescription" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+          formControlName="productDescription"
+          class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
           placeholder="Provide a detailed description of the product."
           rows="4"
           aria-required="true"
-          [attr.aria-invalid]="f['productDescription'].invalid && f['productDescription'].touched"
+          [attr.aria-invalid]="
+            f['productDescription'].invalid && f['productDescription'].touched
+          "
           aria-describedby="productDescription-error"
         ></textarea>
-        <div *ngIf="f['productDescription'].invalid && f['productDescription'].touched">
-          <p *ngIf="f['productDescription'].errors?.['required']" id="productDescription-error" class="text-red-500 text-sm mt-1" role="alert">Description is required.</p>
-          <p *ngIf="f['productDescription'].errors?.['maxlength']" class="text-red-500 text-sm mt-1" role="alert">Description is too long (max 5000 chars).</p>
+        <div
+          *ngIf="
+            f['productDescription'].invalid && f['productDescription'].touched
+          "
+        >
+          <p
+            *ngIf="f['productDescription'].errors?.['required']"
+            id="productDescription-error"
+            class="text-red-500 text-sm mt-1"
+            role="alert"
+          >
+            Description is required.
+          </p>
+          <p
+            *ngIf="f['productDescription'].errors?.['maxlength']"
+            class="text-red-500 text-sm mt-1"
+            role="alert"
+          >
+            Description is too long (max 5000 chars).
+          </p>
         </div>
       </div>
     </div>
@@ -167,81 +264,122 @@
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        
         <div class="space-y-2">
-          <label class="text-sm font-medium text-gray-700" for="productThumbnail-upload">Main Thumbnail*</label>
+          <label
+            class="text-sm font-medium text-gray-700"
+            for="productThumbnail-upload"
+            >Main Thumbnail*</label
+          >
           <app-cloudinary-upload-component
             [config]="cloudinaryConfig"
             name="productThumbnail"
             placeholder="Upload thumbnail image"
-           (uploadSuccess)="onImageChange('productThumbnail', $event)" 
+            (uploadSuccess)="onImageChange('productThumbnail', $event)"
             [imageUrl]="f['productThumbnail'].value"
             id="productThumbnail-upload"
             aria-required="true"
           ></app-cloudinary-upload-component>
-          <div *ngIf="f['productThumbnail'].invalid && f['productThumbnail'].touched">
-            <p *ngIf="f['productThumbnail'].errors?.['required']" class="text-red-500 text-sm mt-1" role="alert">Main thumbnail is required.</p>
+          <div
+            *ngIf="
+              f['productThumbnail'].invalid && f['productThumbnail'].touched
+            "
+          >
+            <p
+              *ngIf="f['productThumbnail'].errors?.['required']"
+              class="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              Main thumbnail is required.
+            </p>
           </div>
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm font-medium text-gray-700" for="productImage1-upload">Product Image 1*</label>
+          <label
+            class="text-sm font-medium text-gray-700"
+            for="productImage1-upload"
+            >Product Image 1*</label
+          >
           <app-cloudinary-upload-component
             [config]="cloudinaryConfig"
             name="productImage1"
             placeholder="Upload image 1"
             [imageUrl]="f['productImage1'].value"
-            (uploadSuccess)="onImageChange('productImage1', $event)" 
+            (uploadSuccess)="onImageChange('productImage1', $event)"
             id="productImage1-upload"
             aria-required="true"
           ></app-cloudinary-upload-component>
           <div *ngIf="f['productImage1'].invalid && f['productImage1'].touched">
-            <p *ngIf="f['productImage1'].errors?.['required']" class="text-red-500 text-sm mt-1" role="alert">Image 1 is required.</p>
+            <p
+              *ngIf="f['productImage1'].errors?.['required']"
+              class="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              Image 1 is required.
+            </p>
           </div>
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm font-medium text-gray-700" for="productImage2-upload">Product Image 2*</label>
+          <label
+            class="text-sm font-medium text-gray-700"
+            for="productImage2-upload"
+            >Product Image 2*</label
+          >
           <app-cloudinary-upload-component
             [config]="cloudinaryConfig"
             name="productImage2"
             placeholder="Upload image 2"
             [imageUrl]="f['productImage2'].value"
-            (uploadSuccess)="onImageChange('productImage2', $event)" 
+            (uploadSuccess)="onImageChange('productImage2', $event)"
             id="productImage2-upload"
             aria-required="true"
           ></app-cloudinary-upload-component>
           <div *ngIf="f['productImage2'].invalid && f['productImage2'].touched">
-            <p *ngIf="f['productImage2'].errors?.['required']" class="text-red-500 text-sm mt-1" role="alert">Image 2 is required.</p>
+            <p
+              *ngIf="f['productImage2'].errors?.['required']"
+              class="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              Image 2 is required.
+            </p>
           </div>
         </div>
 
-       <div class="space-y-2">
-  <label class="text-sm font-medium text-gray-700" for="productImage3-upload">Product Image 3</label>
-  <app-cloudinary-upload-component
-    [config]="cloudinaryConfig"
-    name="productImage3"
-    [imageUrl]="f['productImage3'].value"
-    placeholder="Upload image 3 (optional)"
-    (uploadSuccess)="onImageChange('productImage3', $event)" 
-    id="productImage3-upload"
-  ></app-cloudinary-upload-component>
-</div>
+        <div class="space-y-2">
+          <label
+            class="text-sm font-medium text-gray-700"
+            for="productImage3-upload"
+            >Product Image 3</label
+          >
+          <app-cloudinary-upload-component
+            [config]="cloudinaryConfig"
+            name="productImage3"
+            [imageUrl]="f['productImage3'].value"
+            placeholder="Upload image 3 (optional)"
+            (uploadSuccess)="onImageChange('productImage3', $event)"
+            id="productImage3-upload"
+          ></app-cloudinary-upload-component>
+        </div>
 
-<div class="space-y-2">
-  <label class="text-sm font-medium text-gray-700" for="productImage4-upload">Product Image 4</label>
-  <app-cloudinary-upload-component
-    [config]="cloudinaryConfig"
-    name="productImage4"
-    [imageUrl]="f['productImage4'].value"
-    placeholder="Upload image 4 (optional)"
-    (uploadSuccess)="onImageChange('productImage4', $event)" 
-    id="productImage4-upload"
-  ></app-cloudinary-upload-component>
-</div>
+        <div class="space-y-2">
+          <label
+            class="text-sm font-medium text-gray-700"
+            for="productImage4-upload"
+            >Product Image 4</label
+          >
+          <app-cloudinary-upload-component
+            [config]="cloudinaryConfig"
+            name="productImage4"
+            [imageUrl]="f['productImage4'].value"
+            placeholder="Upload image 4 (optional)"
+            (uploadSuccess)="onImageChange('productImage4', $event)"
+            id="productImage4-upload"
+          ></app-cloudinary-upload-component>
+        </div>
       </div>
     </div>
-    
+
     <div class="flex justify-end gap-4 mt-8">
       <button
         type="button"
@@ -255,9 +393,8 @@
         (click)="isEdit ? update() : add()"
         class="bg-slate-600 hover:bg-slate-500 focus:bg-slate-500 disabled:bg-slate-400 text-white px-5 py-3 rounded-full font-medium"
       >
-        {{ isEdit ? 'Update Product' : 'Add Product' }}
+        {{ isEdit ? "Update Product" : "Add Product" }}
       </button>
     </div>
-
   </form>
 </div>

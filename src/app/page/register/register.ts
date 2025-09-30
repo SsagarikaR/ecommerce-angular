@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -19,13 +24,11 @@ import { user } from '../../types/type';
   styleUrl: './register.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Register {
+export class Register implements OnInit {
   registerForm!: FormGroup;
-  constructor(
-    private fb: FormBuilder,
-    private toast: Toast,
-    private cookieService: CookieService
-  ) { }
+  private fb = inject(FormBuilder);
+  private toast = inject(Toast);
+  private cookieService = inject(CookieService);
   router = inject(Router);
   authService = inject(Auth);
   ngOnInit(): void {
@@ -44,8 +47,9 @@ export class Register {
           this.cookieService.set('auth_token', result.token, { expires: 7 });
           this.router.navigateByUrl('/');
           this.toast.show('User registered successfully!', 'success');
-        }
+        },
       });
+      this.authService.fetchUserProfile()
     } else {
       this.toast.show('Please fix the errors. ', 'error');
       this.registerForm.markAllAsTouched();

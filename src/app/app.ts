@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -29,7 +29,7 @@ import { Auth } from './services/auth/auth';
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
+export class App implements OnInit {
   private authService = inject(Auth);
   protected readonly title = signal('angular_auth');
   toast: {
@@ -37,16 +37,15 @@ export class App {
     type: 'success' | 'error' | 'info';
     visible: boolean;
   } = {
-      message: '',
-      type: 'info',
-      visible: false,
-    };
+    message: '',
+    type: 'info',
+    visible: false,
+  };
   showLayout = true;
-  constructor(
-    private toastService: Toast,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) {
+  private toastService = inject(Toast);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  constructor() {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {

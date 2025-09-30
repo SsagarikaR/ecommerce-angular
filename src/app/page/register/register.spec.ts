@@ -1,23 +1,13 @@
-import {
-  ComponentFixture,
-  TestBed,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Register } from './register';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('Register', () => {
   let component: Register;
   let fixture: ComponentFixture<Register>;
 
   beforeEach(async () => {
-
     await TestBed.configureTestingModule({
-      imports: [
-        Register,
-      ],
-
+      imports: [Register],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Register);
@@ -27,6 +17,4 @@ describe('Register', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-
 });

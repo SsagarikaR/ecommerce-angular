@@ -1,7 +1,4 @@
-import {
-  ComponentFixture,
-  TestBed,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CloudinaryUploadComponent } from './cloudinary-upload-component';
 
 describe('CloudinaryUploadComponent', () => {
@@ -17,5 +14,4 @@ describe('CloudinaryUploadComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductCard } from './product-card';
 import { Wishlist } from '../../services/wishlist/wishlist';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { provideRouter, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AddToCartButton } from '../add-to-cart-button/add-to-cart-button';
@@ -73,7 +73,7 @@ describe('ProductCard', () => {
     fixture.detectChanges();
 
     const descriptionElement = fixture.debugElement.query(
-      By.css('p.mt-1.text-sm')
+      By.css('p.mt-1.text-sm'),
     );
     expect(descriptionElement.nativeElement.textContent).toContain('...');
     expect(component.isExpanded).toBeFalse();
@@ -83,7 +83,7 @@ describe('ProductCard', () => {
 
     expect(component.isExpanded).toBeTrue();
     expect(descriptionElement.nativeElement.textContent).toContain(
-      longDescriptionProduct.productDescription
+      longDescriptionProduct.productDescription,
     );
     expect(descriptionElement.nativeElement.textContent).not.toContain('...');
   });
@@ -101,7 +101,7 @@ describe('ProductCard', () => {
     fixture.detectChanges();
 
     const readMoreButton = fixture.debugElement.query(
-      By.css('button.ml-1')
+      By.css('button.ml-1'),
     ).nativeElement;
     expect(readMoreButton.textContent.trim()).toBe('Read less');
 
@@ -111,7 +111,7 @@ describe('ProductCard', () => {
     expect(component.isExpanded).toBeFalse();
     expect(
       fixture.debugElement.query(By.css('p.mt-1.text-sm')).nativeElement
-        .textContent
+        .textContent,
     ).toContain('...');
   });
 
@@ -129,7 +129,10 @@ describe('ProductCard', () => {
     const newWishlistID = 5;
 
     mockWishlistService.addToWishlist.and.returnValue(
-      of({ message: "Item added to wishlist successfully!", wishlistID: newWishlistID })
+      of({
+        message: 'Item added to wishlist successfully!',
+        wishlistID: newWishlistID,
+      }),
     );
 
     component.toggleWishlist({
@@ -143,5 +146,4 @@ describe('ProductCard', () => {
     expect(component.item.wishlist).toBe('yes');
     expect(component.item.wishListID).toBe(newWishlistID);
   });
-
 });

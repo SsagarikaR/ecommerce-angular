@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { user } from '../../types/type';
@@ -11,7 +11,6 @@ export class Auth {
   private userRole = new BehaviorSubject<string | null>(null);
   userRole$ = this.userRole.asObservable();
 
-  constructor() { }
   signup(data: {
     name: string;
     email: string;

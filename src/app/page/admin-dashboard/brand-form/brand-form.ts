@@ -8,7 +8,12 @@ import { Toast } from '../../../services/toast/toast';
 import { cloudinaryConfig } from '../../../utils/cloudinaryConfig';
 import { CommonModule } from '@angular/common';
 import { brand } from '../../../types/type';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-brand-form',
@@ -26,7 +31,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 export class BrandForm implements OnInit {
   brandForm!: FormGroup;
   brandID!: number;
-  isEdit: boolean = false;
+  isEdit = false;
 
   private router = inject(Router);
   private brandService = inject(Brand);
@@ -63,7 +68,7 @@ export class BrandForm implements OnInit {
           this.toast.show('Brand not found.', 'error');
           this.router.navigateByUrl('/admin/brands');
         }
-      }
+      },
     });
   }
 
@@ -94,7 +99,7 @@ export class BrandForm implements OnInit {
         brandThumbnail: data.brandThumbnail,
       })
       .subscribe({
-        next: (response) => {
+        next: () => {
           this.toast.show('Brand added successfully!', 'success');
           this.router.navigateByUrl('/admin/brands');
         },
@@ -113,7 +118,7 @@ export class BrandForm implements OnInit {
         brandThumbnail: data.brandThumbnail,
       })
       .subscribe({
-        next: (response) => {
+        next: () => {
           this.toast.show('Brand updated successfully!', 'success');
           this.router.navigateByUrl('/admin/brands');
         },
@@ -123,7 +128,6 @@ export class BrandForm implements OnInit {
         },
       });
   }
-
 
   cancel() {
     this.router.navigateByUrl('/admin/brands');

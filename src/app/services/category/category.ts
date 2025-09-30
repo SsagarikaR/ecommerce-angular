@@ -8,7 +8,6 @@ import { category } from '../../types/type';
 export class Category {
   http = inject(HttpClient);
 
-  constructor() { }
   getCategories(queryParams: { categoryID?: number } = {}) {
     const params = new HttpParams({
       fromObject: queryParams,

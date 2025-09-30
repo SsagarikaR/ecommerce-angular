@@ -8,8 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { cloudinaryConfig, uploadResult } from '../../../types/type';
-import { HttpClient } from '@angular/common/http';
+import { cloudinaryConfig } from '../../../types/type';
 import { CloudinaryService } from '../../../services/cloudinary/cloudinary';
 
 @Component({
@@ -20,14 +19,13 @@ import { CloudinaryService } from '../../../services/cloudinary/cloudinary';
   styleUrl: './cloudinary-upload-component.css',
 })
 export class CloudinaryUploadComponent {
-  private http = inject(HttpClient);
   @Input() config: cloudinaryConfig = { cloudName: '', uploadPreset: '' };
-  @Input() placeholder: string = 'Upload Image';
+  @Input() placeholder = 'Upload Image';
   @Input() allowedFormats: string[] = ['jpg', 'jpeg', 'png', 'webp'];
   @Input() maxSize: number = 5 * 1024 * 1024;
-  @Input() allowRemove: boolean = true;
-  @Input() disabled: boolean = false;
-  @Input() targetProperty: string = '';
+  @Input() allowRemove = true;
+  @Input() disabled = false;
+  @Input() targetProperty = '';
   @Input()
   set imageUrl(url: string) {
     if (url) {
@@ -37,7 +35,8 @@ export class CloudinaryUploadComponent {
     }
   }
 
-  @Output() uploadSuccess = new EventEmitter<string>(); @Output() uploadSuccessful = new EventEmitter<{
+  @Output() uploadSuccess = new EventEmitter<string>();
+  @Output() uploadSuccessful = new EventEmitter<{
     url: string;
     property: string;
   }>();
@@ -45,11 +44,11 @@ export class CloudinaryUploadComponent {
   @Output() imageRemoved = new EventEmitter<void>();
   private cloudinaryService = inject(CloudinaryService);
 
-  currentImageUrl: string = '';
-  isUploading: boolean = false;
-  uploadProgress: number = 0;
-  isDragOver: boolean = false;
-  uploadError: string = '';
+  currentImageUrl = '';
+  isUploading = false;
+  uploadProgress = 0;
+  isDragOver = false;
+  uploadError = '';
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   triggerFileInput(): void {
@@ -105,7 +104,7 @@ export class CloudinaryUploadComponent {
         file,
         this.config.cloudName,
         this.config.uploadPreset,
-        this.config.folder
+        this.config.folder,
       )
       .subscribe({
         next: (url: string) => {
@@ -124,7 +123,6 @@ export class CloudinaryUploadComponent {
         .join(', ')
         .toUpperCase()}`;
     }
-
 
     return null;
   }
@@ -152,5 +150,4 @@ export class CloudinaryUploadComponent {
   clearError(): void {
     this.uploadError = '';
   }
-
 }

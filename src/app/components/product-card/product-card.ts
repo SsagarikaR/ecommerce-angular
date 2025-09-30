@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Input,
+} from '@angular/core';
 import { product } from '../../types/type';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -42,7 +47,7 @@ export class ProductCard {
       this.wishlistService
         .addToWishlist({ productID: data.productID })
         .subscribe({
-          next: (res: { message: string, wishlistID: number }) => {
+          next: (res: { message: string; wishlistID: number }) => {
             this.item.wishlist = 'yes';
             this.item.wishListID = res.wishlistID;
           },

@@ -1,236 +1,241 @@
 .cloudinary-upload-container {
-      width: 100%;
-    }
+  width: 100%;
+}
 
-    .upload-area {
-      border: 2px dashed #d1d5db;
-      border-radius: 12px;
-      padding: 24px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      background: #fafafa;
-      position: relative;
-      min-height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.upload-area {
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #fafafa;
+  position: relative;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .upload-area:hover {
-      border-color: #3b82f6;
-      background: #f8faff;
-    }
+.upload-area:hover {
+  border-color: #3b82f6;
+  background: #f8faff;
+}
 
-    .upload-area.drag-over {
-      border-color: #3b82f6;
-      background: #eff6ff;
-      transform: scale(1.02);
-    }
+.upload-area.drag-over {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  transform: scale(1.02);
+}
 
-    .upload-area.uploading {
-      border-color: #10b981;
-      background: #f0fdf4;
-      cursor: not-allowed;
-    }
+.upload-area.uploading {
+  border-color: #10b981;
+  background: #f0fdf4;
+  cursor: not-allowed;
+}
 
-    .upload-area.has-image {
-      border: 1px solid #e5e7eb;
-      background: white;
-      padding: 0;
-      overflow: hidden;
-    }
+.upload-area.has-image {
+  border: 1px solid #e5e7eb;
+  background: white;
+  padding: 0;
+  overflow: hidden;
+}
 
-    /* Image Preview */
-    .image-preview {
-      position: relative;
-      width: 100%;
-      height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+/* Image Preview */
+.image-preview {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .image-preview img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      border-radius: 8px;
-    }
+.image-preview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
 
-    .image-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
 
-    .image-preview:hover .image-overlay {
-      opacity: 1;
-    }
+.image-preview:hover .image-overlay {
+  opacity: 1;
+}
 
-    .change-btn, .remove-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 12px;
-      border: none;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
+.change-btn,
+.remove-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
-    .change-btn {
-      background: #3b82f6;
-      color: white;
-    }
+.change-btn {
+  background: #3b82f6;
+  color: white;
+}
 
-    .change-btn:hover {
-      background: #2563eb;
-    }
+.change-btn:hover {
+  background: #2563eb;
+}
 
-    .remove-btn {
-      background: #ef4444;
-      color: white;
-    }
+.remove-btn {
+  background: #ef4444;
+  color: white;
+}
 
-    .remove-btn:hover {
-      background: #dc2626;
-    }
+.remove-btn:hover {
+  background: #dc2626;
+}
 
-    /* Upload Progress */
-    .upload-progress {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
+/* Upload Progress */
+.upload-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
 
-    .spinner {
-      width: 32px;
-      height: 32px;
-      border: 3px solid #e5e7eb;
-      border-top: 3px solid #3b82f6;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
-    .progress-bar {
-      width: 200px;
-      height: 4px;
-      background: #e5e7eb;
-      border-radius: 2px;
-      overflow: hidden;
-    }
+.progress-bar {
+  width: 200px;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 2px;
+  overflow: hidden;
+}
 
-    .progress-fill {
-      height: 100%;
-      background: #3b82f6;
-      transition: width 0.3s ease;
-    }
+.progress-fill {
+  height: 100%;
+  background: #3b82f6;
+  transition: width 0.3s ease;
+}
 
-    /* Upload Prompt */
-    .upload-prompt {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      color: #6b7280;
-    }
+/* Upload Prompt */
+.upload-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #6b7280;
+}
 
-    .upload-prompt svg {
-      color: #9ca3af;
-    }
+.upload-prompt svg {
+  color: #9ca3af;
+}
 
-    .upload-prompt h4 {
-      margin: 0;
-      font-size: 18px;
-      font-weight: 600;
-      color: #374151;
-    }
+.upload-prompt h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #374151;
+}
 
-    .upload-prompt p {
-      margin: 0;
-      font-size: 14px;
-    }
+.upload-prompt p {
+  margin: 0;
+  font-size: 14px;
+}
 
-    .file-info {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      font-size: 12px;
-      color: #9ca3af;
-    }
+.file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #9ca3af;
+}
 
-    /* Upload Error */
-    .upload-error {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      color: #dc2626;
-    }
+/* Upload Error */
+.upload-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #dc2626;
+}
 
-    .retry-btn {
-      padding: 6px 12px;
-      background: #dc2626;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 12px;
-      cursor: pointer;
-    }
+.retry-btn {
+  padding: 6px 12px;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
 
-    .retry-btn:hover {
-      background: #b91c1c;
-    }
+.retry-btn:hover {
+  background: #b91c1c;
+}
 
-    /* Upload Info */
-    .upload-info {
-      margin-top: 12px;
-      padding: 12px;
-      background: #f8fafc;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-    }
+/* Upload Info */
+.upload-info {
+  margin-top: 12px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
 
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 4px;
-      font-size: 12px;
-    }
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
 
-    .info-row:last-child {
-      margin-bottom: 0;
-    }
+.info-row:last-child {
+  margin-bottom: 0;
+}
 
-    .label {
-      color: #6b7280;
-      font-weight: 500;
-    }
+.label {
+  color: #6b7280;
+  font-weight: 500;
+}
 
-    .value {
-      color: #374151;
-    }
+.value {
+  color: #374151;
+}
 
-    /* Disabled State */
-    .upload-area[disabled] {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+/* Disabled State */
+.upload-area[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

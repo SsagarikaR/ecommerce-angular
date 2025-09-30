@@ -1,70 +1,99 @@
 <div class="container mx-auto p-6">
-   <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
-<form [formGroup]="brandForm" class="space-y-6 ">
-  <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
-    <div class="flex flex-col space-y-1">
-      <label for="brandName" class="text-sm font-medium text-slate-700"
-        >Name</label
-      >
-      <input
-        id="brandName"
-        type="text"
-        placeholder="e.g., Nike, Adidas"
-        formControlName="brandName" class="px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-        
-        aria-required="true" 
-        [attr.aria-invalid]="f['brandName'].invalid && (f['brandName'].dirty || f['brandName'].touched)"
-        aria-describedby="brandName-error"
-      />
-      
-      <div *ngIf="f['brandName'].invalid && (f['brandName'].dirty || f['brandName'].touched)">
-        <p *ngIf="f['brandName'].errors?.['required']" id="brandName-error" class="text-red-500 text-sm mt-1" role="alert">
-          Brand Name is required.
-        </p>
-        <p *ngIf="f['brandName'].errors?.['maxlength']" id="brandName-error-max" class="text-red-500 text-sm mt-1" role="alert">
-          Brand Name cannot exceed 50 characters.
-        </p>
+  <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+    <form [formGroup]="brandForm" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+        <div class="flex flex-col space-y-1">
+          <label for="brandName" class="text-sm font-medium text-slate-700"
+            >Name</label
+          >
+          <input
+            id="brandName"
+            type="text"
+            placeholder="e.g., Nike, Adidas"
+            formControlName="brandName"
+            class="px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            aria-required="true"
+            [attr.aria-invalid]="
+              f['brandName'].invalid &&
+              (f['brandName'].dirty || f['brandName'].touched)
+            "
+            aria-describedby="brandName-error"
+          />
+
+          <div
+            *ngIf="
+              f['brandName'].invalid &&
+              (f['brandName'].dirty || f['brandName'].touched)
+            "
+          >
+            <p
+              *ngIf="f['brandName'].errors?.['required']"
+              id="brandName-error"
+              class="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              Brand Name is required.
+            </p>
+            <p
+              *ngIf="f['brandName'].errors?.['maxlength']"
+              id="brandName-error-max"
+              class="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              Brand Name cannot exceed 50 characters.
+            </p>
+          </div>
+        </div>
+
+        <div class="md:col-span-1">
+          <label
+            class="block text-sm font-medium text-slate-700 mb-2"
+            for="brandThumbnail-upload"
+            >Brand Thumbnail</label
+          >
+          <app-cloudinary-upload-component
+            [config]="cloudinaryConfig"
+            name="brandThumbnail"
+            placeholder="Upload Thumbnail image"
+            [imageUrl]="f['brandThumbnail'].value"
+            (uploadSuccess)="onThumbnailChange($event)"
+            id="brandThumbnail-upload"
+            aria-label="Brand Thumbnail Upload"
+            [attr.aria-required]="true"
+          ></app-cloudinary-upload-component>
+
+          <div
+            *ngIf="
+              f['brandThumbnail'].invalid &&
+              (f['brandThumbnail'].dirty || f['brandThumbnail'].touched)
+            "
+          >
+            <p
+              *ngIf="f['brandThumbnail'].errors?.['required']"
+              id="brandThumbnail-error"
+              class="text-red-500 text-sm mt-1"
+              role="alert"
+            >
+              Brand Thumbnail is required.
+            </p>
+          </div>
+        </div>
       </div>
+    </form>
 
-    </div>
-
-    <div class="md:col-span-1">
-      <label class="block text-sm font-medium text-slate-700 mb-2" for="brandThumbnail-upload"
-        >Brand Thumbnail</label
+    <div class="mt-8 flex justify-end gap-4">
+      <button
+        (click)="cancel()"
+        class="border-slate-400 border text-slate-600 hover:bg-slate-50 focus:bg-slate-100 px-5 py-3 rounded-full font-medium"
       >
-      <app-cloudinary-upload-component
-        [config]="cloudinaryConfig"
-        name="brandThumbnail"
-        placeholder="Upload Thumbnail image"
-        [imageUrl]="f['brandThumbnail'].value" 
-        (uploadSuccess)="onThumbnailChange($event)" 
-        id="brandThumbnail-upload"
-        aria-label="Brand Thumbnail Upload"
-        [attr.aria-required]="true"
-      ></app-cloudinary-upload-component>
-
-      <div *ngIf="f['brandThumbnail'].invalid && (f['brandThumbnail'].dirty || f['brandThumbnail'].touched)">
-        <p *ngIf="f['brandThumbnail'].errors?.['required']" id="brandThumbnail-error" class="text-red-500 text-sm mt-1" role="alert">
-          Brand Thumbnail is required.
-        </p>
-      </div>
+        Cancel
+      </button>
+      <button
+        (click)="saveBrand()"
+        class="bg-slate-600 hover:bg-slate-500 focus:bg-slate-500 disabled:bg-slate-400 text-white px-5 py-3 rounded-full font-medium"
+      >
+        {{ isEdit ? "Update Brand" : "Add Brand" }}
+      </button>
     </div>
   </div>
-</form>
-
-<div class="mt-8 flex justify-end gap-4">
-  <button
-    (click)="cancel()"
-    class="border-slate-400 border text-slate-600 hover:bg-slate-50 focus:bg-slate-100 px-5 py-3 rounded-full font-medium"
-  >
-    Cancel
-  </button>
-  <button
-    (click)="saveBrand()"
-    class="bg-slate-600 hover:bg-slate-500 focus:bg-slate-500 disabled:bg-slate-400 text-white px-5 py-3 rounded-full font-medium"
-  >
-    {{ isEdit ? "Update Brand" : "Add Brand" }}
-  </button>
-</div>
-</div>
 </div>

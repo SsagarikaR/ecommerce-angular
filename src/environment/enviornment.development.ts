@@ -1,3 +1,3 @@
 export const environment = {
-    apiPrefix: 'http://localhost:5001',
+  apiPrefix: 'http://localhost:5001',
 };

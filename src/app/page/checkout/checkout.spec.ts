@@ -1,10 +1,5 @@
-import {
-  ComponentFixture,
-  TestBed,
-} from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-} from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -14,12 +9,9 @@ describe('Checkout', () => {
   let component: Checkout;
   let fixture: ComponentFixture<Checkout>;
 
-
   beforeEach(async () => {
-
     await TestBed.configureTestingModule({
       imports: [Checkout, HttpClientTestingModule, FormsModule, CommonModule],
-
     }).compileComponents();
 
     fixture = TestBed.createComponent(Checkout);
@@ -28,10 +20,7 @@ describe('Checkout', () => {
     fixture.detectChanges();
   });
 
-
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

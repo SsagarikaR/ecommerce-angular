@@ -18,7 +18,7 @@ export class Product {
       name?: string;
       price?: string;
       categoryID?: number;
-    } = {}
+    } = {},
   ) {
     const params = new HttpParams({
       fromObject: queryParams,
@@ -26,7 +26,10 @@ export class Product {
     return this.http.get<product[]>('products', { params });
   }
   update(data: Partial<product>) {
-    return this.http.patch<{ message: string, success: boolean }>('products', data);
+    return this.http.patch<{ message: string; success: boolean }>(
+      'products',
+      data,
+    );
   }
   delete(productID: number) {
     return this.http.delete('products', {

@@ -4,7 +4,9 @@
     [class.drag-over]="isDragOver"
     [class.uploading]="isUploading"
     [class.has-image]="currentImageUrl"
+    tabindex="1"
     (click)="triggerFileInput()"
+    (keyup.enter)="triggerFileInput()"
     (dragover)="onDragOver($event)"
     (dragleave)="onDragLeave($event)"
     (drop)="onDrop($event)"
@@ -84,7 +86,7 @@
           >Supported formats:
           {{ allowedFormats.join(", ").toUpperCase() }}</span
         >
-       </div>
+      </div>
     </div>
 
     <div *ngIf="uploadError" class="upload-error">

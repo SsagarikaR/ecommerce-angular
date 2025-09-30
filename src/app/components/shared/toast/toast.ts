@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Toast {
-  @Input() message: string = '';
+  @Input() message = '';
   @Input() type: 'success' | 'error' | 'info' = 'info';
-  @Input() visible: boolean = false;
+  @Input() visible = false;
 }

@@ -21,13 +21,11 @@ describe('WishList', () => {
   });
 
   it('should display the default state when not wishlisted', () => {
-
     component.isWishlisted = false;
     fixture.detectChanges();
 
     const button = fixture.debugElement.query(By.css('button'));
     const svg = fixture.debugElement.query(By.css('svg'));
-
 
     expect(button.nativeElement.title).toBe('Add to Wishlist');
     expect(svg.classes['text-red-500']).toBeFalsy();
@@ -36,13 +34,11 @@ describe('WishList', () => {
   });
 
   it('should display the wishlisted state when wishlisted', () => {
-
     component.isWishlisted = true;
     fixture.detectChanges();
 
     const button = fixture.debugElement.query(By.css('button'));
     const svg = fixture.debugElement.query(By.css('svg'));
-
 
     expect(button.nativeElement.title).toBe('Remove from Wishlist');
     expect(svg.classes['text-red-500']).toBe(true);
@@ -51,31 +47,25 @@ describe('WishList', () => {
   });
 
   it('should emit the correct data on click', () => {
-
     component.productID = 123;
     component.wishlistID = 456;
-    spyOn(component.toggle, 'emit');
-
+    spyOn(component.wishlistToggle, 'emit');
 
     const button = fixture.debugElement.query(By.css('button'));
     button.nativeElement.click();
     fixture.detectChanges();
 
-
-    expect(component.toggle.emit).toHaveBeenCalledWith({
+    expect(component.wishlistToggle.emit).toHaveBeenCalledWith({
       wishlistID: 456,
       productID: 123,
     });
   });
 
   it('should stop event propagation when clicked', () => {
-
     const event = new MouseEvent('click');
     spyOn(event, 'stopPropagation');
 
-
     component.onToggle(event);
-
 
     expect(event.stopPropagation).toHaveBeenCalled();
   });

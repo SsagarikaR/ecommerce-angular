@@ -7,7 +7,6 @@ import { brand } from '../../types/type';
 })
 export class Brand {
   http = inject(HttpClient);
-  constructor() { }
 
   getBrands(queryParams: { brandID?: number } = {}) {
     const params = new HttpParams({

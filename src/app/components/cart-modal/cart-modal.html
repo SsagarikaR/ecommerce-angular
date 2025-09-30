@@ -2,8 +2,9 @@
   *ngIf="isOpen"
   class="fixed inset-0 bg-black/25 z-[999]"
   (click)="close()"
+  (keyup.enter)="close()"
+  tabindex="1"
 ></div>
-
 
 <div
   *ngIf="isOpen"
@@ -17,7 +18,21 @@
       (click)="close()"
       aria-label="Close shopping cart"
     >
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-x-icon lucide-x"
+      >
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg>
     </button>
   </div>
 
@@ -44,7 +59,11 @@
           >
             -
           </button>
-          <span class="px-2 text-slate-700" [attr.aria-label]="'Current quantity: ' + item.quantity">{{ item.quantity }}</span>
+          <span
+            class="px-2 text-slate-700"
+            [attr.aria-label]="'Current quantity: ' + item.quantity"
+            >{{ item.quantity }}</span
+          >
           <button
             class="px-2 py-1 border border-slate-300 rounded bg-slate-50 hover:bg-slate-100"
             (click)="updateQuantity(item, item.quantity + 1)"
@@ -57,7 +76,7 @@
         <button
           class="text-rose-500 text-xs hover:underline"
           (click)="remove(item)"
-           [attr.aria-label]="'Remove ' + item.productName + ' from cart'"
+          [attr.aria-label]="'Remove ' + item.productName + ' from cart'"
         >
           Remove
         </button>

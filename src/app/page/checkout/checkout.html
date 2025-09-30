@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-slate-50 py-8">
   <div class="max-w-4xl mx-auto px-4">
     <!-- Progress Steps -->
-    <div class="mb-8"  aria-label="Checkout Progress">
+    <div class="mb-8" aria-label="Checkout Progress">
       <div class="flex items-center justify-center space-x-4">
         <div class="flex items-center">
           <div
@@ -134,10 +134,13 @@
       <form #addressForm="ngForm" class="space-y-4">
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1"
+            <label
+              for="state"
+              class="block text-sm font-medium text-slate-700 mb-1"
               >State</label
             >
             <input
+              id="state"
               type="text"
               [(ngModel)]="orderData.state"
               name="state"
@@ -146,10 +149,13 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1"
+            <label
+              for="city"
+              class="block text-sm font-medium text-slate-700 mb-1"
               >City</label
             >
             <input
+              id="city"
               type="text"
               [(ngModel)]="orderData.city"
               name="city"
@@ -161,10 +167,13 @@
 
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1"
+            <label
+              for="pincode"
+              class="block text-sm font-medium text-slate-700 mb-1"
               >Pincode</label
             >
             <input
+              id="pincode"
               type="text"
               [(ngModel)]="orderData.pincode"
               name="pincode"
@@ -173,10 +182,13 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1"
+            <label
+              for="locality"
+              class="block text-sm font-medium text-slate-700 mb-1"
               >Locality</label
             >
             <input
+              id="locality"
               type="text"
               [(ngModel)]="orderData.locality"
               name="locality"
@@ -187,10 +199,13 @@
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1"
+          <label
+            for="address"
+            class="block text-sm font-medium text-slate-700 mb-1"
             >Complete Address</label
           >
           <textarea
+            id="address"
             [(ngModel)]="orderData.address"
             name="address"
             required
@@ -246,7 +261,7 @@
       </div>
 
       <!-- Address Summary -->
-      <div class="mb-6"  aria-label="Delivery Address Summary">
+      <div class="mb-6" aria-label="Delivery Address Summary">
         <h3 class="font-medium mb-3 text-slate-800">Delivery Address</h3>
         <div class="text-sm text-slate-600 bg-slate-50 p-3 rounded-md">
           <p>{{ orderData.address }}</p>

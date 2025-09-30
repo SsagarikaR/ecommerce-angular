@@ -8,7 +8,10 @@ import { wishlistItem } from '../../types/type';
 export class Wishlist {
   http = inject(HttpClient);
   addToWishlist(data: { productID: number }) {
-    return this.http.post<{ message: string, wishlistID: number }>('wishlist', data);
+    return this.http.post<{ message: string; wishlistID: number }>(
+      'wishlist',
+      data,
+    );
   }
   fetchFromWishlist() {
     return this.http.get<wishlistItem[]>('wishlist');

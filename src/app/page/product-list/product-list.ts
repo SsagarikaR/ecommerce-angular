@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ProductCard } from '../../components/product-card/product-card';
@@ -11,7 +11,7 @@ import { Product } from '../../services/product/product';
   templateUrl: './product-list.html',
   styleUrl: './product-list.css',
 })
-export class ProductList {
+export class ProductList implements OnInit {
   private route = inject(ActivatedRoute);
   private productService = inject(Product);
 
@@ -50,7 +50,7 @@ export class ProductList {
         this.totalItems = result[0]?.totalCount || this.products.length || 0;
         this.totalPages = Math.ceil(this.totalItems / this.limit);
         this.loading = false;
-      }
+      },
     });
     this.loading = false;
   }

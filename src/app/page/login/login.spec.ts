@@ -9,7 +9,7 @@ import { Auth } from '../../services/auth/auth';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Toast } from '../../services/toast/toast';
-import { of, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -90,9 +90,10 @@ describe('Login', () => {
     component.loginForm.get('password')?.setValue('password123');
 
     component.onSubmit();
-    tick(); expect(mockToastService.show).toHaveBeenCalledWith(
+    tick();
+    expect(mockToastService.show).toHaveBeenCalledWith(
       'Invalid credentials',
-      'error'
+      'error',
     );
 
     expect(mockRouter.navigate).not.toHaveBeenCalled();

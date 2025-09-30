@@ -1,9 +1,4 @@
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { Home } from './home';
 import { Product } from '../../services/product/product';
 import { Category } from '../../services/category/category';
@@ -147,7 +142,7 @@ describe('Home', () => {
 
   it('should display the about us image from a fetched category', () => {
     const aboutImage = fixture.nativeElement.querySelector(
-      '[alt="Studio workspace with handcrafted ceramics"]'
+      '[alt="Studio workspace with handcrafted ceramics"]',
     );
     expect(aboutImage.src).toContain('vases.jpg');
   });
@@ -173,7 +168,7 @@ describe('Home', () => {
     fixture.detectChanges();
 
     const recommendedSection = fixture.nativeElement.querySelector(
-      'section[ngIf="preferences && preferences.length > 1"]'
+      'section[ngIf="preferences && preferences.length > 1"]',
     );
     expect(recommendedSection).toBeFalsy();
   });

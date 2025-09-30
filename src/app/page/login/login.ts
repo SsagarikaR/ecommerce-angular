@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,7 +14,6 @@ import { Auth } from '../../services/auth/auth';
 import { Router, RouterLink } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { CommonModule } from '@angular/common';
-import { Toast } from '../../services/toast/toast';
 import { user } from '../../types/type';
 
 @Component({
@@ -19,8 +23,7 @@ import { user } from '../../types/type';
   styleUrl: './login.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Login {
-  private toast = inject(Toast);
+export class Login implements OnInit {
   loginForm!: FormGroup;
   fb = inject(FormBuilder);
   auth = inject(Auth);
@@ -42,7 +45,9 @@ export class Login {
         this.cookieService.set('auth_token', result.token, { expires: 7 });
 
         this.router.navigate(['/']);
-      }
+
+      },
     });
+    this.auth.fetchUserProfile()
   }
 }

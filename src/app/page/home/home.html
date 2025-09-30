@@ -43,27 +43,27 @@
           </div>
 
           <owl-carousel-o [options]="customOptions">
-            @for(category of categories; track $index){
-            <ng-template carouselSlide>
-              <a
-                class="relative block overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm hover:shadow-md transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
-                [routerLink]="'/products'"
-                [queryParams]="{ categoryID: category.categoryID }"
-              >
-                <div class="h-60 w-full bg-stone-100">
-                  <img
-                    class="h-full w-full object-cover"
-                    [src]="category.categoryThumbnail"
-                    alt="{{ category.categoryName }}"
-                  />
-                </div>
-                <span
-                  class="pointer-events-none absolute inset-x-4 bottom-4 inline-flex items-center justify-center rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-zinc-900 shadow"
+            @for (category of categories; track $index) {
+              <ng-template carouselSlide>
+                <a
+                  class="relative block overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm hover:shadow-md transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
+                  [routerLink]="'/products'"
+                  [queryParams]="{ categoryID: category.categoryID }"
                 >
-                  {{ category.categoryName }}
-                </span>
-              </a>
-            </ng-template>
+                  <div class="h-60 w-full bg-stone-100">
+                    <img
+                      class="h-full w-full object-cover"
+                      [src]="category.categoryThumbnail"
+                      alt="{{ category.categoryName }}"
+                    />
+                  </div>
+                  <span
+                    class="pointer-events-none absolute inset-x-4 bottom-4 inline-flex items-center justify-center rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-zinc-900 shadow"
+                  >
+                    {{ category.categoryName }}
+                  </span>
+                </a>
+              </ng-template>
             }
           </owl-carousel-o>
         </section>
@@ -77,13 +77,13 @@
               class="hidden items-center gap-1 text-sm font-medium text-emerald-900 hover:text-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 rounded md:inline-flex"
               [routerLink]="'/products'"
             >
-              Browse all 
+              Browse all
             </a>
           </div>
 
           <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:gap-6 mb-6">
             @for (product of products!.slice(0, 10); track $index) {
-            <app-product-card [item]="product"></app-product-card>
+              <app-product-card [item]="product"></app-product-card>
             }
           </div>
 
@@ -95,7 +95,7 @@
               class="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2 text-white hover:bg-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
               [routerLink]="'/products'"
             >
-              Show more 
+              Show more
             </a>
           </div>
         </section>
@@ -109,7 +109,7 @@
               class="hidden items-center gap-1 text-sm font-medium text-emerald-700 hover:text-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 rounded md:inline-flex"
               [routerLink]="'/products'"
             >
-              Browse all 
+              Browse all
             </a>
           </div>
 
@@ -117,7 +117,7 @@
             class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 lg:gap-6 mb-6"
           >
             @for (preference of preferences!.slice(0, 9); track $index) {
-            <app-product-card [item]="preference"></app-product-card>
+              <app-product-card [item]="preference"></app-product-card>
             }
           </div>
 
@@ -126,7 +126,7 @@
               class="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2 text-white hover:bg-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
               [routerLink]="'/products'"
             >
-              Show more 
+              Show more
             </a>
           </div>
         </section>
@@ -153,7 +153,7 @@
               [routerLink]="'/products'"
               class="mt-3 inline-flex text-sm font-medium text-emerald-900 hover:text-emerald-800"
             >
-              Shop now 
+              Shop now
             </a>
           </div>
         </div>

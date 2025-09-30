@@ -17,8 +17,6 @@ export class DialogService {
 
   dialogData$ = this.dialogDataSubject.asObservable();
 
-  constructor() { }
-
   open(data: DialogData) {
     this.dialogDataSubject.next(data);
   }

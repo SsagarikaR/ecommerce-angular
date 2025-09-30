@@ -15,7 +15,13 @@ import { CloudinaryUploadComponent } from '../../../components/shared/cloudinary
 import { category, brand, product } from '../../../types/type';
 import { Toast } from '../../../services/toast/toast';
 import { cloudinaryConfig } from '../../../utils/cloudinaryConfig';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  AbstractControl,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-product-form',
@@ -50,22 +56,31 @@ export class ProductForm implements OnInit {
   categories: category[] = [];
   brands: brand[] = [];
 
-  isEdit: boolean = false;
-  isLoading: boolean = false;
-  isLoadingDropdowns: boolean = false;
-
+  isEdit = false;
+  isLoading = false;
+  isLoadingDropdowns = false;
 
   ngOnInit() {
     this.productForm = this.fb.group({
       productName: ['', [Validators.required, Validators.maxLength(100)]],
       productPrice: [
         0,
-        [Validators.required, Validators.min(0.01), Validators.pattern(/^\d*\.?\d*$/)],
+        [
+          Validators.required,
+          Validators.min(0.01),
+          Validators.pattern(/^\d*\.?\d*$/),
+        ],
       ],
-      stock: [0, [Validators.required, Validators.min(0), Validators.pattern(/^\d*$/)]],
+      stock: [
+        0,
+        [Validators.required, Validators.min(0), Validators.pattern(/^\d*$/)],
+      ],
       categoryID: [0, [Validators.required, Validators.min(1)]],
       brandID: [0, [Validators.required, Validators.min(1)]],
-      productDescription: ['', [Validators.required, Validators.maxLength(5000)]],
+      productDescription: [
+        '',
+        [Validators.required, Validators.maxLength(5000)],
+      ],
 
       productThumbnail: ['', [Validators.required]],
       productImage1: ['', [Validators.required]],
@@ -84,7 +99,7 @@ export class ProductForm implements OnInit {
     }
   }
 
-  get f(): { [key: string]: AbstractControl } {
+  get f(): Record<string, AbstractControl> {
     return this.productForm.controls;
   }
 
@@ -131,7 +146,7 @@ export class ProductForm implements OnInit {
       },
       complete: () => {
         this.isLoading = false;
-      }
+      },
     });
   }
 
@@ -141,22 +156,22 @@ export class ProductForm implements OnInit {
     this.f[controlName].markAsDirty();
   }
 
-
   add() {
-    this.productForm.markAllAsTouched(); if (this.productForm.invalid) {
+    this.productForm.markAllAsTouched();
+    if (this.productForm.invalid) {
       return;
     }
 
     this.isLoading = true;
     const productData = this.productForm.value;
     this.productService.add(productData).subscribe({
-      next: (response) => {
+      next: () => {
         this.toast.show('Product created successfully!', 'success');
         this.router.navigateByUrl('/admin/products');
       },
       complete: () => {
         this.isLoading = false;
-      }
+      },
     });
   }
 
@@ -165,7 +180,7 @@ export class ProductForm implements OnInit {
     if (this.productForm.invalid) {
       this.toast.show(
         'Please correct all form errors before submitting.',
-        'error'
+        'error',
       );
       return;
     }
@@ -173,17 +188,20 @@ export class ProductForm implements OnInit {
     this.isLoading = true;
     const productData = {
       productID: this.productID,
-      ...this.productForm.value
+      ...this.productForm.value,
     };
 
     this.productService.update(productData).subscribe({
-      next: (response: { message: string, success: boolean }) => {
-        this.toast.show(response.message || 'Product updated successfully!', 'success');
+      next: (response: { message: string; success: boolean }) => {
+        this.toast.show(
+          response.message || 'Product updated successfully!',
+          'success',
+        );
         this.router.navigateByUrl('/admin/products');
       },
       complete: () => {
         this.isLoading = false;
-      }
+      },
     });
   }
 

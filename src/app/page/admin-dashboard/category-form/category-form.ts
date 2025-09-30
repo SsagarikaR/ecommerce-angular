@@ -7,11 +7,21 @@ import { Toast } from '../../../services/toast/toast';
 import { CloudinaryUploadComponent } from '../../../components/shared/cloudinary-upload-component/cloudinary-upload-component';
 import { cloudinaryConfig } from '../../../utils/cloudinaryConfig';
 import { category } from '../../../types/type';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-category-form',
-  imports: [ReactiveFormsModule, MatButtonModule, CloudinaryUploadComponent, CommonModule],
+  imports: [
+    ReactiveFormsModule,
+    MatButtonModule,
+    CloudinaryUploadComponent,
+    CommonModule,
+  ],
   templateUrl: './category-form.html',
   styleUrl: './category-form.css',
 })
@@ -21,7 +31,7 @@ export class CategoryForm implements OnInit {
   categoryService = inject(Category);
   cloudinaryConfig = cloudinaryConfig;
   router = inject(Router);
-  isEdit: boolean = false;
+  isEdit = false;
   private activatedRoute = inject(ActivatedRoute);
 
   private fb = inject(FormBuilder);
@@ -70,13 +80,9 @@ export class CategoryForm implements OnInit {
         categoryThumbnail: formData.categoryThumbnail,
       })
       .subscribe({
-        next: (response) => {
+        next: () => {
           this.toast.show('Category Added Successfully!', 'success');
           this.router.navigateByUrl('/admin/categories');
-        },
-        error: (error) => {
-          console.error('Error creating category', error);
-          this.toast.show('Error adding category.', 'error');
         },
       });
   }
@@ -95,13 +101,9 @@ export class CategoryForm implements OnInit {
         categoryThumbnail: formData.categoryThumbnail,
       })
       .subscribe({
-        next: (response) => {
+        next: () => {
           this.toast.show('Category Updated Successfully!', 'success');
           this.router.navigateByUrl('/admin/categories');
-        },
-        error: (error) => {
-          console.error('Error updating category', error);
-          this.toast.show('Error updating category.', 'error');
         },
       });
   }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Product } from '../../services/product/product';
@@ -16,7 +16,7 @@ import { Toast } from '../../services/toast/toast';
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.css',
 })
-export class ProductDetail {
+export class ProductDetail implements OnInit {
   private route = inject(ActivatedRoute);
   private productService = inject(Product);
   private wishlistService = inject(Wishlist);
@@ -32,10 +32,10 @@ export class ProductDetail {
 
   // New properties for reviews
   reviews: review[] = [];
-  newReviewDescription: string = '';
-  newReviewRating: number = 0;
-  reviewLoading: boolean = false;
-  reviewError: string = '';
+  newReviewDescription = '';
+  newReviewRating = 0;
+  reviewLoading = false;
+  reviewError = '';
 
   constructor() {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
@@ -50,31 +50,23 @@ export class ProductDetail {
 
   private fetchProductDetails(): void {
     this.productService.get({ id: this.id }).subscribe({
-      next: (res: any) => {
+      next: (res: product[]) => {
         this.product = Array.isArray(res) ? res[0] : res;
         this.selectedImage = this.product?.productThumbnail || null;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error fetching product', err);
-        this.loading = false;
       },
     });
+    this.loading = false;
   }
 
   private fetchProductReviews(): void {
     this.reviewLoading = true;
     this.reviewService.getReviewsOfProduct(this.id).subscribe({
-      next: (res: any) => {
+      next: (res: review[]) => {
         this.reviews = res;
         this.reviewLoading = false;
       },
-      error: (err) => {
-        console.error('Error fetching reviews:', err);
-        this.reviewError = 'Failed to load reviews.';
-        this.reviewLoading = false;
-      },
     });
+    this.reviewLoading = false;
   }
 
   addToCart(item: product) {
@@ -109,7 +101,7 @@ export class ProductDetail {
     }
     const totalRating = this.reviews.reduce(
       (sum, review) => sum + review.rating,
-      0
+      0,
     );
     return totalRating / this.reviews.length;
   }
@@ -178,12 +170,10 @@ export class ProductDetail {
           description: this.newReviewDescription.trim(),
         })
         .subscribe({
-          next: (res) => {
+          next: () => {
             this.toast.show('Thank you for your review!');
-            // Refresh the review list after a successful submission
             this.fetchProductReviews();
 
-            // Reset form fields
             this.newReviewDescription = '';
             this.newReviewRating = 0;
           },

@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { Product } from '../../services/product/product';
 import type { category, preferences, product } from '../../types/type';
 import { ProductCard } from '../../components/product-card/product-card';
@@ -15,9 +20,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Home {
-  heroImage: string = '';
-  aboutImage: string = '';
+export class Home implements OnInit {
+  heroImage = '';
+  aboutImage = '';
   customOptions: OwlOptions = {
     loop: true,
     mouseDrag: false,
@@ -47,10 +52,11 @@ export class Home {
     });
     this.categoryService.getCategories().subscribe((result: category[]) => {
       this.categories = result || [];
-
     });
-    this.preferenceService.getPrefernces().subscribe((result: preferences[]) => {
-      this.preferences = result || [];
-    });
+    this.preferenceService
+      .getPrefernces()
+      .subscribe((result: preferences[]) => {
+        this.preferences = result || [];
+      });
   }
 }

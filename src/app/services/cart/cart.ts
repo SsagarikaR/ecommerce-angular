@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { cartItem } from '../../types/type';
 import { HttpClient } from '@angular/common/http';
-import { Toast } from '../toast/toast';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +15,7 @@ export class Cart {
   private cartModalOpen = new BehaviorSubject<boolean>(false);
   cartModalOpen$ = this.cartModalOpen.asObservable();
 
-  constructor(private toast: Toast) {
+  constructor() {
     this.http.get<cartItem[]>('cart').subscribe({
       next: (result) => this.cartItems.next(result),
     });
@@ -36,7 +35,7 @@ export class Cart {
   addItem(item: { productID: number; quantity: number }): void {
     const currentCart = this.cartItems.getValue();
     const existingItem = currentCart.find(
-      (ci) => ci.productID === item.productID
+      (ci) => ci.productID === item.productID,
     );
 
     if (existingItem) {
@@ -46,16 +45,17 @@ export class Cart {
       });
     } else {
       this.http
-        .post<{ cartItem: cartItem[]; message: string; cartItemID: number }>(
-          'cart',
-          item
-        )
+        .post<{
+          cartItem: cartItem[];
+          message: string;
+          cartItemID: number;
+        }>('cart', item)
         .subscribe({
           next: (result) => {
             const newCartItem = result.cartItem;
             const currentCart = newCartItem;
             this.cartItems.next(currentCart);
-          }
+          },
         });
     }
 
@@ -67,34 +67,34 @@ export class Cart {
     const updatedCart = currentCart.map((ci) =>
       ci.cartItemID === data.cartItemID
         ? { ...ci, quantity: data.quantity }
-        : ci
+        : ci,
     );
     this.cartItems.next(updatedCart);
 
     this.http
-      .patch<{ cartItem: cartItem[]; message: string; cartItemID: number }>(
-        `cart`,
-        data
-      )
+      .patch<{
+        cartItem: cartItem[];
+        message: string;
+        cartItemID: number;
+      }>(`cart`, data)
       .subscribe({
         next: (result) => {
           const newCartItem = result.cartItem;
           const currentCart = newCartItem;
           this.cartItems.next(currentCart);
-        }
+        },
       });
   }
 
   deleteItem(cartItemID: number): void {
     const currentCart = this.cartItems.getValue();
     const updatedCart = currentCart.filter(
-      (ci) => ci.cartItemID !== cartItemID
+      (ci) => ci.cartItemID !== cartItemID,
     );
     this.cartItems.next(updatedCart);
 
-    this.http
-      .delete(`cart`, {
-        body: { cartItemID: cartItemID },
-      })
+    this.http.delete(`cart`, {
+      body: { cartItemID: cartItemID },
+    });
   }
 }

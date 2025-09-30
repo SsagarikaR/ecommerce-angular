@@ -32,7 +32,7 @@ export interface product {
 }
 
 export interface preferences extends product {
-  userID: number
+  userID: number;
 }
 
 export interface categroyData {
@@ -141,4 +141,3 @@ export interface user {
   token: string;
   role: string;
 }
-

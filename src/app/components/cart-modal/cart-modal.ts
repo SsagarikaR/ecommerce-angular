@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { cartItem } from '../../types/type';
 import { CommonModule } from '@angular/common';
 import { Cart } from '../../services/cart/cart';
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   templateUrl: './cart-modal.html',
   styleUrl: './cart-modal.css',
 })
-export class CartModal {
+export class CartModal implements OnInit {
   private cartService = inject(Cart);
   router = inject(Router);
   cartItems: cartItem[] = [];

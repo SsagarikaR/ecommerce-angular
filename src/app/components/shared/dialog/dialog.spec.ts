@@ -6,7 +6,6 @@ describe('DialogComponent', () => {
   let fixture: ComponentFixture<Dialog>;
 
   beforeEach(async () => {
-
     fixture = TestBed.createComponent(Dialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -15,6 +14,4 @@ describe('DialogComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-
 });

@@ -1,8 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Category } from '../../../services/category/category';
-import { category } from '../../../types/type';
-
 @Component({
   selector: 'app-footer',
   imports: [CommonModule],
@@ -10,6 +7,4 @@ import { category } from '../../../types/type';
   styleUrl: './footer.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Footer {
-
-}
+export class Footer {}

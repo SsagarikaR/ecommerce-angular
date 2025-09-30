@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   Router,
   RouterOutlet,
@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './admin-layout.html',
   styleUrl: './admin-layout.css',
 })
-export class AdminLayout {
+export class AdminLayout implements OnInit {
   router = inject(Router);
   pageTitle = '';
   currentRoute = '';

@@ -35,7 +35,7 @@ export interface BrandData {
 export class Brands implements OnInit {
   brands: BrandData[] = [];
   filteredBrands: BrandData[] = [];
-  selectedBrands: Set<number> = new Set();
+  selectedBrands = new Set<number>();
   isLoading = false;
   searchTerm = '';
   Math = Math;
@@ -68,7 +68,7 @@ export class Brands implements OnInit {
         this.totalBrands = result.length;
         this.applyFiltersAndSort();
         this.isLoading = false;
-      }
+      },
     });
     this.isLoading = false;
   }
@@ -78,7 +78,7 @@ export class Brands implements OnInit {
 
     if (this.searchTerm) {
       filtered = filtered.filter((brand) =>
-        brand.brandName.toLowerCase().includes(this.searchTerm.toLowerCase())
+        brand.brandName.toLowerCase().includes(this.searchTerm.toLowerCase()),
       );
     }
 
@@ -140,7 +140,7 @@ export class Brands implements OnInit {
     } else {
       this.selectedBrands.clear();
       this.filteredBrands.forEach((brand) =>
-        this.selectedBrands.add(brand.brandID)
+        this.selectedBrands.add(brand.brandID),
       );
     }
   }
@@ -203,21 +203,22 @@ export class Brands implements OnInit {
     const selectedCount = this.selectedBrands.size;
     this.dialog.open({
       title: 'Delete Brands',
-      message: `Are you sure you want to delete ${selectedCount} brand${selectedCount > 1 ? 's' : ''
-        }? This action cannot be undone.`,
+      message: `Are you sure you want to delete ${selectedCount} brand${
+        selectedCount > 1 ? 's' : ''
+      }? This action cannot be undone.`,
     });
 
     this.dialog.confirmed$.subscribe((result) => {
       if (result) {
         const deletePromises = Array.from(this.selectedBrands).map((brandId) =>
-          this.brandService.deleteBrands(brandId).toPromise()
+          this.brandService.deleteBrands(brandId).toPromise(),
         );
 
         Promise.all(deletePromises)
           .then(() => {
             this.showNotification(
               `${selectedCount} brands deleted successfully`,
-              'success'
+              'success',
             );
             this.selectedBrands.clear();
             this.loadBrands();
@@ -264,7 +265,7 @@ export class Brands implements OnInit {
 
   private showNotification(
     message: string,
-    type: 'success' | 'error' | 'info' = 'info'
+    type: 'success' | 'error' | 'info' = 'info',
   ) {
     this.snackBar.open(message, 'Close', {
       duration: 3000,

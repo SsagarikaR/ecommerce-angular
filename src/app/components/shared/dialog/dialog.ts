@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DialogService, DialogData } from '../../../services/dialog/dialog';
 
@@ -14,9 +20,9 @@ export class Dialog implements OnInit, OnDestroy {
   private dialogService = inject(DialogService);
   private subscription!: Subscription;
 
-  title: string = 'Confirm';
-  message: string = 'Are you sure?';
-  visible: boolean = false;
+  title = 'Confirm';
+  message = 'Are you sure?';
+  visible = false;
 
   ngOnInit() {
     this.subscription = this.dialogService.dialogData$.subscribe(
@@ -24,7 +30,7 @@ export class Dialog implements OnInit, OnDestroy {
         this.title = data.title;
         this.message = data.message;
         this.visible = true;
-      }
+      },
     );
   }
 

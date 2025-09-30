@@ -100,7 +100,7 @@ describe('BrandForm', () => {
 
     expect(mockToast.show).toHaveBeenCalledWith(
       'Error loading brand details.',
-      'error'
+      'error',
     );
     expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/admin/brands');
   }));
@@ -113,7 +113,7 @@ describe('BrandForm', () => {
 
     fixture.detectChanges();
     const saveButton = fixture.debugElement.query(
-      By.css('button.bg-slate-600')
+      By.css('button.bg-slate-600'),
     );
     saveButton.nativeElement.click();
     tick();
@@ -124,7 +124,7 @@ describe('BrandForm', () => {
     });
     expect(mockToast.show).toHaveBeenCalledWith(
       'Brand added successfully!',
-      'success'
+      'success',
     );
     expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/admin/brands');
   }));
@@ -139,7 +139,7 @@ describe('BrandForm', () => {
 
     fixture.detectChanges();
     const saveButton = fixture.debugElement.query(
-      By.css('button.bg-slate-600')
+      By.css('button.bg-slate-600'),
     );
     saveButton.nativeElement.click();
     tick();
@@ -151,7 +151,7 @@ describe('BrandForm', () => {
     });
     expect(mockToast.show).toHaveBeenCalledWith(
       'Brand updated successfully!',
-      'success'
+      'success',
     );
     expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/admin/brands');
   }));
@@ -159,7 +159,7 @@ describe('BrandForm', () => {
   // Test Case 8: Cancel Button
   it('should navigate to brands list on cancel', () => {
     const cancelButton = fixture.debugElement.query(
-      By.css('button.border-slate-400')
+      By.css('button.border-slate-400'),
     );
     cancelButton.nativeElement.click();
 
@@ -170,7 +170,7 @@ describe('BrandForm', () => {
   it('should update brandThumbnail when the cloudinary component emits uploadSuccess', () => {
     const testUrl = 'http://new-cloudinary-url.jpg';
     const cloudinaryComponent = fixture.debugElement.query(
-      By.directive(CloudinaryUploadComponent)
+      By.directive(CloudinaryUploadComponent),
     ).componentInstance;
 
     cloudinaryComponent.uploadSuccess.emit({

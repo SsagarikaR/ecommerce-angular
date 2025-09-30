@@ -1,22 +1,13 @@
-import {
-  ComponentFixture,
-  TestBed,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Categories } from './categories';
-
-
 
 describe('Categories', () => {
   let component: Categories;
   let fixture: ComponentFixture<Categories>;
 
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        Categories,
-      ],
-
+      imports: [Categories],
     }).compileComponents();
   });
 
@@ -28,5 +19,4 @@ describe('Categories', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

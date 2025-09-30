@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -13,7 +13,10 @@ import { filter } from 'rxjs';
 import { Auth } from '../../../services/auth/auth';
 import { CookieService } from 'ngx-cookie-service';
 
-type Crumb = { label: string; url?: string };
+interface Crumb {
+  label: string;
+  url?: string;
+}
 
 @Component({
   selector: 'app-header',
@@ -21,7 +24,7 @@ type Crumb = { label: string; url?: string };
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
-export class Header {
+export class Header implements OnInit {
   private categoryService = inject(Category);
   private activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
@@ -36,7 +39,9 @@ export class Header {
 
   breadcrumb: Crumb[] = [];
   ngOnInit() {
+    this.authService.fetchUserProfile()
     this.authService.userRole$.subscribe((role) => {
+
       this.isAdmin = role === 'Admin';
     });
     this.loadCategories();
@@ -55,7 +60,6 @@ export class Header {
       next: (data: category[]) => {
         this.categories = data;
       },
-
     });
   }
 
@@ -97,7 +101,7 @@ export class Header {
   private buildBreadcrumb(
     route: ActivatedRoute,
     url = '',
-    crumbs: Crumb[] = []
+    crumbs: Crumb[] = [],
   ): Crumb[] {
     if (crumbs.length === 0 && this.router.url !== '/') {
       crumbs.push({ label: 'Home', url: '/' });

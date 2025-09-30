@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -26,10 +26,10 @@ import { Toast } from '../../../services/toast/toast';
   templateUrl: './products.html',
   styleUrl: './products.css',
 })
-export class Products {
+export class Products implements OnInit {
   products: product[] = [];
   filteredProducts: product[] = [];
-  selectedProducts: Set<number> = new Set();
+  selectedProducts = new Set<number>();
   isLoading = false;
   searchTerm = '';
   Math = Math;
@@ -76,7 +76,7 @@ export class Products {
         this.filteredProducts = [...this.products];
         this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
         this.isLoading = false;
-      }
+      },
     });
     this.isLoading = false;
   }
@@ -118,7 +118,7 @@ export class Products {
     } else {
       this.selectedProducts.clear();
       this.filteredProducts.forEach((product) =>
-        this.selectedProducts.add(product.productID)
+        this.selectedProducts.add(product.productID),
       );
     }
   }
@@ -181,21 +181,22 @@ export class Products {
     const selectedCount = this.selectedProducts.size;
     this.dialog.open({
       title: 'Delete Products',
-      message: `Are you sure you want to delete ${selectedCount} product${selectedCount > 1 ? 's' : ''
-        }? This action cannot be undone.`,
+      message: `Are you sure you want to delete ${selectedCount} product${
+        selectedCount > 1 ? 's' : ''
+      }? This action cannot be undone.`,
     });
 
     this.dialog.confirmed$.subscribe((result) => {
       if (result) {
         const deletePromises = Array.from(this.selectedProducts).map(
-          (productId) => this.productService.delete(productId).toPromise()
+          (productId) => this.productService.delete(productId).toPromise(),
         );
 
         Promise.all(deletePromises)
           .then(() => {
             this.toast.show(
               `${selectedCount} products deleted successfully`,
-              'success'
+              'success',
             );
             this.selectedProducts.clear();
             this.loadProducts();

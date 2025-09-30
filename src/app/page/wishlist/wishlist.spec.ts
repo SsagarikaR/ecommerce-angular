@@ -1,21 +1,13 @@
-import {
-  ComponentFixture,
-  TestBed,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { WishlistPage } from './wishlist';
 
 describe('WishlistPage', () => {
   let component: WishlistPage;
   let fixture: ComponentFixture<WishlistPage>;
 
-
   beforeEach(async () => {
-
     await TestBed.configureTestingModule({
-      imports: [
-        WishlistPage,
-      ],
-
+      imports: [WishlistPage],
     }).compileComponents();
 
     fixture = TestBed.createComponent(WishlistPage);
@@ -25,5 +17,4 @@ describe('WishlistPage', () => {
   it('should create the component', () => {
     expect(component).toBeTruthy();
   });
-
 });

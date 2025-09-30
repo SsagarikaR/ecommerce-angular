@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { cartItem } from '../../types/type';
 import { Cart } from '../../services/cart/cart';
@@ -14,7 +19,7 @@ import { Toast } from '../../services/toast/toast';
   styleUrl: './checkout.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Checkout {
+export class Checkout implements OnInit {
   private toast = inject(Toast);
   private cartService = inject(Cart);
   private ordersService = inject(Orders);
@@ -86,14 +91,14 @@ export class Checkout {
       };
 
       this.ordersService.createOrder(orderPayload).subscribe({
-        next: (response) => {
+        next: () => {
           this.hideConfirmModal();
           this.router.navigate(['/orders']);
         },
         error: (error) => {
           this.toast.show(
             error.error.message || 'Failed to create order. Please try again.',
-            'error'
+            'error',
           );
           this.isLoading = false;
         },

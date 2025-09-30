@@ -11,7 +11,6 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
 
   const apiPrefix = environment.apiPrefix;
   if (req.url.includes(CLOUDINARY_API_URL)) {
-
     const isAbsolute = /^https?:\/\//i.test(req.url);
     const apiReq = req.clone({
       url: isAbsolute ? req.url : `${apiPrefix}/${req.url}`,

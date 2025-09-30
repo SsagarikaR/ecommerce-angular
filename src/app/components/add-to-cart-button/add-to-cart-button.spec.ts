@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddToCartButton } from './add-to-cart-button';
 import { Cart } from '../../services/cart/cart';
 import { of } from 'rxjs';
-import { cartItem, product } from '../../types/type';
+import { product } from '../../types/type';
 
 class MockCartService {
-  addItem(item: cartItem) {
+  addItem() {
     return of('Item added');
   }
 }
@@ -18,8 +18,7 @@ describe('AddToCartButton', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AddToCartButton],
-      providers: [
-        { provide: Cart, useClass: MockCartService },],
+      providers: [{ provide: Cart, useClass: MockCartService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AddToCartButton);

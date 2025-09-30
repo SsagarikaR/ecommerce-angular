@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Wishlist } from '../../services/wishlist/wishlist';
 import { Toast } from '../../services/toast/toast';
@@ -13,7 +13,7 @@ import { product, wishlistItem } from '../../types/type';
   templateUrl: './wishlist.html',
   styleUrl: './wishlist.css',
 })
-export class WishlistPage {
+export class WishlistPage implements OnInit {
   private wishlistService = inject(Wishlist);
   private toast = inject(Toast);
   private cartService = inject(Cart);
@@ -31,7 +31,7 @@ export class WishlistPage {
       next: (items: wishlistItem[]) => {
         this.wishlist = items;
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -47,7 +47,7 @@ export class WishlistPage {
       next: (result) => {
         this.toast.show(result.message || 'Removed from wishlist', 'success');
         this.fetchWishlist();
-      }
+      },
     });
   }
 }

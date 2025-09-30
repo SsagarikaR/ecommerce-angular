@@ -37,7 +37,7 @@ export class Orders {
     city: string,
     pincode: string,
     locality: string,
-    address: string
+    address: string,
   ) {
     return this.http.patch(`${this.baseUrl}`, {
       orderID,
@@ -55,7 +55,7 @@ export class Orders {
 
   updateOrderStatus(
     orderID: number,
-    status: 'pending' | 'confirmed' | 'cancelled' | 'delivered'
+    status: 'pending' | 'confirmed' | 'cancelled' | 'delivered',
   ) {
     return this.http.patch(`${this.baseUrl}/update-status`, {
       orderID,

@@ -20,7 +20,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () =>
-      import('./routes/adminDashboard.route').then((a) => adminRoutes),
+      import('./routes/adminDashboard.route').then(() => adminRoutes),
     data: { hideLayout: true },
   },
   {

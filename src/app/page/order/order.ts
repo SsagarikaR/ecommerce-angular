@@ -5,6 +5,15 @@ import { Orders } from '../../services/orders/orders';
 import { order, orderItem } from '../../types/type';
 import { DialogService } from '../../services/dialog/dialog';
 import { RouterLink } from '@angular/router';
+type Status =
+  | 'pending'
+  | 'confirmed'
+  | 'processing'
+  | 'shipped'
+  | 'delivered'
+  | 'cancelled'
+  | 'returned'
+  | 'success';
 
 @Component({
   selector: 'app-order ',
@@ -79,18 +88,16 @@ export class OrderComponent implements OnInit {
         this.addressUpdate.city,
         this.addressUpdate.pincode,
         this.addressUpdate.locality,
-        this.addressUpdate.address
+        this.addressUpdate.address,
       )
       .subscribe({
-        next: (result) => {
+        next: () => {
           this.resetAddressForm();
           this.loadOrders(); // Refresh the list
           this.loading = false;
         },
-        error: (error) => {
-          this.error = 'Failed to update address. Please try again.';
+        complete: () => {
           this.loading = false;
-          console.error('Error updating address:', error);
         },
       });
   }
@@ -108,7 +115,7 @@ export class OrderComponent implements OnInit {
         if (confirmed) {
           this.loading = true;
           this.orderService.cancelOrder(orderID).subscribe({
-            next: (result) => {
+            next: () => {
               this.loadOrders();
               this.loading = false;
             },
@@ -120,7 +127,7 @@ export class OrderComponent implements OnInit {
           });
         }
         subscription.unsubscribe();
-      }
+      },
     );
   }
 
@@ -137,23 +144,21 @@ export class OrderComponent implements OnInit {
         if (confirmed) {
           this.loading = true;
           this.orderService.deleteOrder(orderID).subscribe({
-            next: (result) => {
+            next: () => {
               this.loadOrders(); // Refresh the list
               this.loading = false;
             },
-            error: (error) => {
-              this.error = 'Failed to delete order . Please try again.';
+            complete: () => {
               this.loading = false;
-              console.error('Error deleting order :', error);
             },
           });
         }
         subscription.unsubscribe();
-      }
+      },
     );
   }
 
-  // Show address update form for specific order 
+  // Show address update form for specific order
   showUpdateAddressForm(order: order) {
     this.editingOrderId = order.orderID || 0;
     this.addressUpdate = {
@@ -171,7 +176,7 @@ export class OrderComponent implements OnInit {
   getStatusClass(status: string | undefined): string {
     if (!status) return 'pending';
 
-    const statusMap: { [key: string]: string } = {
+    const statusMap: Record<Status, string> = {
       pending: 'pending',
       confirmed: 'confirmed',
       processing: 'processing',
@@ -179,16 +184,15 @@ export class OrderComponent implements OnInit {
       delivered: 'delivered',
       cancelled: 'cancelled',
       returned: 'returned',
-      success: 'delivered', // Add 'success' to handle the mock data
+      success: 'delivered',
     };
-
-    return statusMap[status.toLowerCase()] || 'pending';
+    return statusMap[status.toLowerCase() as Status] || 'pending';
   }
 
   getStatusDisplay(status: string | undefined): string {
     if (!status) return 'Pending';
 
-    const statusMap: { [key: string]: string } = {
+    const statusMap: Record<Status, string> = {
       pending: 'Pending',
       confirmed: 'Confirmed',
       processing: 'Processing',
@@ -199,7 +203,7 @@ export class OrderComponent implements OnInit {
       success: 'Delivered', // Add 'success' to handle the mock data
     };
 
-    return statusMap[status.toLowerCase()] || status;
+    return statusMap[status.toLowerCase() as Status] || status;
   }
 
   isOrderCancelled(status: string | undefined): boolean {

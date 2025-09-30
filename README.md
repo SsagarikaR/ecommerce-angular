@@ -25,7 +25,7 @@ A full-featured e-commerce application built with Angular, featuring product man
 
 ##  Technologies Used
 
-- **Frontend**: Angular 20.1.4
+- **Frontend**: Angular 20
 - **Styling**: Tailwind CSS
 - **Components**: Custom Angular components
 - **Routing**: Angular Router
@@ -81,13 +81,16 @@ src/
 │   │   ├── wishlist/
 │   │   └── admin/
 │   ├── services/
-│   │   ├── product.service.ts
-│   │   ├── cart.service.ts
-│   │   ├── auth.service.ts
+│   │   ├── product/
+│   │   ├── cart/
+│   │   ├── auth/
 │   │   └── ...
-│   └── core/
-│       ├── auth.guard.ts
-│       └── tooken.interceptor.ts
+│   └── guards/
+│   |    ├── auth.guard.ts
+│   |    └── admin.guard.ts
+│   └── interceptor/
+│       ├── token.interceptor.ts
+│       └── error.interceptor.ts
 ```
 
 ##  Available Scripts
